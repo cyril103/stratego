@@ -6,7 +6,7 @@ int main(void){
     g.board[31]=(Piece){LIEUTENANT,COMPUTER,40,true,true};
     g.board[21]=(Piece){CAPTAIN,COMPUTER,41,true,true};
     float before=army_exposure(&g,COMPUTER);
-    CHECK(before>worth[LIEUTENANT]);
+    CHECK(before>0);
     CHECK(collective_retreat(&g,(Move){31,32},before)>0);
     Game hidden=g;hidden.board[30].revealed=false;hidden.board[30].rank=-2;
     CHECK(army_exposure(&hidden,COMPUTER)==0);

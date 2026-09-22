@@ -21,7 +21,10 @@ static float army_exposure(const Game *v,int side){
         }
         largest=fmaxf(largest,danger);total+=danger;
     }
-    return largest+.35f*(total-largest);
+    /* The main evaluator already prices the largest tactical loss. This
+       term only adds the rest of the formation, avoiding a second rescue
+       premium that could postpone an urgent attack for one exposed piece. */
+    return .35f*(total-largest);
 }
 static float collective_retreat(const Game *v,Move m,float before){
     Piece d=v->board[m.to],a=v->board[m.from];

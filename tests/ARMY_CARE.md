@@ -10,6 +10,9 @@ defense filters, not a forced retreat order.
 `collective_army_care` checks multiple victims, retreat, hidden identities and
 support. The approach estimate is local, not a proof that every victim can be
 saved or that a two-move attack is forced.
+The largest threat is subtracted from this additional term because the main
+evaluation already scores it. Otherwise a lone exposed unit could improperly
+interrupt a winning flag race; the full recorded-game suite guards this case.
 
 ## Scarce miners
 

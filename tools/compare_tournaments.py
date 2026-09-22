@@ -7,10 +7,12 @@ from pathlib import Path
 def compare(old, new):
     before = json.loads((old / 'results.json').read_text())
     after = json.loads((new / 'results.json').read_text())
-    indexed = {(m['seed'], m['side']): m for m in before['matches']}
+    def key(m):
+        return m['a'], m['b'], m['seed'], m.get('formation', 'auto'), m['side']
+    indexed = {key(m): m for m in before['matches']}
     rows = []
     for match in after['matches']:
-        previous = indexed.get((match['seed'], match['side']))
+        previous = indexed.get(key(match))
         if previous is None:
             continue
         a = [json.loads(line) for line in Path(previous['replay']).read_text().splitlines()]

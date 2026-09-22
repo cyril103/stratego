@@ -2,13 +2,43 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import tempfile
+import json
 
 spec = importlib.util.spec_from_file_location('tournament', Path(__file__).resolve().parents[1] / 'tools/tournament.py')
 tournament = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tournament)
+compare_spec = importlib.util.spec_from_file_location('compare', Path(__file__).resolve().parents[1] / 'tools/compare_tournaments.py')
+comparison = importlib.util.module_from_spec(compare_spec)
+compare_spec.loader.exec_module(comparison)
 
 
 class ScoringTests(unittest.TestCase):
+    def test_expanded_schedule_is_paired_and_unique(self):
+        tasks = tournament.schedule([1, 2, 3], [204, 205], ['auto', 'random'], 1)
+        self.assertEqual(len(tasks), 16)
+        self.assertEqual(len(set(tasks)), 16)
+        for a, b, seed, side, formation in tasks:
+            self.assertIn(1, (a, b))
+            self.assertIn((a, b, seed, 1-side, formation), tasks)
+
+    def test_comparison_separates_opponents_and_formations(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            old, new = root / 'old', root / 'new'
+            old.mkdir(); new.mkdir()
+            matches = []
+            for index, (opponent, formation) in enumerate([(2, 'auto'), (3, 'auto'), (3, 'random')]):
+                replay = root / f'{index}.jsonl'
+                replay.write_text(json.dumps({'board': [index]}) + '\n')
+                matches.append(dict(a=1, b=opponent, formation=formation, seed=204, side=0,
+                                    winning_model=1, ply=100, replay=str(replay)))
+            for path in (old, new):
+                (path / 'results.json').write_text(json.dumps({'matches': matches}))
+            rows = comparison.compare(old, new)
+            self.assertEqual(len(rows), 3)
+            self.assertTrue(all(row['first_change'] is None for row in rows))
+
     def test_duel_only_lists_participants(self):
         rows = tournament.standings([], [1, 3])
         self.assertEqual({r['model'] for r in rows}, {1, 3})

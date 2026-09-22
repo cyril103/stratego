@@ -14,6 +14,13 @@ REASONS = {1: 'drapeau', 2: 'immobilisation', 3: 'double immobilisation', 4: 'ca
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def schedule(models, seeds, formations, focus=None):
+    return [(a, b, seed, side, formation)
+            for a, b in itertools.combinations(models, 2)
+            if focus is None or focus in (a, b)
+            for seed in seeds for formation in formations for side in (0, 1)]
+
+
 def standings(matches, models=None):
     rows = {i: dict(model=i, name=NAMES[i], played=0, wins=0, losses=0, draws=0, unfinished=0, points=0.0) for i in (NAMES if models is None else models)}
     for m in matches:
@@ -48,11 +55,14 @@ def save_report(out, matches, manifest):
     for index, row in enumerate(rows, 1):
         if row['points'] != last:
             rank, last = index, row['points']
-        lines.append(f"| {rank} | {row['name']} | {row['played']} | {row['wins']} | {row['draws']} | {row['losses']} | {row['unfinished']} | {row['points']:g} |")
-    lines += ['', '| A | B | Camp A | Demi-coups | Resultat | Motif |', '|---|---|---|---|---|---|']
+        label = '-' if manifest.get('focus') is not None else rank
+        lines.append(f"| {label} | {row['name']} | {row['played']} | {row['wins']} | {row['draws']} | {row['losses']} | {row['unfinished']} | {row['points']:g} |")
+    if manifest.get('focus') is not None:
+        lines += ['', 'Confrontations ciblees : nombres de parties differents selon les modeles, aucun rang global attribue.']
+    lines += ['', '| A | B | Graine | Placement | Camp A | Demi-coups | Resultat | Motif |', '|---|---|---|---|---|---|---|---|']
     for m in matches:
         result = 'inachevee' if m['winner'] < 0 else 'nulle' if m['winner'] == 2 else NAMES[m['winning_model']]
-        lines.append(f"| {NAMES[m['a']]} | {NAMES[m['b']]} | {m['side']} | {m['ply']} | {result} | {REASONS.get(m['reason'], 'plafond de demi-coups')} |")
+        lines.append(f"| {NAMES[m['a']]} | {NAMES[m['b']]} | {m['seed']} | {m.get('formation', 'auto')} | {m['side']} | {m['ply']} | {result} | {REASONS.get(m['reason'], 'plafond de demi-coups')} |")
     lines += ['', '| Modele | Calcul moyen par decision | Decisions |', '|---|---|---|']
     for model in models:
         name = NAMES[model]
@@ -75,12 +85,18 @@ def main():
     parser.add_argument('--seconds', type=float, default=180)
     parser.add_argument('--plies', type=int, default=100000)
     parser.add_argument('--models', type=int, nargs='+', default=list(NAMES), choices=list(NAMES))
+    parser.add_argument('--focus', type=int, choices=list(NAMES), help='Only pairings involving this model')
+    parser.add_argument('--formations', nargs='+', choices=['auto', 'random'], default=['auto'])
     parser.add_argument('--jobs', type=int, default=1, help='Concurrent games; only available without a clock')
     args = parser.parse_args()
     if args.pairs < 1 or args.seconds < 0 or args.plies < 1:
         parser.error('positive pairs and plies, nonnegative seconds required (0 disables the clock)')
     if len(args.models)<2 or len(set(args.models))!=len(args.models):
         parser.error('at least two distinct models required')
+    if args.focus is not None and args.focus not in args.models:
+        parser.error('focus must be a participating model')
+    if len(set(args.formations)) != len(args.formations):
+        parser.error('formations must be distinct')
     if args.jobs < 1 or (args.jobs > 1 and args.seconds):
         parser.error('positive jobs required; concurrent games require --seconds 0')
     out = args.output.resolve()
@@ -103,7 +119,8 @@ def main():
         shutil.copy2(path, out / path.name)
         hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
     (out / 'source_hashes.json').write_text(json.dumps(hashes, indent=2), encoding='utf-8')
-    manifest = dict(games=len(args.models)*(len(args.models)-1)*args.pairs, pairs=args.pairs, seed=args.seed, seconds=args.seconds, ply_limit=args.plies, jobs=args.jobs,
+    tasks = schedule(args.models, range(args.seed, args.seed + args.pairs), args.formations, args.focus)
+    manifest = dict(games=len(tasks), formations=args.formations, focus=args.focus, pairs=args.pairs, seed=args.seed, seconds=args.seconds, ply_limit=args.plies, jobs=args.jobs,
                     models={i:NAMES[i] for i in args.models}, policy_header=policy.read_text().splitlines()[0],
                     binary_sha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
                     policy_sha256=hashlib.sha256(policy.read_bytes()).hexdigest(),
@@ -111,14 +128,12 @@ def main():
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     matches, starts = [], {}
     save_report(out, matches, manifest)
-    tasks = [(a, b, seed, side) for a, b in itertools.combinations(args.models, 2)
-             for seed in range(args.seed, args.seed + args.pairs) for side in (0, 1)]
 
     def play(index, task):
-        a, b, seed, side = task
-        folder = out / f'{a}_vs_{b}_{seed}_{side}'
+        a, b, seed, side, formation = task
+        folder = out / f'{a}_vs_{b}_{seed}_{side}_{formation}'
         folder.mkdir()
-        command = [str(binary), '1', str(args.plies), str(seed), str(side), '1', str(folder), str(args.seconds), str(a), str(b), str(policy)]
+        command = [str(binary), '1', str(args.plies), str(seed), str(side), str(int(formation == 'auto')), str(folder), str(args.seconds), str(a), str(b), str(policy)]
         print(f"GAME {index}/{manifest['games']}: {NAMES[a]} vs {NAMES[b]} seed={seed} side={side}", flush=True)
         started = time.monotonic()
         with (folder / 'stdout.txt').open('w', encoding='utf-8') as log:
@@ -128,7 +143,7 @@ def main():
         if not end.get('end'):
             raise RuntimeError('Missing match result')
         winner = end['winner']
-        match = dict(a=a, b=b, seed=seed, side=side, winner=winner, winning_model=(a if winner == side else b) if winner in (0, 1) else None,
+        match = dict(a=a, b=b, seed=seed, side=side, formation=formation, winner=winner, winning_model=(a if winner == side else b) if winner in (0, 1) else None,
                      ply=end['ply'], reason=end['reason'], seconds=round(time.monotonic()-started, 3),
                      seconds_a=end['seconds_a'], decisions_a=end['decisions_a'], seconds_b=end['seconds_b'], decisions_b=end['decisions_b'],
                      replay=str(folder / f'match_{seed}_{side}.jsonl'))
@@ -139,10 +154,10 @@ def main():
         futures = [executor.submit(play, index, task) for index, task in enumerate(tasks, 1)]
         for future in as_completed(futures):
             match, board = future.result()
-            if starts.setdefault(match['seed'], board) != board:
+            if starts.setdefault((match['seed'], match['formation']), board) != board:
                 raise RuntimeError('Initial boards differ across paired games')
             matches.append(match)
-            matches.sort(key=lambda item: (item['a'], item['b'], item['seed'], item['side']))
+            matches.sort(key=lambda item: (item['a'], item['b'], item['seed'], item['formation'], item['side']))
             save_report(out, matches, manifest)
             print('RESULT ' + json.dumps(match), flush=True)
     print('COMPLETE ' + str(out / 'classement.md'), flush=True)
