@@ -1077,6 +1077,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         strategic[i]+=information_gain(&view,p,m)/(1+opportunity/worth[SCOUT]);
         strategic[i]-=scout_disclosure_cost(&view,m);
         strategic[i]-=scarce_miner_probe(&view,p,m);
+        strategic[i]-=miner_capability_cost(&view,p,m);
         /* Reward a sound immediate recapture, without paying for a known
            losing attack or overriding the search's assessment of defenders. */
         if(g->combat==1&&g->last_move.to==m.to&&d.side==1-g->turn&&gain>0)strategic[i]+=2.5f;

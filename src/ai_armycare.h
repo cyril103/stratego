@@ -30,3 +30,32 @@ static float collective_retreat(const Game *v,Move m,float before){
     Game next=optimistic_move(v,m);
     return 2*(before-army_exposure(&next,v->turn));
 }
+/* Charge the loss of a scarce capability in addition to ordinary material.
+   Integrate public probabilities analytically, including rare counterattacks. */
+static float miner_capability_cost(const Game *v,float p[100][12],Move m){
+    Piece a=v->board[m.from],d=v->board[m.to];int side=v->turn;
+    int left=army_counts[MINER]-v->captured[side][MINER];
+    if(a.rank!=MINER||left<1||left>3||v->captured[1-side][BOMB]>=army_counts[BOMB])return 0;
+    float failure=0,flag=0;
+    if(d.side==1-side){
+        flag=p[m.to][FLAG];
+        for(int r=0;r<12;r++)if(combat_result(MINER,r)<=0)failure+=p[m.to][r];
+    }
+    Game next=optimistic_move(v,m);float counter=0;
+    for(int e=0;e<100;e++)if(e!=m.to&&v->board[e].side==1-side){
+        float attack=0;
+        for(int r=SPY;r<=MARSHAL;r++)if(p[e][r]>0&&combat_result(r,MINER)>=0){
+            Game probe=next;probe.board[e].rank=r;
+            if(public_legal(&probe,(Move){e,m.to},1-side))attack+=p[e][r];
+        }
+        counter=fmaxf(counter,attack);
+    }
+    /* A flag capture ends the game; no hypothetical reply is then charged. */
+    float risk=failure+fmaxf(0,1-failure-flag)*counter;
+    /* Bomb-screen probes are the capability's purpose. Preserve their
+       existing route evaluation instead of charging the full reserve price. */
+    float mission=d.side==1-side&&!d.moved?p[m.to][BOMB]+flag:0;
+    int advance=side==COMPUTER?m.to/10:9-m.to/10;
+    if(advance>=6&&mission>=.5f)return 0;
+    return 3*worth[MINER]*risk*(1-.8f*mission)/left;
+}
