@@ -15,15 +15,32 @@
 #include <string.h>
 #include <time.h>
 
-#define VW 1440
+static int view_width=1440;
+#define VW view_width
 #define VH 900
-#define SW 1016
+#define SW (VW-424)
 #define SH 704
 static const Color BG={14,22,28,255}, PANEL={22,33,40,255}, INK={229,225,209,255};
 static const Color MUTED={139,157,162,255}, BRASS={214,177,108,255}, REDTEAM={202,30,44,255}, IVORY={229,218,185,255};
 static Font regular,bold;
 static Vector2 mouse;
 static bool clicked;
+static bool quit_requested=false;
+static int windowed_width=1440,windowed_height=VH;
+static void toggle_fullscreen(void) {
+    if(IsWindowFullscreen()) {
+        ToggleFullscreen();
+        SetWindowSize(windowed_width,windowed_height);
+    } else {
+        windowed_width=GetScreenWidth();windowed_height=GetScreenHeight();
+        int monitor=GetCurrentMonitor();
+        int width=GetMonitorWidth(monitor),height=GetMonitorHeight(monitor);
+        SetWindowSize(width,height);
+        ToggleFullscreen();
+        /* The decorated window may be clamped to the work area before the switch. */
+        SetWindowSize(width,height);
+    }
+}
 static Model pieces[13],piece_faces[12],piece_plate,board_model,inlay;
 static const Color BLUE_TEAM={35,83,183,255};
 static Shader lighting,metal_lighting,matte_lighting;
@@ -31,6 +48,17 @@ static Shader wood_lighting,cloth_lighting;
 static Model table_model,tile_model;
 static Model contact_shadow;
 static Texture2D shadow_texture;
+static Texture2D battlefield_background;
+static void draw_background(float x,float y) {
+    if(!battlefield_background.id)return;
+    float w=(float)battlefield_background.width,h=(float)battlefield_background.height;
+    float scale=fmaxf(VW/w,VH/h);
+    Rectangle source={(w-VW/scale)/2,(h-VH/scale)/2,VW/scale,VH/scale};
+    DrawTexturePro(battlefield_background,source,(Rectangle){x,y,VW,VH},(Vector2){0,0},0,WHITE);
+}
+static int layout_width(void) {
+    return (int)fmaxf(1440,roundf((float)GetScreenWidth()*VH/fmaxf(1,GetScreenHeight())));
+}
 static RenderTexture2D captured_icons[2][12];
 static int tray_side=COMPUTER;
 static bool tray_journal=false;
@@ -248,8 +276,11 @@ static void draw_move_animation(void) {
 static void draw_scene(RenderTexture2D target) {
     Shader studio[]={lighting,metal_lighting,matte_lighting,wood_lighting,cloth_lighting};
     for(int i=0;i<5;i++)SetShaderValue(studio[i],GetShaderLocation(studio[i],"eyePosition"),&camera.position,SHADER_UNIFORM_VEC3);
-    BeginTextureMode(target);ClearBackground((Color){19,31,37,255});BeginMode3D(camera);
-    DrawPlane((Vector3){0,-3,0},(Vector2){200,200},(Color){36,29,26,255});
+    BeginTextureMode(target);ClearBackground(BG);
+    BeginMode2D((Camera2D){.zoom=2});
+    draw_background(-24,-142);
+    DrawRectangle(0,0,SW,SH,Fade(BG,.24f));
+    EndMode2D();BeginMode3D(camera);
     DrawModel(table_model,(Vector3){0,-.83f,0},1,(Color){94,59,37,255});
     rlDrawRenderBatchActive();rlDisableDepthMask();
     DrawModelEx(contact_shadow,(Vector3){.13f,-.474f,.17f},(Vector3){0,1,0},0,(Vector3){9.4f,1,13.6f},Fade(WHITE,.9f));
@@ -321,20 +352,24 @@ static void help_overlay(void) {
 }
 static void interface(void) {
     ClearBackground(BG);
+    draw_background(0,0);
+    DrawRectangle(0,0,VW,VH,Fade(BG,.24f));
+    DrawRectangleGradientV(0,0,VW,142,Fade(BG,.94f),Fade(BG,.68f));
+    DrawRectangleGradientV(0,846,VW,54,Fade(BG,.7f),Fade(BG,.94f));
     label("ATELIER DE STRATEGIE    /    EDITION 3D",28,23,14,BRASS,true);
     label("STRATEGO",24,47,46,INK,true);
     label(phase==2?"Chaque coup compte.":"Deux armees. Un drapeau. Aucune certitude.",310,68,18,MUTED,false);
-    if(button("?  Regles",(Rectangle){1064,47,168,43},false,true))help=true;
-    if(button("Nouvelle partie",(Rectangle){1244,47,172,43},false,true)){reset_game();phase=1;}
-    DrawLine(24,112,1416,112,(Color){53,65,66,255});
+    if(button("?  Regles",(Rectangle){VW-376,47,168,43},false,true))help=true;
+    if(button("Nouvelle partie",(Rectangle){VW-196,47,172,43},false,true)){reset_game();phase=1;}
+    DrawLine(24,112,VW-24,112,(Color){53,65,66,255});
     label(phase==0?"LE CHAMP DE BATAILLE":(phase==1?"01   DEPLOYEZ VOS FORCES":"02   LA BATAILLE"),28,122,13,BRASS,true);
     label("BLEU / VOUS                           ROUGE / ADVERSAIRE",627,122,13,MUTED,false);
-    DrawRectangleRounded((Rectangle){1064,142,352,704},.025f,8,PANEL);
+    DrawRectangleRounded((Rectangle){VW-376,142,352,704},.025f,8,Fade(PANEL,.96f));
 }
 static void deployment_board(void){
-    DrawRectangle(24,142,SW,SH,(Color){27,37,39,255});
-    const float bx=232,by=185,cell=60;
-    center("VOTRE PLAN DE BATAILLE",532,150,20,BRASS);
+    DrawRectangle(24,142,SW,SH,(Color){27,37,39,226});
+    const float bx=24+(SW-600)/2.0f,by=185,cell=60;
+    center("VOTRE PLAN DE BATAILLE",24+SW/2.0f,150,20,BRASS);
     int hovered=-1;
     for(int s=0;s<100;s++){
         Rectangle box={bx+(s%10)*cell,by+(s/10)*cell,cell-2,cell-2};
@@ -348,9 +383,9 @@ static void deployment_board(void){
             label(rank_symbols[r],box.x+35,box.y+17,22,INK,true);
         }
     }
-    center("ZONE ADVERSE",532,281,22,MUTED);
+    center("ZONE ADVERSE",24+SW/2.0f,281,22,MUTED);
     for(int i=0;i<10;i++){center(TextFormat("%c",'A'+i),bx+i*cell+29,by+605,17,BRASS);label(TextFormat("%d",10-i),bx-31,by+i*cell+21,18,BRASS,true);}
-    center("Placez vos pieces dans les quatre rangees claires.",532,817,17,INK);
+    center("Placez vos pieces dans les quatre rangees claires.",24+SW/2.0f,817,17,INK);
     if(hovered>=0&&!help){
         Rectangle box={bx+(hovered%10)*cell,by+(hovered/10)*cell,cell-2,cell-2};DrawRectangleLinesEx(box,2,IVORY);
         if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){deployment_remove(&deployment,&game,hovered);selected=-1;}
@@ -362,13 +397,13 @@ static void deployment_board(void){
     }
 }
 static void side_panel(void) {
-    float x=1088;
+    float x=VW-352;
     if(phase==0) {
         label("STRATEGIE A INFORMATION CACHEE",x,169,12,BRASS,true);
-        label("L'art de",x,213,40,INK,true);label("l'anticipation.",x,260,40,INK,true);
+        label("L'art de",x,213,36,INK,true);label("l'anticipation.",x,260,34,INK,true);
         label("40 pieces sous vos ordres.",x,329,20,MUTED,false);
         label("Observez. Sondez. Avancez.",x,360,20,MUTED,false);
-        label("Protegez votre drapeau et percez",x,412,18,INK,false);label("les lignes de votre adversaire.",x,440,18,INK,false);
+        label("Protegez votre drapeau et percez",x,412,16,INK,false);label("les lignes de votre adversaire.",x,440,16,INK,false);
         label("ADVERSAIRE",x,515,13,BRASS,true);
         if(button(ai_model_name(difficulty),(Rectangle){x,545,304,47},false,true))difficulty=ai_model_next(difficulty,ml_ready());
         label(ai_model_description(difficulty),x,608,14,MUTED,false);
@@ -390,7 +425,7 @@ static void side_panel(void) {
             label(rank_symbols[r],cell.x+45,cell.y+3,22,n?INK:MUTED,true);
             label(TextFormat("x%d",n),cell.x+45,cell.y+31,20,n?INK:MUTED,true);
         }
-        label(reserve_rank>=0?rank_names[reserve_rank]:"Cliquez une piece pour deplacer",x,588,16,INK,true);
+        label(reserve_rank>=0?rank_names[reserve_rank]:"Cliquez une piece pour deplacer",x,588,15,INK,true);
         label("Clic droit : remettre en reserve",x,612,15,MUTED,false);
         if(button("Vider",(Rectangle){x,653,96,42},false,true)){deployment_clear(&deployment,&game);selected=reserve_rank=-1;}
         if(button("Melanger",(Rectangle){x+104,653,200,42},false,true)){
@@ -500,6 +535,7 @@ static void end_overlay(void){
     EndScissorMode();
 }
 int main(int argc,char **argv) {
+    bool quit_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--quit-demo"))quit_demo=true;
     bool deployment_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--deployment-demo"))deployment_demo=true;
     bool resign_demo=false,immobile_demo=false,draw_demo=false;
     bool models_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--models-demo"))models_demo=true;
@@ -514,7 +550,14 @@ int main(int argc,char **argv) {
     const char *appdir=GetApplicationDirectory();if(!DirectoryExists("assets/models"))ChangeDirectory(appdir);
     ml_init("assets/models/selfplay.policy");
     for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--ml")&&ml_ready())difficulty=2;
-    SetConfigFlags(FLAG_MSAA_4X_HINT|FLAG_WINDOW_RESIZABLE|FLAG_WINDOW_HIGHDPI);InitWindow(VW,VH,"Stratego 3D | Atelier de strategie");SetWindowMinSize(1024,640);SetTargetFPS(60);SetExitKey(KEY_NULL);
+    unsigned int window_flags=FLAG_MSAA_4X_HINT|FLAG_WINDOW_RESIZABLE;
+    /* Windows GLFW sizes are already pixels: HIGHDPI would scale the canvas twice. */
+#if defined(__APPLE__)
+    window_flags|=FLAG_WINDOW_HIGHDPI;
+#endif
+    SetConfigFlags(window_flags);InitWindow(VW,VH,"Stratego 3D | Atelier de strategie");SetWindowMinSize(1024,640);SetTargetFPS(60);SetExitKey(KEY_NULL);
+    toggle_fullscreen();
+    if(quit_demo&&!IsWindowFullscreen()){CloseWindow();return 4;}
     regular=interface_font(false);
     bold=interface_font(true);
     SetTextureFilter(regular.texture,TEXTURE_FILTER_BILINEAR);SetTextureFilter(bold.texture,TEXTURE_FILTER_BILINEAR);
@@ -532,13 +575,16 @@ int main(int argc,char **argv) {
     float wood_kind=1,cloth_kind=2;
     SetShaderValue(wood_lighting,GetShaderLocation(wood_lighting,"surfaceKind"),&wood_kind,SHADER_UNIFORM_FLOAT);
     SetShaderValue(cloth_lighting,GetShaderLocation(cloth_lighting,"surfaceKind"),&cloth_kind,SHADER_UNIFORM_FLOAT);
-    table_model=LoadModelFromMesh(GenMeshCube(32,.7f,28));table_model.materials[0].shader=wood_lighting;
+    table_model=LoadModelFromMesh(GenMeshCube(13,.7f,14));table_model.materials[0].shader=wood_lighting;
     tile_model=LoadModelFromMesh(GenMeshCube(1,1,1));tile_model.materials[0].shader=cloth_lighting;
     for(int i=0;i<board_model.materialCount;i++)board_model.materials[i].shader=wood_lighting;
+    battlefield_background=LoadTexture("assets/backgrounds/napoleonic-battlefield.png");
+    if(battlefield_background.id)SetTextureFilter(battlefield_background,TEXTURE_FILTER_BILINEAR);
     create_contact_shadow();
     create_captured_icons();
     if(!IsModelValid(board_model)||!IsModelValid(inlay)){TraceLog(LOG_ERROR,"Missing board assets");CloseWindow();return 1;}
     InitAudioDevice();audio_ok=IsAudioDeviceReady();if(audio_ok){click_sound=tone(460,.14f);combat_sound=tone(135,.30f);}
+    view_width=layout_width();
     RenderTexture2D canvas=LoadRenderTexture(VW,VH),scene=LoadRenderTexture(SW*2,SH*2);SetTextureFilter(canvas.texture,TEXTURE_FILTER_BILINEAR);SetTextureFilter(scene.texture,TEXTURE_FILTER_BILINEAR);
     reset_game();if(smoke)phase=smoke_battle?2:1;
     if(smoke) {
@@ -571,22 +617,38 @@ int main(int argc,char **argv) {
     if(models_demo)phase=0;
     if(deployment_demo)deployment_path="reports/deployment_demo_save.txt";
     if(ai_draw_demo){phase=2;ai_draw_pending=true;last_ai_draw_offer=game.ply;}
-    while(!WindowShouldClose()) {
+    while(!quit_requested&&!WindowShouldClose()) {
+        if(IsKeyPressed(KEY_F11)||(quit_demo&&(frames==3||frames==6)))toggle_fullscreen();
+        if(quit_demo&&(frames==4||frames==9)) {
+            bool expected_fullscreen=frames==9;
+            int monitor=GetCurrentMonitor();
+            int width=expected_fullscreen?GetMonitorWidth(monitor):windowed_width;
+            int height=expected_fullscreen?GetMonitorHeight(monitor):windowed_height;
+            if(IsWindowFullscreen()!=expected_fullscreen||GetScreenWidth()!=width||GetScreenHeight()!=height||GetRenderWidth()!=width||GetRenderHeight()!=height){TraceLog(LOG_ERROR,"Fullscreen viewport mismatch: fullscreen=%d screen=%dx%d render=%dx%d expected=%dx%d",IsWindowFullscreen(),GetScreenWidth(),GetScreenHeight(),GetRenderWidth(),GetRenderHeight(),width,height);CloseWindow();return 4;}
+            TraceLog(LOG_INFO,"DISPLAY: fullscreen=%d screen=%dx%d render=%dx%d",IsWindowFullscreen(),GetScreenWidth(),GetScreenHeight(),GetRenderWidth(),GetRenderHeight());
+        }
+        int next_width=layout_width();
+        if(next_width!=VW) {
+            UnloadRenderTexture(canvas);UnloadRenderTexture(scene);view_width=next_width;
+            canvas=LoadRenderTexture(VW,VH);scene=LoadRenderTexture(SW*2,SH*2);
+            SetTextureFilter(canvas.texture,TEXTURE_FILTER_BILINEAR);SetTextureFilter(scene.texture,TEXTURE_FILTER_BILINEAR);
+        }
         float dt=fminf(GetFrameTime(),.1f);float scale=fminf((float)GetScreenWidth()/VW,(float)GetScreenHeight()/VH);
         Vector2 offset={(GetScreenWidth()-VW*scale)/2,(GetScreenHeight()-VH*scale)/2};mouse=Vector2Scale(Vector2Subtract(GetMousePosition(),offset),1/scale);clicked=IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
+        if(quit_demo&&frames==10){mouse=(Vector2){VW-100,870};clicked=true;}
         if(resign_demo&&frames==20){mouse=(Vector2){640,500};clicked=true;}
-        if(models_demo&&(frames==5||frames==10||frames==15||(ml_ready()&&frames==20))){mouse=(Vector2){1230,565};clicked=true;}
+        if(models_demo&&(frames==5||frames==10||frames==15||(ml_ready()&&frames==20))){mouse=(Vector2){VW-210,565};clicked=true;}
         if(ai_draw_demo&&frames==30){mouse=(Vector2){ai_draw_demo==1?640:410,500};clicked=true;}
         if(deployment_demo){
-            if(frames==5){mouse=(Vector2){1130,340};clicked=true;}
-            if(frames==10){mouse=(Vector2){252,565};clicked=true;}
+            if(frames==5){mouse=(Vector2){VW-310,340};clicked=true;}
+            if(frames==10){mouse=(Vector2){252+(VW-1440)/2.0f,565};clicked=true;}
             if(frames==14&&(game.board[60].rank!=MARSHAL||deployment_count(&deployment,MARSHAL)!=0))return 4;
-            if(frames==15){mouse=(Vector2){1280,670};clicked=true;}
-            if(frames==16){mouse=(Vector2){1140,725};clicked=true;}
-            if(frames==17){mouse=(Vector2){1130,670};clicked=true;}
-            if(frames==18){mouse=(Vector2){1310,725};clicked=true;}
+            if(frames==15){mouse=(Vector2){VW-160,670};clicked=true;}
+            if(frames==16){mouse=(Vector2){VW-300,725};clicked=true;}
+            if(frames==17){mouse=(Vector2){VW-310,670};clicked=true;}
+            if(frames==18){mouse=(Vector2){VW-130,725};clicked=true;}
             if(frames==19&&!deployment_complete(&deployment,&game))return 4;
-            if(frames==20){mouse=(Vector2){1200,785};clicked=true;}
+            if(frames==20){mouse=(Vector2){VW-240,785};clicked=true;}
         }
         if(IsKeyPressed(KEY_F1))help=!help;
         if(IsKeyPressed(KEY_ESCAPE)){if(help)help=false;else if(ai_draw_pending){ai_draw_pending=false;push_log("Vous refusez la nulle : la partie continue.");}else if(resign_confirm)resign_confirm=false;else if(draw_confirm)draw_confirm=false;else if(game.winner>=0)end_dismissed=true;else {selected=-1;reserve_rank=-1;}}
@@ -636,13 +698,24 @@ int main(int argc,char **argv) {
         draw_scene(scene);
         BeginTextureMode(canvas);
         bool raw_click=clicked;if(help||resign_confirm||draw_confirm||ai_draw_pending)clicked=false;
-        interface();DrawTexturePro(scene.texture,(Rectangle){0,0,SW*2,-SH*2},(Rectangle){24,142,SW,SH},(Vector2){0,0},0,WHITE);if(phase==1)deployment_board();side_panel();
+        interface();if(phase==2)DrawTexturePro(scene.texture,(Rectangle){0,0,SW*2,-SH*2},(Rectangle){24,142,SW,SH},(Vector2){0,0},0,WHITE);if(phase==1)deployment_board();side_panel();
         if(phase==2&&game.winner<0&&button("Proposer nulle",(Rectangle){650,48,190,42},false,!animating&&game.turn==HUMAN&&game.ply-last_draw_offer>=20)){draw_confirm=true;raw_click=false;}
         if(phase==2&&game.winner<0&&button("Capituler",(Rectangle){850,48,200,42},false,!animating)){resign_confirm=true;raw_click=false;}
         label("CLIC  Selection / deplacement",28,864,14,MUTED,false);label("DROIT  Orbite   MOLETTE  Zoom / glisser   C  Recentrer",374,864,14,MUTED,false);
-        label(muted?"M  Son coupe":"M  Son actif",1064,864,14,BRASS,false);label("F1  Aide",1339,864,14,MUTED,false);
-        clicked=help?false:raw_click;end_overlay();clicked=raw_click;if(help)help_overlay();EndTextureMode();
-        BeginDrawing();ClearBackground(BLACK);DrawTexturePro(canvas.texture,(Rectangle){0,0,VW,-VH},(Rectangle){offset.x,offset.y,VW*scale,VH*scale},(Vector2){0,0},0,WHITE);EndDrawing();
+        label(muted?"M  Son coupe":"M  Son actif",VW-460,864,14,BRASS,false);label("F11  Ecran",VW-315,864,14,MUTED,false);
+        clicked=help?false:raw_click;end_overlay();clicked=raw_click;if(help)help_overlay();
+        if(button("Quitter",(Rectangle){VW-180,852,156,36},false,true))quit_requested=true;
+        EndTextureMode();
+        BeginDrawing();ClearBackground(BLACK);DrawTexturePro(canvas.texture,(Rectangle){0,0,VW,-VH},(Rectangle){offset.x,offset.y,VW*scale,VH*scale},(Vector2){0,0},0,WHITE);
+        if(quit_demo&&frames==9) {
+            /* Capture the actual framebuffer, including final scaling and letterboxing. */
+            rlDrawRenderBatchActive();
+            Image display={rlReadScreenPixels(GetRenderWidth(),GetRenderHeight()),GetRenderWidth(),GetRenderHeight(),1,PIXELFORMAT_UNCOMPRESSED_R8G8B8A8};
+            bool saved=ExportImage(display,"reports/fullscreen-display.png");UnloadImage(display);
+            if(!saved){CloseWindow();return 4;}
+        }
+        EndDrawing();
+        if(quit_demo&&frames==10&&!quit_requested){TraceLog(LOG_ERROR,"Quit button did not close the game");CloseWindow();return 4;}
         if(combat_demo&&!reveal_captured&&animation>=.9f){
             if(game.ply!=0||game.board[64].side!=demo_side||game.board[54].side!=1-demo_side){TraceLog(LOG_ERROR,"Combat committed before reveal");return 4;}
             Image capture=LoadImageFromTexture(canvas.texture);ImageFlipVertical(&capture);bool saved=ExportImage(capture,"combat_reveal.png");UnloadImage(capture);if(!saved)return 4;reveal_captured=true;
@@ -675,9 +748,11 @@ int main(int argc,char **argv) {
         }
     }
     ai_worker_stop();
+    if(quit_demo)TraceLog(LOG_INFO,"QUIT: fullscreen launch and exit button passed (%d frames)",frames);
     match_log_close(&game);
     for(int side=0;side<2;side++)for(int r=0;r<12;r++)UnloadRenderTexture(captured_icons[side][r]);
     UnloadModel(table_model);UnloadModel(tile_model);UnloadShader(wood_lighting);UnloadShader(cloth_lighting);
+    if(battlefield_background.id)UnloadTexture(battlefield_background);
     UnloadRenderTexture(canvas);UnloadRenderTexture(scene);for(int i=0;i<13;i++)UnloadModel(pieces[i]);for(int i=0;i<12;i++)UnloadModel(piece_faces[i]);UnloadModel(piece_plate);UnloadModel(board_model);UnloadModel(inlay);UnloadModel(contact_shadow);UnloadTexture(shadow_texture);UnloadShader(lighting);UnloadShader(metal_lighting);UnloadShader(matte_lighting);
     if(regular.texture.id!=GetFontDefault().texture.id)UnloadFont(regular);
     if(bold.texture.id!=GetFontDefault().texture.id)UnloadFont(bold);

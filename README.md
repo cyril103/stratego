@@ -8,6 +8,8 @@ L'interface utilise Consolas et Consolas Bold installées dans le dossier de pol
 
 Lancer `build/stratego.exe`, ou double-cliquer `Jouer.cmd` après compilation. Les assets sont copiés à côté de l'exécutable. OpenGL 3.3 est nécessaire. Aucun serveur ni compte.
 
+Le jeu démarre en plein écran réel, à la résolution native du moniteur. Sur les écrans larges (16:10, 16:9 et ultralarges), l'interface adapte sa largeur : le plateau dispose de plus d'espace, le panneau reste ancré à droite et le fond remplit l'écran sans déformation ni bandes noires. `F11` bascule entre plein écran et fenêtre. Le bouton **Quitter**, en bas à droite, ferme le jeu depuis tous les écrans, y compris l'aide et les dialogues.
+
 1. Choisir Découverte ou Expert + (sélectionné par défaut), puis « Préparer mon armée ».
 2. Dans le placement en 2D, choisir un grade dans la réserve à droite puis une case des quatre rangées de votre camp. Cliquer une pièce posée puis une case pour la déplacer ou l'échanger ; clic droit pour la remettre en réserve. « Vider » recommence le placement et « Mélanger » pose une formation complète. Échap annule la sélection.
 3. Une fois les 40 pièces placées, cliquer « Engager la bataille » : retour automatique en 3D. Vous jouez en premier.
