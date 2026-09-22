@@ -2,7 +2,9 @@
 in vec3 normal;
 in vec4 color;
 in vec3 worldPosition;
+in vec2 texCoord;
 uniform vec4 colDiffuse;
+uniform sampler2D texture0;
 uniform vec3 eyePosition;
 uniform float roughness;
 uniform float metallic;
@@ -30,7 +32,7 @@ vec3 lamp(vec3 n,vec3 v,vec3 l,vec3 tint,vec3 base) {
 }
 void main() {
     vec3 n=normalize(normal),v=normalize(eyePosition-worldPosition);
-    vec3 base=pow(max(colDiffuse.rgb*color.rgb,vec3(0.0)),vec3(2.2));
+    vec3 base=pow(max(texture(texture0,texCoord).rgb*colDiffuse.rgb*color.rgb,vec3(0.0)),vec3(2.2));
     if(surfaceKind>0.5&&surfaceKind<1.5){
         vec2 p=worldPosition.xz;
         float bend=woodNoise(p*.35)*2.0;

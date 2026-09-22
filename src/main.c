@@ -16,6 +16,7 @@
 #include <time.h>
 #include "ui_theme.h"
 #include "battlefield.h"
+#include "piece_art.h"
 
 #if defined(_WIN32)
 /* NVIDIA Optimus reads this executable export before the OpenGL context exists.
@@ -226,8 +227,8 @@ static void draw_piece_pose(Piece p,Vector3 pos,bool hidden,float angle,float sc
     DrawModelEx(pieces[12],pos,(Vector3){0,1,0},angle,size,color);
     /* Never submit a hidden rank's emblem, even when the camera rotates behind it. */
     if(!hidden){
-        DrawModelEx(piece_plate,pos,(Vector3){0,1,0},angle,size,p.side==HUMAN?(Color){227,232,220,255}:(Color){240,201,114,255});
-        DrawModelEx(piece_faces[p.rank],pos,(Vector3){0,1,0},angle,size,color);
+        DrawModelEx(piece_plate,pos,(Vector3){0,1,0},angle,size,(Color){226,189,121,255});
+        DrawModelEx(piece_faces[p.rank],pos,(Vector3){0,1,0},angle,size,WHITE);
     }
 }
 static void draw_piece(Piece p,Vector3 pos,bool hidden){draw_piece_pose(p,pos,hidden,hidden?180:0,1);}
@@ -350,7 +351,18 @@ static void draw_scene(RenderTexture2D target) {
         Piece p=game.board[s];if(p.side<0||(animating&&s==pending.from))continue;
         Vector3 pos=square_pos(s);pos.y+=1.1f;Vector2 xy=GetWorldToScreenEx(pos,camera,SW,SH);
         bool known=!face_hidden(p);
-        /* Grade lives on the model's face. Show an aid only for the selected unit. */
+        /* Keep the painted portrait unobstructed; small pieces get a base label. */
+        if(known&&selected!=s){
+            Vector3 foot=square_pos(s);foot.y+=.18f;foot.z+=.22f;
+            Vector3 head=foot;head.y+=.70f;
+            Vector2 base=GetWorldToScreenEx(foot,camera,SW,SH);
+            Vector2 top=GetWorldToScreenEx(head,camera,SW,SH);
+            if(Vector2Distance(base,top)<38){
+                Rectangle badge={base.x-10,base.y-7,20,17};
+                DrawRectangleRounded(badge,.22f,4,(Color){12,19,27,245});
+                center(rank_symbols[p.rank],base.x,base.y-7,14,IVORY);
+            }
+        }
         if(known&&selected==s){DrawCircleV(xy,19,(Color){24,34,50,255});center(rank_symbols[p.rank],xy.x,xy.y-14,28,IVORY);}
         if(reveal_recent(&reveal_window,&game,p)&&p.side==HUMAN)DrawCircle((int)xy.x+9,(int)xy.y+7,2,BRASS);
     }
@@ -637,7 +649,8 @@ int main(int argc,char **argv) {
     lighting.locs[SHADER_LOC_MATRIX_MODEL]=GetShaderLocation(lighting,"matModel");
     for(int i=0;i<13;i++){pieces[i]=LoadModel(TextFormat("assets/models/piece_%02d.obj",i));if(!IsModelValid(pieces[i])){TraceLog(LOG_ERROR,"Missing piece assets; run tools/create_assets.py with Blender");CloseWindow();return 1;}apply_shader(&pieces[i]);}
     piece_plate=LoadModel("assets/models/piece_plate.obj");if(!IsModelValid(piece_plate)){CloseWindow();return 1;}apply_shader(&piece_plate);
-    for(int i=0;i<12;i++){piece_faces[i]=LoadModel(TextFormat("assets/models/piece_face_%02d.obj",i));if(!IsModelValid(piece_faces[i])){CloseWindow();return 1;}apply_shader(&piece_faces[i]);}
+    for(int i=0;i<piece_plate.materialCount;i++)piece_plate.materials[i].shader=metal_lighting;
+    if(!piece_art_load(piece_faces,matte_lighting,imperial)){TraceLog(LOG_ERROR,"Cannot load piece illustrations");CloseWindow();return 1;}
     if(!battlefield_load()){TraceLog(LOG_ERROR,"Cannot load battlefield materials");CloseWindow();return 1;}
     tile_model=LoadModelFromMesh(GenMeshCube(1,1,1));field_material(&tile_model,0);
     battlefield_background=LoadTexture("assets/backgrounds/napoleonic-battlefield.png");
@@ -823,6 +836,7 @@ int main(int argc,char **argv) {
     UnloadModel(tile_model);
     UnloadRenderTexture(terrain_map);
     battlefield_unload();
+    piece_art_unload();
     if(battlefield_background.id)UnloadTexture(battlefield_background);
     if(imperial_emblem.id)UnloadTexture(imperial_emblem);
     if(imperial.texture.id!=GetFontDefault().texture.id)UnloadFont(imperial);
