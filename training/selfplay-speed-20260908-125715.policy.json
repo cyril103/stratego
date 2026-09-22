@@ -1,0 +1,17 @@
+{
+  "algorithm":"REINFORCE linear residual policy",
+  "features":24,
+  "training_games":128,
+  "training_finished":48,
+  "training_capped":80,
+  "selected_checkpoint_games":128,
+  "validation_pairs":16,
+  "validation_first_seed":100000,
+  "test_first_seed":300000,
+  "test_pairs":128,
+  "evaluation_temperature":0.35,
+  "ply_cap":800,
+  "test_wins":48,
+  "test_losses":56,
+  "test_capped":152
+}

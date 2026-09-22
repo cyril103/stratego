@@ -1,0 +1,42 @@
+REINFORCE self-play, 24 public action features, terminal rewards only.
+round 1/8, games 128, finished 48, capped 80
+round 1/8, games 256, finished 93, capped 163
+round 1/8, games 384, finished 150, capped 234
+round 1/8, games 512, finished 209, capped 303
+validation round 1: 6 W / 5 L / 21 capped
+round 2/8, games 640, finished 255, capped 385
+round 2/8, games 768, finished 286, capped 482
+round 2/8, games 896, finished 328, capped 568
+round 2/8, games 1024, finished 364, capped 660
+validation round 2: 2 W / 4 L / 26 capped
+round 3/8, games 1152, finished 413, capped 739
+round 3/8, games 1280, finished 454, capped 826
+round 3/8, games 1408, finished 503, capped 905
+round 3/8, games 1536, finished 552, capped 984
+validation round 3: 5 W / 4 L / 23 capped
+round 4/8, games 1664, finished 603, capped 1061
+round 4/8, games 1792, finished 655, capped 1137
+round 4/8, games 1920, finished 706, capped 1214
+round 4/8, games 2048, finished 747, capped 1301
+validation round 4: 4 W / 7 L / 21 capped
+round 5/8, games 2176, finished 802, capped 1374
+round 5/8, games 2304, finished 858, capped 1446
+round 5/8, games 2432, finished 909, capped 1523
+round 5/8, games 2560, finished 959, capped 1601
+validation round 5: 2 W / 3 L / 27 capped
+round 6/8, games 2688, finished 1017, capped 1671
+round 6/8, games 2816, finished 1078, capped 1738
+round 6/8, games 2944, finished 1140, capped 1804
+round 6/8, games 3072, finished 1196, capped 1876
+validation round 6: 0 W / 1 L / 31 capped
+round 7/8, games 3200, finished 1237, capped 1963
+round 7/8, games 3328, finished 1281, capped 2047
+round 7/8, games 3456, finished 1331, capped 2125
+round 7/8, games 3584, finished 1376, capped 2208
+validation round 7: 2 W / 3 L / 27 capped
+round 8/8, games 3712, finished 1415, capped 2297
+round 8/8, games 3840, finished 1462, capped 2378
+round 8/8, games 3968, finished 1508, capped 2460
+round 8/8, games 4096, finished 1548, capped 2548
+validation round 8: 2 W / 2 L / 28 capped
+HELDOUT selected checkpoint 512 games: 53 W / 71 L / 132 capped (256 games, zero-weight policy opponent)

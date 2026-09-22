@@ -1,0 +1,38 @@
+#include "game.h"
+#include <stdio.h>
+#define CHECK(x) do{if(!(x)){fprintf(stderr,"Formation %d seed %d side %d line %d: %s\n",variant,seed,side,__LINE__,#x);return 1;}}while(0)
+int main(void){
+    int flag_positions[100]={0},checked=0;
+    for(int variant=0;variant<AI_FORMATIONS;variant++)for(int seed=1;seed<=200;seed++)for(int side=0;side<2;side++){
+        Game g;game_init(&g,seed);ai_deploy_template(&g,side,variant);
+        int count[12]={0},ids[80]={0},marshal=-1,spy=-1;
+        for(int s=0;s<100;s++)if(g.board[s].side==side){
+            Piece p=g.board[s];CHECK(p.rank>=0&&p.rank<12);count[p.rank]++;
+            CHECK(p.id>=side*40&&p.id<side*40+40);CHECK(++ids[p.id]==1);
+            CHECK(side==COMPUTER?s<40:s>=60);
+            if(p.rank==MARSHAL)marshal=s;if(p.rank==SPY)spy=s;if(p.rank==FLAG&&side==COMPUTER)flag_positions[s]++;
+        }
+        for(int r=0;r<12;r++)CHECK(count[r]==army_counts[r]);
+        CHECK((marshal%10-spy%10)*(marshal%10-spy%10)+(marshal/10-spy/10)*(marshal/10-spy/10)==1);
+        /* Ignoring other mobile troops, every mobile piece can reach an open
+           front lane without ever requiring a friendly bomb to disappear. */
+        bool reachable[100]={false};int queue[100],head=0,tail=0;
+        for(int s=0;s<100;s++)if(g.board[s].side==side&&movable(g.board[s])&&s/10==(side==COMPUTER?3:6)&&!is_lake(s+(side==COMPUTER?10:-10))){reachable[s]=true;queue[tail++]=s;}
+        while(head<tail){int s=queue[head++],nb[4]={s>=10?s-10:-1,s<90?s+10:-1,s%10?s-1:-1,s%10<9?s+1:-1};for(int k=0;k<4;k++){int t=nb[k];if(t>=0&&!reachable[t]&&g.board[t].side==side&&movable(g.board[t])){reachable[t]=true;queue[tail++]=t;}}}
+        for(int s=0;s<100;s++)if(g.board[s].side==side&&movable(g.board[s]))CHECK(reachable[s]);
+        for(int lane=0;lane<3;lane++){
+            int col=lane==0?0:lane==1?4:8;bool miner=false,officer=false;
+            for(int row=0;row<4;row++)for(int x=col;x<col+2;x++){
+                Piece p=g.board[(side==COMPUTER?row:9-row)*10+x];
+                if(p.rank==MINER)miner=true;if(row>=2&&p.rank>=CAPTAIN&&p.rank<=MARSHAL)officer=true;
+            }
+            CHECK(miner&&officer);
+        }
+        Game same;game_init(&same,seed);ai_deploy_template(&same,side,variant);
+        for(int s=0;s<100;s++)CHECK(g.board[s].rank==same.board[s].rank&&g.board[s].id==same.board[s].id);
+        checked++;
+    }
+    int positions=0;for(int s=0;s<100;s++)positions+=flag_positions[s]>0;
+    printf("%d formations checked, %d flag positions: inventory, lanes, escape routes, spy and reproducibility OK\n",checked,positions);
+    return positions<8;
+}
