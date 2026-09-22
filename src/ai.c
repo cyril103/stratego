@@ -553,6 +553,49 @@ static bool immediate_defeat(const Game *view,Move m){
     }
     return false;
 }
+/* A distant unidentified piece can take the flag in ONE scout move. Inspect
+   the first occupant of each flag ray, including masked blockers. Public
+   odds express possibility without revealing the real enemy identity.
+   Use the largest ray probability, a lower bound that needs no assumption
+   of independent identities in the remaining army. */
+static float scout_flag_ray_risk(const Game *next,float p[100][12],int side){
+    int flag=-1;float risk=0;
+    for(int s=0;s<100;s++)if(next->board[s].side==side&&next->board[s].rank==FLAG)flag=s;
+    if(flag<0)return 0;
+    int nb[4],nn=neighbors(flag,nb);
+    for(int j=0;j<nn;j++){
+        int step=nb[j]-flag,previous=flag;
+        for(int s=nb[j];s>=0&&s<100;s+=step){
+            if(abs(s%10-previous%10)+abs(s/10-previous/10)!=1||is_lake(s))break;
+            previous=s;Piece enemy=next->board[s];
+            if(enemy.side<0)continue;
+            if(enemy.side==side)break;
+            float chance=enemy.revealed?(enemy.rank==SCOUT?1.0f:0):p[s][SCOUT];
+            if(chance>0){
+                Game hypothesis=*next;hypothesis.board[s].rank=SCOUT;
+                if(public_legal(&hypothesis,(Move){s,flag},1-side))risk=fmaxf(risk,chance);
+            }
+            break;
+        }
+    }
+    return risk;
+}
+static float scout_flag_risk(const Game *view,float p[100][12],Move m){
+    Piece target=view->board[m.to];
+    if(target.side==1-view->turn){
+        /* A probe on the ray is not a guaranteed screen: losing the combat
+           may leave the enemy scout alive. A flag capture ends the game. */
+        float risk=0;
+        for(int r=SPY;r<=BOMB;r++)if(p[m.to][r]>0){
+            Game hypothesis=*view;hypothesis.board[m.to].rank=r;hypothesis.board[m.to].revealed=true;
+            Game next=optimistic_move(&hypothesis,m);
+            risk+=p[m.to][r]*scout_flag_ray_risk(&next,p,view->turn);
+        }
+        return risk;
+    }
+    Game next=optimistic_move(view,m);
+    return scout_flag_ray_risk(&next,p,view->turn);
+}
 static float last_mobile_risk(const Game *view,float p[100][12],Move m){
     int mobile=0;for(int s=0;s<100;s++)if(view->board[s].side==view->turn&&movable(view->board[s]))mobile++;
     if(mobile!=1)return false;
@@ -948,7 +991,11 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     for(int i=0;i<n;i++){doomed[i]=immediate_defeat(&view,moves[i]);if(!doomed[i])alternatives++;}
     if(alternatives){int kept=0;for(int i=0;i<n;i++)if(!doomed[i])moves[kept++]=moves[i];n=kept;}
     float terminal_risk[MAX_MOVES],least_risk=2;
-    for(int i=0;i<n;i++){terminal_risk[i]=last_mobile_risk(&view,p,moves[i])+guard_tempo_risk(&view,p,moves[i]);least_risk=fminf(least_risk,terminal_risk[i]);}
+    for(int i=0;i<n;i++){
+        terminal_risk[i]=fmaxf(scout_flag_risk(&view,p,moves[i]),
+            last_mobile_risk(&view,p,moves[i])+guard_tempo_risk(&view,p,moves[i]));
+        least_risk=fminf(least_risk,terminal_risk[i]);
+    }
     {int kept=0;for(int i=0;i<n;i++)if(terminal_risk[i]<=least_risk+.00001f)moves[kept++]=moves[i];n=kept;}
     /* Keep the terminal filters authoritative. Within equally viable moves,
        do not walk back into an avoided suspect when a quiet, materially safe
