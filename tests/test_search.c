@@ -261,9 +261,11 @@ int main(void){
     public_board(&g,&inferred,unassigned);probabilities(&inferred,unassigned,odds);
     Move hanging={26,25};Game exposed=optimistic_move(&inferred,hanging);exposed.turn=HUMAN;
     float pressure=ai_flag_risk(&inferred,COMPUTER);
-    CHECK(pressure-ai_flag_risk(&exposed,COMPUTER)>90);
+    /* Arrival maps now exclude a guard captured before it can intercept.
+       The old >90 relief was the bug, not behavior to preserve. */
+    CHECK(ai_flag_risk(&exposed,COMPUTER)>=pressure);
     CHECK(known_unanswered_loss_at(&exposed,COMPUTER,25)>0);
-    CHECK(public_defense_relief(&inferred,odds,hanging,pressure)==0);
+    CHECK(public_defense_relief(&inferred,odds,hanging,pressure)<=0);
     CHECK(known_unanswered_loss_at(&exposed,COMPUTER,58)==0);
     /* A real recapture still counts as cover; avoid banning useful exchanges. */
     Game covered=exposed;put(&covered,15,MARSHAL,COMPUTER);
@@ -290,7 +292,10 @@ int main(void){
     CHECK(known_unanswered_loss(&inferred,(Move){7,6})>0);
     CHECK(known_unanswered_loss(&inferred,(Move){25,26})==0);
     Game no_bombs=inferred;no_bombs.captured[HUMAN][BOMB]=army_counts[BOMB];
-    CHECK(known_unanswered_loss(&no_bombs,(Move){7,6})==0);
+    /* With no bombs left it is an ordinary endangered piece, not expendable:
+       retain its material cost, but remove the scarce-miner premium. */
+    CHECK(known_unanswered_loss(&no_bombs,(Move){7,6})>0);
+    CHECK(known_unanswered_loss(&no_bombs,(Move){7,6})<known_unanswered_loss(&inferred,(Move){7,6}));
     Game covered_miner=inferred;put(&covered_miner,35,CAPTAIN,COMPUTER);
     CHECK(known_unanswered_loss(&covered_miner,(Move){7,6})==0);
     Game uncertain=inferred;uncertain.board[24].revealed=false;uncertain.board[24].rank=-2;

@@ -14,6 +14,7 @@ typedef struct {
     Piece board[BOARD];
     int turn, winner, ply, end_reason;
     int captured[2][12];
+    bool cleared_bombs[2][BOARD]; /* Public locations of successfully defused bombs. */
     int last_id[2], last_from[2], last_to[2], repetitions[2];
     Move last_move;
     Move history[2][8];

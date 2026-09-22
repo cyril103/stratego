@@ -445,11 +445,13 @@ static Game optimistic_move(const Game *view,Move m){
    a tempting capture. A quiet move elsewhere does not erase a possible spy
    or marshal. Count the worst unknown attacker per officer, not every
    adjacent square as an independent simultaneous capture. */
-static float approaching_officer_risk(const Game *view,float p[100][12]) {
+static float approaching_officer_risk_from(const Game *view,const Game *intent,float p[100][12]) {
     int side=view->turn;float risk=0;
     for(int s=0;s<100;s++){
         Piece officer=view->board[s];
         if(officer.side!=side||officer.rank<COLONEL||officer.rank>MARSHAL)continue;
+        int anchor=s;
+        for(int t=0;t<100;t++)if(intent->board[t].side==side&&intent->board[t].id==officer.id){anchor=t;break;}
         float worst=0;int nb[4],count=neighbors(s,nb);
         for(int k=0;k<count;k++){
             int e=nb[k];Piece hunter=view->board[e];
@@ -461,11 +463,20 @@ static float approaching_officer_risk(const Game *view,float p[100][12]) {
                from a recent pursuer towards an old unknown scout looks just
                as dangerous as standing still. Baseline contact risk never
                expires when this short history rolls over. */
-            bool approached=false;int hcount=view->history_count[1-side];if(hcount>8)hcount=8;
-            for(int h=0;h<hcount;h++){
-                Move past=view->history[1-side][h];
-                if(view->history_id[1-side][h]==hunter.id&&past.to==e&&
-                   abs(past.from%10-s%10)+abs(past.from/10-s/10)>1)approached=true;
+            bool approached=false;int hcount=intent->history_count[1-side];if(hcount>8)hcount=8;
+            int past_anchor=anchor;
+            for(int age=0;age<hcount;age++){
+                /* At our turn, the latest enemy move followed our latest
+                   move. Rewind one own move per older enemy observation. */
+                if(age>0&&age<=intent->history_count[side]){
+                    int own=(intent->history_count[side]-age)%8;
+                    if(intent->history_id[side][own]==officer.id)past_anchor=intent->history[side][own].from;
+                }
+                int h=(intent->history_count[1-side]-1-age)%8;
+                Move past=intent->history[1-side][h];
+                if(intent->history_id[1-side][h]==hunter.id&&past.to==e&&
+                   abs(e%10-past_anchor%10)+abs(e/10-past_anchor/10)==1&&
+                   abs(past.from%10-past_anchor%10)+abs(past.from/10-past_anchor/10)>1)approached=true;
             }
             float floor=officer.revealed?(hunter.moved?.5f:.25f):(hunter.moved?.25f:.1f);
             if(officer.revealed&&approached)floor+=.5f;
@@ -475,6 +486,9 @@ static float approaching_officer_risk(const Game *view,float p[100][12]) {
         risk+=worst;
     }
     return risk;
+}
+static float approaching_officer_risk(const Game *view,float p[100][12]) {
+    return approaching_officer_risk_from(view,view,p);
 }
 static int officer_exits(const Game *view,float p[100][12],int s){
     int nb[4],n=neighbors(s,nb),exits=0;Piece officer=view->board[s];
@@ -565,12 +579,22 @@ static float known_unanswered_loss_at(const Game *next,int side,int victim){
     Piece target=next->board[victim];
     if(target.side!=side||!movable(target))return 0;
     for(int s=0;s<100;s++){
-        Piece e=next->board[s];if(e.side!=1-side||!e.revealed||!movable(e)||combat_result(e.rank,target.rank)<=0)continue;
+        Piece e=next->board[s];if(e.side!=1-side||!e.revealed||!movable(e))continue;
+        int result=combat_result(e.rank,target.rank);
+        bool key_spy_trade=target.rank==SPY&&result==0&&next->captured[1-side][MARSHAL]<army_counts[MARSHAL];
+        if(result<=0&&!key_spy_trade)continue;
         if(!public_legal(next,(Move){s,victim},e.side))continue;
+        if(key_spy_trade)return 4*worth[MARSHAL];
+        /* Recapturing the spy does not refund the marshal it just killed. */
+        if(target.rank==MARSHAL&&e.rank==SPY)return 4*(worth[MARSHAL]-worth[SPY]);
         Game reply=*next;reply.board[s]=empty_piece();reply.board[victim]=e;
         bool recapture=false;
         for(int t=0;t<100;t++){Piece guard=reply.board[t];if(guard.side==side&&movable(guard)&&combat_result(guard.rank,e.rank)>=0&&public_legal(&reply,(Move){t,victim},side)){recapture=true;break;}}
-        if(!recapture)return worth[target.rank]*4;
+        if(!recapture){
+            float value=worth[target.rank];
+            if(target.rank==SPY&&next->captured[1-side][MARSHAL]<army_counts[MARSHAL])value=worth[MARSHAL];
+            return value*4;
+        }
     }
     return 0;
 }
@@ -579,6 +603,11 @@ static float known_unanswered_loss(const Game *view,Move m){
     if(d.side<0||(d.revealed&&combat_result(a.rank,d.rank)>0))next.board[m.to]=a;
     else if(d.revealed&&combat_result(a.rank,d.rank)==0)next.board[m.to]=empty_piece();
     float loss=0;
+    int flag=-1,mobile=0;
+    for(int s=0;s<100;s++)if(view->board[s].side==a.side){
+        if(view->board[s].rank==FLAG)flag=s;
+        if(movable(view->board[s]))mobile++;
+    }
     for(int victim=0;victim<100;victim++){
         Piece target=next.board[victim];
         /* An unrelated move must not abandon our last routes through bombs.
@@ -586,8 +615,10 @@ static float known_unanswered_loss(const Game *view,Move m){
         bool scarce_miner=target.side==a.side&&target.rank==MINER&&
             army_counts[MINER]-view->captured[a.side][MINER]<=2&&
             view->captured[1-a.side][BOMB]<army_counts[BOMB];
-        if(victim!=m.to&&target.rank<COLONEL&&!scarce_miner)continue;
-        loss=fmaxf(loss,known_unanswered_loss_at(&next,a.side,victim));
+        bool active_spy=target.rank==SPY&&view->captured[1-a.side][MARSHAL]<army_counts[MARSHAL];
+        bool local_guard=mobile<=3&&flag>=0&&abs(victim%10-flag%10)+abs(victim/10-flag/10)<=3;
+        float weight=victim==m.to||target.rank>=COLONEL||scarce_miner||active_spy||local_guard?1:.25f;
+        loss=fmaxf(loss,weight*known_unanswered_loss_at(&next,a.side,victim));
     }
     return loss;
 }
@@ -807,7 +838,14 @@ static float escorted_defense(const Game *view,Move m){
 }
 #include "ai_intercept.h"
 #include "ai_assault.h"
+#include "ai_breach.h"
 #include "ai_flagrace.h"
+#include "ai_guardtempo.h"
+#include "ai_guardrelief.h"
+#include "ai_officerteam.h"
+#include "ai_raiders.h"
+#include "ai_continuity.h"
+#include "ai_marshalguard.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -865,11 +903,35 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     for(int i=0;i<n;i++){doomed[i]=immediate_defeat(&view,moves[i]);if(!doomed[i])alternatives++;}
     if(alternatives){int kept=0;for(int i=0;i<n;i++)if(!doomed[i])moves[kept++]=moves[i];n=kept;}
     float terminal_risk[MAX_MOVES],least_risk=2;
-    for(int i=0;i<n;i++){terminal_risk[i]=last_mobile_risk(&view,p,moves[i]);least_risk=fminf(least_risk,terminal_risk[i]);}
+    for(int i=0;i<n;i++){terminal_risk[i]=last_mobile_risk(&view,p,moves[i])+guard_tempo_risk(&view,p,moves[i]);least_risk=fminf(least_risk,terminal_risk[i]);}
     {int kept=0;for(int i=0;i<n;i++)if(terminal_risk[i]<=least_risk+.00001f)moves[kept++]=moves[i];n=kept;}
+    /* Keep the terminal filters authoritative. Within equally viable moves,
+       do not walk back into an avoided suspect when a quiet, materially safe
+       alternative exists. This does not label that suspect as a known spy. */
+    bool safe_wait=false;
+    for(int i=0;i<n;i++)if(view.board[moves[i].to].side<0&&!marshal_returns_to_suspect(&view,p,moves[i])&&
+        !marshal_known_spy_exposure(&view,moves[i])&&known_unanswered_loss(&view,moves[i])==0){safe_wait=true;break;}
+    if(safe_wait){int kept=0;for(int i=0;i<n;i++)if(!marshal_returns_to_suspect(&view,p,moves[i]))moves[kept++]=moves[i];n=kept;}
+    Move spy_capture=dangerous_spy_capture(&view,p,moves,n);if(spy_capture.from>=0)return spy_capture;
     Move cleanup=cleanup_capture(&view,moves,n);if(cleanup.from>=0)return cleanup;
+    Move certain=continuity_capture(&view,p,moves,n);if(certain.from>=0)return certain;
     InterceptPlan intercept;intercept_plan(&view,p,&intercept);
+    GuardRelief relief=guard_relief_plan(&view,&intercept);
+    RaiderPlan raiders;raider_plan(&view,&raiders);
     AssaultPlan assault;assault_plan(&view,p,&assault);
+    BreachPlan breach=breach_plan(&view,p);
+    ContinuityPlan miner_mission=last_miner_plan(&view,p);
+    ContinuityPlan support=reserve_support_plan(&view,p);
+    /* A two-turn flag probe with a budgeted complete loss is an explicit
+       conversion policy. Sampled hidden layouts otherwise drown this short
+       winning window in speculative distant flag losses. The terminal-risk
+       filters above retain priority over the mission. */
+    for(int i=0;i<n;i++)if(breach_step(&breach,moves[i]))return moves[i];
+    /* Finish a safe short reinforcement before buying another speculative
+       search line. Candidate filtering still rules out immediate/forced loss. */
+    for(int i=0;i<n;i++)if(miner_mission.step.from<0&&support.step.from==moves[i].from&&support.step.to==moves[i].to){
+        return moves[i];
+    }
     defense_maps(&view,p,defense);
     float preservation=ai_preservation_risk(&view,g->turn);
     float public_flag_pressure=ai_flag_risk(&view,g->turn);
@@ -912,6 +974,9 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         strategic[i]+=.85f*(expected_threat(&view,p,m,false)-expected_threat(&view,p,m,true));
         strategic[i]-=known_unanswered_loss(&view,m);
         strategic[i]-=supported_capture_cost(&view,p,m);
+        strategic[i]-=officer_trap_cost(&view,m);
+        strategic[i]-=counter_capture_cost(&view,p,m);
+        strategic[i]+=general_escort_bonus(&view,m);
         strategic[i]+=officer_clearance(&view,p,m);
         /* Do not use a valuable officer as a probe while a stronger rank is
            still unaccounted for. This uses remaining ranks, never identities. */
@@ -929,6 +994,12 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
             strategic[i]+=recall_officer(&view,m);
         strategic[i]+=1.25f*intercept_bonus(&view,p,&intercept,m);
         strategic[i]+=assault_bonus(&view,p,&assault,m);
+        strategic[i]+=continuity_bonus(&miner_mission,m)+continuity_bonus(&support,m);
+        strategic[i]-=continuity_guard_cost(&view,p,&support,m);
+        if(miner_mission.step.from==m.from&&d.side==1-a.side&&m.to!=miner_mission.step.to){
+            float failure=0;for(int r=SPY;r<=MARSHAL;r++)if(combat_result(a.rank,r)<=0)failure+=p[m.to][r];
+            if(p[m.to][FLAG]<p[miner_mission.goal][FLAG]*.5f)strategic[i]-=160*failure;
+        }
         strategic[i]-=flag_race_cost(&view,p,m);
         strategic[i]-=last_guard_trade(&view,p,m);
         strategic[i]+=gate_interception(&view,p,m);
@@ -971,10 +1042,16 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
             strategic[i]+=.5f*public_defense_relief(&view,p,m,public_flag_pressure);
         }
         if(d.side>=0&&cautious.board[m.to].side==g->turn)cautious.board[m.to].revealed=true;
-        float approach_safety=approaching-approaching_officer_risk(&cautious,p);
+        /* Pursuit intent belongs to the actual officer position, not a
+           hypothetical retreat square that the enemy never approached. */
+        float approach_safety=approaching-approaching_officer_risk_from(&cautious,&view,p);
         /* An uncertain capture cannot be credited as a successful rescue. */
         if(d.side>=0&&(!d.revealed||combat_result(a.rank,d.rank)<=0))approach_safety=fminf(0,approach_safety);
         strategic[i]+=approach_safety;
+        strategic[i]+=raider_bonus(&view,&raiders,m);
+        strategic[i]+=reserve_home_bonus(&view,p,m);
+        strategic[i]+=guard_relief_bonus(&relief,m);
+        strategic[i]-=stale_pursuit_cost(&view,m,public_flag_pressure);
         if(a.rank==MINER&&army_counts[MINER]-g->captured[g->turn][MINER]<=2&&army_counts[BOMB]>g->captured[1-g->turn][BOMB]){
             float risk=expected_threat(&view,p,m,true)-expected_threat(&view,p,m,false);
             strategic[i]-=fmaxf(0,risk)*.65f;

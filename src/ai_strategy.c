@@ -306,6 +306,7 @@ float ai_flag_risk(const Game *g,int side) {
         for(int a=0;a<100;a++) {
             Piece defender=g->board[a];
             if(defender.side!=side||!movable(defender)||combat_result(defender.rank,rank)<0)continue;
+            if(g->turn!=side&&controlled(g,side,defender.rank,a,a))continue;
             int dist[100];for(int s=0;s<100;s++)dist[s]=100;
             head=tail=0;dist[a]=0;queue[tail++]=a;
             while(head<tail) {

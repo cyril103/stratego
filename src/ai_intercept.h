@@ -10,11 +10,23 @@ static void intercept_distances(const Game *g,int goal,int side,int rank,int dis
         if(s<0||dist[s]>=100)break;
         done[s]=true;
         Piece occupant=g->board[s];int cost=1;
+        /* A reserve may leave a threatened origin, but must not be routed
+           through a square where a known escort can take it. Distances are
+           propagated backwards, so an unsafe square can still be an origin. */
+        if(s!=goal&&side==g->turn){
+            bool unsafe=false;
+            for(int e=0;e<100;e++){
+                Piece enemy=g->board[e];
+                if(enemy.side==1-side&&enemy.revealed&&movable(enemy)&&
+                   combat_result(enemy.rank,rank)>0&&public_legal(g,(Move){e,s},enemy.side))unsafe=true;
+            }
+            if(unsafe)continue;
+        }
         if(s!=goal&&occupant.side>=0){
             if(occupant.side==side){
                 if(!(movable(occupant)||(occupant.rank==-2&&occupant.moved)))continue;
                 cost=2;
-            }else if(!occupant.revealed||combat_result(rank,occupant.rank)<=0)continue;
+            }else if((!occupant.revealed&&occupant.side!=g->turn)||combat_result(rank,occupant.rank)<=0)continue;
         }
         const int dx[4]={-1,1,0,0},dy[4]={0,0,-1,1};
         for(int direction=0;direction<4;direction++)for(int step=1;step<=(rank==SCOUT?9:1);step++){
@@ -33,6 +45,10 @@ static void intercept_plan(const Game *view,float p[100][12],InterceptPlan *plan
     plan->count=0;int flag=-1,side=view->turn;
     for(int s=0;s<100;s++)if(view->board[s].side==side&&view->board[s].rank==FLAG)flag=s;
     if(flag<0)return;
+    /* These maps depend on the hypothesized rank, not on which intruder is
+       being evaluated. Compute them once rather than once per enemy piece. */
+    int arrival_maps[12][100];
+    for(int rank=SPY;rank<=MARSHAL;rank++)intercept_distances(view,flag,1-side,rank,arrival_maps[rank]);
     for(int e=0;e<100;e++){
         Piece enemy=view->board[e];
         if(enemy.side!=1-side||(!enemy.moved&&!enemy.revealed))continue;
@@ -41,9 +57,8 @@ static void intercept_plan(const Game *view,float p[100][12],InterceptPlan *plan
            miners are accounted for, captains and scouts still threaten an
            accessible flag. Weight only ranks with a public reachable route. */
         for(int rank=SPY;rank<=MARSHAL;rank++)if(p[e][rank]>0){
-            int arrival[100];intercept_distances(view,flag,1-side,rank,arrival);
-            if(arrival[e]<=8){
-                if(arrival[e]<fastest)fastest=arrival[e];
+            if(arrival_maps[rank][e]<=8){
+                if(arrival_maps[rank][e]<fastest)fastest=arrival_maps[rank][e];
                 probability+=p[e][rank];
             }
         }

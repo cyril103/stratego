@@ -102,6 +102,7 @@ bool game_apply(Game *g,Move m) {
     if(d.rank<0)g->board[m.to]=a;
     else {
         a.revealed=d.revealed=true;g->combat=combat_result(a.rank,d.rank);
+        if(d.rank==BOMB&&g->combat>0)g->cleared_bombs[d.side][m.to]=true;
         if(g->combat>=0)g->captured[d.side][d.rank]++;
         if(g->combat<=0)g->captured[a.side][a.rank]++;
         g->board[m.to]=g->combat>0?a:(g->combat<0?d:empty_piece());
