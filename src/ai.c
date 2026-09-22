@@ -55,6 +55,23 @@ static float scout_disclosure_cost(const Game *view,Move m) {
     float scout_fraction=(float)(unknown[SCOUT]>0?unknown[SCOUT]:0)/total;
     return 5*worth[SCOUT]*(1-scout_fraction);
 }
+/* High officers surrender lasting information on their first surviving
+   combat. Scale that price by the still-hidden mobile army, not the clock:
+   late deployment and endgames should not preserve secrecy at any cost. */
+static float officer_disclosure_cost(const Game *view,float p[100][12],Move m){
+    Piece a=view->board[m.from],d=view->board[m.to];
+    if((a.rank!=GENERAL&&a.rank!=MARSHAL)||a.revealed||d.side!=1-a.side)return 0;
+    int hidden[12]={0},total=0;
+    for(int s=0;s<100;s++){
+        Piece own=view->board[s];
+        if(own.side==a.side&&!own.revealed&&movable(own)){hidden[own.rank]++;total++;}
+    }
+    if(total<=hidden[a.rank])return 0; /* Already inferable from public losses. */
+    float survives=0;
+    for(int r=SPY;r<=BOMB;r++)if(combat_result(a.rank,r)>0)survives+=p[m.to][r];
+    float uncertainty=1-(float)hidden[a.rank]/total;
+    return 1.5f*worth[a.rank]*fminf(1,total/24.0f)*uncertainty*survives;
+}
 /* The last miners are the remaining route through a bomb screen. Do not pay
    for information with them when the target has moved (so cannot be a bomb
    or flag). Known recaptures and actual bomb/flag probes keep their priority. */
@@ -1103,6 +1120,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         /* Cash in reliable tactical opportunities before buying more information. */
         strategic[i]+=information_gain(&view,p,m)/(1+opportunity/worth[SCOUT]);
         strategic[i]-=scout_disclosure_cost(&view,m);
+        strategic[i]-=officer_disclosure_cost(&view,p,m);
         strategic[i]-=scarce_miner_probe(&view,p,m);
         strategic[i]-=miner_capability_cost(&view,p,m);
         /* Reward a sound immediate recapture, without paying for a known

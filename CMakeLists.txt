@@ -243,6 +243,16 @@ endif()
 
 
 
+add_executable(secrecy_tests tests/test_secrecy.c src/replay.c src/game.c src/ai_basic.c src/ml.c src/ai_parallel.c src/ai_strategy.c)
+target_include_directories(secrecy_tests PRIVATE src)
+target_compile_definitions(secrecy_tests PRIVATE STRATEGO_SECRECY_FIXTURE="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures/human_win_555.jsonl")
+target_link_libraries(secrecy_tests PRIVATE Threads::Threads)
+if(NOT MSVC)
+  target_link_libraries(secrecy_tests PRIVATE m)
+  target_compile_options(secrecy_tests PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+add_test(NAME officer_secrecy COMMAND secrecy_tests)
+
 add_executable(train_selfplay tools/train_selfplay.c src/game.c src/ai_basic.c src/ml.c src/ai_deploy.c)
 add_executable(deployment_tests tests/test_deployment.c src/game.c src/deployment_io.c)
 add_executable(formation_tests tests/test_formations.c src/game.c src/ai_deploy.c)
