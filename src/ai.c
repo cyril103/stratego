@@ -532,7 +532,15 @@ static float contact_safety_bonus(const Game *view,float p[100][12],Move m,float
     float success=0;
     if(d.revealed)success=combat_result(a.rank,d.rank)>0?1:0;
     else for(int r=FLAG;r<=BOMB;r++)if(combat_result(a.rank,r)>0)success+=p[m.to][r];
-    return relief*success;
+    float credit=relief*success;
+    if(!d.revealed){
+        float defeat=0;
+        for(int r=SPY;r<=BOMB;r++)if(combat_result(a.rank,r)<0)defeat+=p[m.to][r];
+        /* A hypothetical rescue must not be worth several times the officer
+           risked against a still-possible superior (or an unmoved bomb). */
+        if(defeat>0)credit=fminf(credit,.5f*worth[a.rank]);
+    }
+    return credit;
 }
 static int officer_exits(const Game *view,float p[100][12],int s){
     int nb[4],n=neighbors(s,nb),exits=0;Piece officer=view->board[s];
@@ -961,6 +969,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_armycare.h"
 #include "ai_pincer.h"
 #include "ai_spyteam.h"
+#include "ai_endgamecare.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -1110,6 +1119,8 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         strategic[i]+=pincer_bonus(&view,m);
         strategic[i]+=spy_clearance_bonus(&view,m)+spy_ambush_bonus(&view,m);
         strategic[i]-=spy_attack_cost(&view,p,m);
+        strategic[i]-=spy_box_cost(&view,m);
+        strategic[i]-=last_officer_trade_cost(&view,m);
         /* Opening a long spy route must not postpone an officer's rescue. */
         if(a.rank==SPY||preservation<1)strategic[i]+=spy_hunt(&view,m);
         strategic[i]+=1.25f*escorted_defense(&view,m);

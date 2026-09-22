@@ -34,6 +34,38 @@ static float spy_attack_cost(const Game *v,float p[100][12],Move m){
     float comeback=spy_comeback_chance(v,p,m);
     return 4*worth[MARSHAL]*loss*(1-comeback)-2*worth[MARSHAL]*p[m.to][MARSHAL]*comeback;
 }
+/* Look one quiet enemy reply ahead before advancing the spy. Unknown moved
+   units need no invented identity: every mobile rank can capture a spy.
+   This is a bounded positional cost, not a claim of forced game defeat. */
+static float spy_box_cost(const Game *v,Move m){
+    if(v->board[m.from].rank!=SPY||v->board[m.to].side>=0||
+       v->captured[1-v->turn][MARSHAL]>=army_counts[MARSHAL])return 0;
+    Game next=optimistic_move(v,m);int side=v->turn;
+    if(spy_square_unsafe(&next,m.to,side))return 0; /* Already priced as immediate loss. */
+    int nb[4],nn=neighbors(m.to,nb);
+    for(int e=0;e<100;e++){
+        Piece enemy=next.board[e];
+        if(enemy.side!=1-side||(!enemy.revealed&&!enemy.moved))continue;
+        Game probe=next;if(!enemy.revealed)probe.board[e].rank=SPY;
+        for(int j=0;j<nn;j++){
+            Move approach={e,nb[j]};
+            if(probe.board[approach.to].side>=0||!public_legal(&probe,approach,1-side))continue;
+            Game reply=optimistic_move(&probe,approach);bool escape=false;
+            for(int k=0;k<nn;k++){
+                Move out={m.to,nb[k]};Piece target=reply.board[out.to];
+                if(!public_legal(&reply,out,side))continue;
+                if(target.side==1-side){
+                    if(target.revealed&&target.rank==MARSHAL)escape=true;
+                    continue;
+                }
+                Game end=optimistic_move(&reply,out);
+                if(!spy_square_unsafe(&end,out.to,side))escape=true;
+            }
+            if(!escape)return .8f*worth[MARSHAL];
+        }
+    }
+    return 0;
+}
 /* Open a safe exit before the enemy can trap the spy behind its own army. */
 static float spy_clearance_bonus(const Game *v,Move m){
     int side=v->turn,spy=-1;
