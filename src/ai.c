@@ -627,6 +627,9 @@ static float known_unanswered_loss(const Game *view,Move m){
     Game next=*view;Piece a=next.board[m.from],d=next.board[m.to];next.board[m.from]=empty_piece();
     if(d.side<0||(d.revealed&&combat_result(a.rank,d.rank)>0))next.board[m.to]=a;
     else if(d.revealed&&combat_result(a.rank,d.rank)==0)next.board[m.to]=empty_piece();
+    /* A known captured marshal no longer justifies preserving our spy as
+       an anti-marshal reserve. Unknown combat must not assume this success. */
+    if(d.side>=0&&d.revealed&&combat_result(a.rank,d.rank)>=0)next.captured[d.side][d.rank]++;
     float loss=0;
     int flag=-1,mobile=0;
     for(int s=0;s<100;s++)if(view->board[s].side==a.side){
@@ -640,7 +643,7 @@ static float known_unanswered_loss(const Game *view,Move m){
         bool scarce_miner=target.side==a.side&&target.rank==MINER&&
             army_counts[MINER]-view->captured[a.side][MINER]<=2&&
             view->captured[1-a.side][BOMB]<army_counts[BOMB];
-        bool active_spy=target.rank==SPY&&view->captured[1-a.side][MARSHAL]<army_counts[MARSHAL];
+        bool active_spy=target.rank==SPY&&next.captured[1-a.side][MARSHAL]<army_counts[MARSHAL];
         bool local_guard=mobile<=3&&flag>=0&&abs(victim%10-flag%10)+abs(victim/10-flag/10)<=3;
         bool raid_victim=false;
         int raider=view->last_move.to;

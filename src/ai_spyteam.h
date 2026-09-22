@@ -1,9 +1,38 @@
-/* Escaping a threat by sacrificing the spy is still a capability loss. */
+/* A losing army needs chances to recover, not an indefinitely preserved spy.
+   Public casualties establish the deficit; only a moved, unidentified target
+   with nonzero marshal odds qualifies. Safe retreat delays risk at moderate
+   deficits, but cannot veto it when outnumbered by more than roughly 3:1. */
+static float spy_comeback_chance(const Game *v,float p[100][12],Move m){
+    Piece a=v->board[m.from],d=v->board[m.to];
+    if(a.rank!=SPY||d.side!=1-v->turn||d.revealed||!d.moved||p[m.to][MARSHAL]<=0||
+       v->captured[1-v->turn][MARSHAL]>=army_counts[MARSHAL]||force_advantage(v)>=0)return 0;
+    int own=0,enemy=0;
+    for(int r=SPY;r<=MARSHAL;r++){
+        own+=army_counts[r]-v->captured[v->turn][r];
+        enemy+=army_counts[r]-v->captured[1-v->turn][r];
+    }
+    if(enemy<=0)return 0;
+    float deficit=1-(float)own/enemy;
+    float urgency=fmaxf(0,fminf(1,(deficit-.25f)/.4f));
+    if(urgency==0)return 0;
+    int nb[4],nn=neighbors(m.from,nb);bool escape=false;
+    for(int j=0;j<nn;j++){
+        Move retreat={m.from,nb[j]};
+        if(v->board[retreat.to].side>=0||!public_legal(v,retreat,v->turn))continue;
+        Game next=optimistic_move(v,retreat);
+        if(!spy_square_unsafe(&next,retreat.to,v->turn)){escape=true;break;}
+    }
+    return escape?urgency: fminf(1,urgency*1.5f);
+}
+/* Retain the capability cost in viable positions. In a severe deficit, an
+   analytic marshal upside keeps a rare winning identity from disappearing
+   in the small sample. Ordinary combat losses and flag safety still apply. */
 static float spy_attack_cost(const Game *v,float p[100][12],Move m){
     if(v->board[m.from].rank!=SPY||v->board[m.to].side!=1-v->turn||
        v->captured[1-v->turn][MARSHAL]>=army_counts[MARSHAL])return 0;
     float loss=0;for(int r=0;r<12;r++)if(combat_result(SPY,r)<=0)loss+=p[m.to][r];
-    return 4*worth[MARSHAL]*loss;
+    float comeback=spy_comeback_chance(v,p,m);
+    return 4*worth[MARSHAL]*loss*(1-comeback)-2*worth[MARSHAL]*p[m.to][MARSHAL]*comeback;
 }
 /* Open a safe exit before the enemy can trap the spy behind its own army. */
 static float spy_clearance_bonus(const Game *v,Move m){

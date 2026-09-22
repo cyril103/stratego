@@ -32,3 +32,42 @@ at ply 106 it chooses 27->37 instead of 59->58.
 
 Step 1 validation: Release build without warnings; all 26 CTest tests passed.
 Local logs: `reports/secrecy-build.log`, `reports/secrecy-tests.log`.
+
+## Step 2: spy comeback opportunities
+
+Before ply 522 the AI has four mobile pieces against thirteen. Its spy at
+68 can legally attack the moved, unidentified enemy at 67. Public remaining
+ranks give that target 10% marshal probability. Previously the extra spy
+capability penalty alone was 180 points, regardless of the army deficit.
+
+For moved, unidentified targets with nonzero marshal probability, the new
+rule requires a negative public force balance and a mobile-number deficit
+greater than 25%. Risk tolerance grows continuously to full strength at
+65%. With no legally safe adjacent retreat it grows 50% faster. Stationary
+targets, known losing targets, impossible marshal identities and balanced
+armies do not receive this relaxation.
+
+Risk tolerance progressively removes the extra capability penalty and adds
+an analytic upside of twice marshal value times marshal probability. At the
+recorded position this changes the additional term from a 180-point cost to
+a 10-point bonus. Normal combat evaluation, retaliation and terminal flag
+filters still apply; the move is not forced by a hard-coded replay rule.
+
+A related accounting correction updates public captured inventory when
+evaluating retaliation after a *known* winning capture. Taking an identified
+marshal no longer incurs the old 200-point anti-marshal reserve penalty if
+the spy can then be recaptured. An uncertain attack never assumes that it
+has already removed the marshal.
+
+`spy_comeback_risk` checks the recorded attack on eight seeds and swaps the
+hidden target marshal with a moved hidden lieutenant: choices and final RNG
+states must match. The original replay now chooses 68->67 on all eight seeds.
+Other checks cover safe retreats versus a boxed spy, moderate versus severe
+deficits, stationary/known targets, zero marshal odds, balanced armies,
+capture of an identified marshal and an immediate flag-defense override.
+
+These are local decision regressions; neither a full-game victory nor a new
+overall win rate has been established.
+
+Step 2 validation: Release build without warnings; all 27 CTest tests passed
+in 245.86 seconds. Local logs: `reports/spy-build.log`, `reports/spy-tests.log`.
