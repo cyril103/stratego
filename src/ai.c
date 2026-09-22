@@ -846,6 +846,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_raiders.h"
 #include "ai_continuity.h"
 #include "ai_marshalguard.h"
+#include "ai_armycare.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -936,6 +937,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     float preservation=ai_preservation_risk(&view,g->turn);
     float public_flag_pressure=ai_flag_risk(&view,g->turn);
     float approaching=approaching_officer_risk(&view,p);
+    float exposure=army_exposure(&view,view.turn);
     for(int r=1;r<=10;r++)route_map(&view,p,r,routes[r]);
     Candidate candidates[ROOT_WIDTH];int count=0;float strategic[MAX_MOVES];
     StrategyHint hints[MAX_STRATEGY_HINTS];int hint_count=ai_strategy_hints(g,hints);
@@ -973,6 +975,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
            must not erase a known hanging piece for a speculative plan. */
         strategic[i]+=.85f*(expected_threat(&view,p,m,false)-expected_threat(&view,p,m,true));
         strategic[i]-=known_unanswered_loss(&view,m);
+        strategic[i]+=collective_retreat(&view,m,exposure);
         strategic[i]-=supported_capture_cost(&view,p,m);
         strategic[i]-=officer_trap_cost(&view,m);
         strategic[i]-=counter_capture_cost(&view,p,m);
