@@ -15,6 +15,7 @@ typedef struct {
     int turn, winner, ply, end_reason;
     int captured[2][12];
     bool cleared_bombs[2][BOARD]; /* Public locations of successfully defused bombs. */
+    uint64_t marshal_suspects[2][2]; /* Public retreats, keyed by persistent piece ID. */
     int last_id[2], last_from[2], last_to[2], repetitions[2];
     Move last_move;
     Move history[2][8];

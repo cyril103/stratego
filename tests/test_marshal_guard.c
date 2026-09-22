@@ -28,7 +28,7 @@ int main(void){
     CHECK(!marshal_returns_to_suspect(&v,p,(Move){26,27}));
     Game reversed=mirror(v);CHECK(marshal_avoided(&reversed,v.board[39].id,99-48));
     CHECK(!marshal_avoided(&reversed,v.board[39].id,99-49));
-    Game forgotten=v;forgotten.history_count[0]=forgotten.history_count[1]=0;CHECK(!marshal_avoided(&forgotten,v.board[39].id,48));
+    Game forgotten=v;forgotten.history_count[0]=forgotten.history_count[1]=0;CHECK(marshal_avoided(&forgotten,v.board[39].id,48));
     p[48][SPY]=0;CHECK(!marshal_returns_to_suspect(&v,p,(Move){39,38}));
     CHECK(replay_load(STRATEGO_MARSHAL_FIXTURE,84,&g));public_board(&g,&v,r);probabilities(&v,r,p);
     CHECK(marshal_returns_to_suspect(&v,p,(Move){26,27}));CHECK(!marshal_returns_to_suspect(&v,p,(Move){38,39}));

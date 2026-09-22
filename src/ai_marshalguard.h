@@ -3,6 +3,9 @@
    A new contact must not erase the older contact we deliberately avoided. */
 static bool marshal_avoided(const Game *v,int marshal_id,int suspect){
     int side=v->turn,id=v->board[suspect].id,position=suspect;
+    if(v->board[suspect].revealed||v->board[suspect].side!=1-side)return false;
+    if(id>=0&&id<80&&!v->board[suspect].revealed&&
+       (v->marshal_suspects[side][id/64]&(UINT64_C(1)<<(id%64))))return true;
     int count=v->history_count[side];if(count>8)count=8;
     if(count>v->history_count[1-side])count=v->history_count[1-side];
     for(int age=0;age<count;age++){

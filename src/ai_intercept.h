@@ -2,6 +2,8 @@
    not forced lines: clearing a friendly mobile screen costs an extra tempo. */
 static void intercept_distances(const Game *g,int goal,int side,int rank,int dist[100]){
     bool done[100]={false};
+    bool unresolved_spy=rank==MARSHAL&&g->captured[1-side][SPY]<army_counts[SPY];
+    if(unresolved_spy)for(int e=0;e<100;e++)if(g->board[e].side==1-side&&g->board[e].revealed&&g->board[e].rank==SPY)unresolved_spy=false;
     for(int s=0;s<100;s++)dist[s]=100;
     dist[goal]=0;
     for(int iteration=0;iteration<100;iteration++){
@@ -15,6 +17,14 @@ static void intercept_distances(const Game *g,int goal,int side,int rank,int dis
            propagated backwards, so an unsafe square can still be an origin. */
         if(s!=goal&&side==g->turn){
             bool unsafe=false;
+            if(unresolved_spy){
+                int near[4],nn=neighbors(s,near);
+                for(int j=0;j<nn;j++){
+                    Piece suspect=g->board[near[j]];int id=suspect.id;
+                    if(suspect.side==1-side&&!suspect.revealed&&id>=0&&id<80&&
+                       (g->marshal_suspects[side][id/64]&(UINT64_C(1)<<(id%64))))unsafe=true;
+                }
+            }
             for(int e=0;e<100;e++){
                 Piece enemy=g->board[e];
                 if(enemy.side==1-side&&enemy.revealed&&movable(enemy)&&

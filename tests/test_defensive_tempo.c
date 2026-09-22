@@ -38,7 +38,16 @@ int main(void){
             CHECK(game_legal(&g,m,g.turn));CHECK(m.from==same.from&&m.to==same.to&&a==b);
             if(position==0)CHECK(m.from==44&&m.to==45);
             if(position==1)CHECK(m.from==23&&m.to==24);
-            if(position==2)CHECK(raider_bonus(&view,&plan,m)>0);
+            if(position==2){
+                /* Rescuing the captain already attacked by the known colonel
+                   is also useful defense; following the invader must not be
+                   the only accepted answer while it can take that captain. */
+                Game next=optimistic_move(&view,m);
+                bool rescue=m.from==20&&view.board[m.from].rank==CAPTAIN&&view.board[m.to].side<0&&
+                    public_legal(&view,(Move){30,20},HUMAN)&&known_unanswered_loss_at(&view,COMPUTER,20)>0&&
+                    known_unanswered_loss_at(&next,COMPUTER,m.to)==0&&ai_flag_risk(&next,COMPUTER)<=ai_flag_risk(&view,COMPUTER);
+                CHECK(raider_bonus(&view,&plan,m)>0||rescue);
+            }
             printf("Defense before %d seed %u: %d -> %d\n",ply,seeds[seed],m.from,m.to);fflush(stdout);
         }
     }

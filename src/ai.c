@@ -579,7 +579,15 @@ static float known_unanswered_loss_at(const Game *next,int side,int victim){
     Piece target=next->board[victim];
     if(target.side!=side||!movable(target))return 0;
     for(int s=0;s<100;s++){
-        Piece e=next->board[s];if(e.side!=1-side||!e.revealed||!movable(e))continue;
+        Piece e=next->board[s];if(e.side!=1-side)continue;
+        if(target.rank==SPY&&e.moved&&!e.revealed){
+            Game probe=*next;probe.board[s].rank=SPY;
+            /* Every mobile rank kills an attacked spy, including a mutual
+               spy exchange. Knowing the exact attacking rank is unnecessary. */
+            if(public_legal(&probe,(Move){s,victim},e.side))
+                return 4*(next->captured[1-side][MARSHAL]<army_counts[MARSHAL]?worth[MARSHAL]:worth[SPY]);
+        }
+        if(!e.revealed||!movable(e))continue;
         int result=combat_result(e.rank,target.rank);
         bool key_spy_trade=target.rank==SPY&&result==0&&next->captured[1-side][MARSHAL]<army_counts[MARSHAL];
         if(result<=0&&!key_spy_trade)continue;
@@ -617,7 +625,14 @@ static float known_unanswered_loss(const Game *view,Move m){
             view->captured[1-a.side][BOMB]<army_counts[BOMB];
         bool active_spy=target.rank==SPY&&view->captured[1-a.side][MARSHAL]<army_counts[MARSHAL];
         bool local_guard=mobile<=3&&flag>=0&&abs(victim%10-flag%10)+abs(victim/10-flag/10)<=3;
-        float weight=victim==m.to||target.rank>=COLONEL||scarce_miner||active_spy||local_guard?1:.25f;
+        bool raid_victim=false;
+        int raider=view->last_move.to;
+        if(view->combat==1&&raider>=0&&raider<100&&target.side==a.side){
+            Piece enemy=next.board[raider];
+            raid_victim=enemy.side==1-a.side&&enemy.revealed&&enemy.rank>=SERGEANT&&enemy.rank<=MARSHAL&&
+                combat_result(enemy.rank,target.rank)>0&&public_legal(&next,(Move){raider,victim},enemy.side);
+        }
+        float weight=victim==m.to||target.rank>=COLONEL||scarce_miner||active_spy||local_guard||raid_victim?1:.25f;
         loss=fmaxf(loss,weight*known_unanswered_loss_at(&next,a.side,victim));
     }
     return loss;
@@ -637,6 +652,15 @@ static float public_defense_relief(const Game *view,float p[100][12],Move m,floa
 }
 /* Stage the spy two steps from an identified marshal, never beside a piece
    that can simply take it. Unknown identities provide no target information. */
+static bool spy_square_unsafe(const Game *view,int square,int side){
+    for(int e=0;e<100;e++){
+        Piece enemy=view->board[e];if(enemy.side!=1-side)continue;
+        if(!enemy.revealed&&!enemy.moved)continue;
+        Game probe=*view;if(!enemy.revealed)probe.board[e].rank=SPY;
+        if(public_legal(&probe,(Move){e,square},1-side))return true;
+    }
+    return false;
+}
 static float spy_mission(const Game *view){
     int spy=-1,marshal=-1,side=view->turn;
     for(int s=0;s<100;s++){
@@ -656,8 +680,7 @@ static float spy_mission(const Game *view){
             int t=nb[k];Piece p=view->board[t];
             if(is_lake(t)||p.side==1-side||(p.side==side&&!movable(p)))continue;
             Game probe=*view;probe.board[spy]=empty_piece();probe.board[t]=(Piece){SPY,side,-1,true,true};
-            bool danger=false;
-            for(int e=0;e<100;e++)if(probe.board[e].side==1-side&&probe.board[e].revealed&&movable(probe.board[e])&&game_legal(&probe,(Move){e,t},1-side)){danger=true;break;}
+            bool danger=spy_square_unsafe(&probe,t,side);
             if(danger)continue;
             /* A mobile ally can clear the corridor; bombs cannot. */
             float cost=p.side==side?3:1;
@@ -669,8 +692,7 @@ static float spy_mission(const Game *view){
 static float spy_hunt(const Game *view,Move m){
     if(view->board[m.to].side>=0)return 0;
     Game next=*view;next.board[m.to]=next.board[m.from];next.board[m.from]=empty_piece();
-    if(next.board[m.to].rank==SPY)for(int e=0;e<100;e++)
-        if(next.board[e].side==1-view->turn&&next.board[e].revealed&&movable(next.board[e])&&game_legal(&next,(Move){e,m.to},1-view->turn))return 0;
+    if(next.board[m.to].rank==SPY&&spy_square_unsafe(&next,m.to,view->turn))return 0;
     float before=spy_mission(view),after=spy_mission(&next);
     if(after>=100)return 0;
     return fmaxf(0,fminf(12,6*(fminf(before,after+2)-after)));
@@ -848,6 +870,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_marshalguard.h"
 #include "ai_armycare.h"
 #include "ai_pincer.h"
+#include "ai_spyteam.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -991,6 +1014,8 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         strategic[i]+=ai_coordination_bonus(&view,m);
         strategic[i]+=dominant_hunt(&view,m);
         strategic[i]+=pincer_bonus(&view,m);
+        strategic[i]+=spy_clearance_bonus(&view,m)+spy_ambush_bonus(&view,m);
+        strategic[i]-=spy_attack_cost(&view,p,m);
         /* Opening a long spy route must not postpone an officer's rescue. */
         if(a.rank==SPY||preservation<1)strategic[i]+=spy_hunt(&view,m);
         strategic[i]+=1.25f*escorted_defense(&view,m);
@@ -1084,6 +1109,10 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
            losing attack or overriding the search's assessment of defenders. */
         if(g->combat==1&&g->last_move.to==m.to&&d.side==1-g->turn&&gain>0)strategic[i]+=2.5f;
         float order=gain+strategic[i]+expected_threat(&view,p,m,false)-expected_threat(&view,p,m,true);
+        if(futile_raid_follow(&view,m)){
+            strategic[i]=fminf(strategic[i],-known_unanswered_loss(&view,m));
+            order=gain+strategic[i]+expected_threat(&view,p,m,false)-expected_threat(&view,p,m,true);
+        }
         insert(candidates,&count,ROOT_WIDTH,m,order);
     }
     Game worlds[SAMPLES];for(int j=0;j<SAMPLES;j++)sample_board(&view,remaining,&worlds[j],rng);

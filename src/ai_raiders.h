@@ -64,6 +64,26 @@ static void raider_plan(const Game *view,RaiderPlan *plan){
         if(task.guard>=0&&best<=reach){plan->tasks[plan->count++]=task;assigned[task.guard]=true;}
     }
 }
+static bool futile_raid_follow(const Game *view,Move m){
+    if(view->combat!=1||m.to!=view->last_move.from||view->board[m.to].side>=0||ai_flag_risk(view,view->turn)>0)return false;
+    int raider=view->last_move.to;if(raider<0||raider>=100)return false;
+    Piece enemy=view->board[raider],a=view->board[m.from];
+    if(enemy.side!=1-a.side||!enemy.revealed||enemy.rank<SERGEANT||enemy.rank>MARSHAL||combat_result(a.rank,enemy.rank)<=0)return false;
+    Game next=optimistic_move(view,m);
+    for(int s=0;s<100;s++){
+        Piece victim=next.board[s];
+        if(victim.side!=a.side||!movable(victim)||combat_result(enemy.rank,victim.rank)<=0||
+           !public_legal(&next,(Move){raider,s},enemy.side)||known_unanswered_loss_at(&next,a.side,s)<=0)continue;
+        int nb[4],nn=neighbors(s,nb);
+        for(int j=0;j<nn;j++){
+            Move escape={s,nb[j]};
+            if(view->board[nb[j]].side>=0||!public_legal(view,escape,a.side)||immediate_defeat(view,escape))continue;
+            Game safer=optimistic_move(view,escape);
+            if(known_unanswered_loss_at(&safer,a.side,escape.to)==0)return true;
+        }
+    }
+    return false;
+}
 static float raider_bonus(const Game *view,const RaiderPlan *plan,Move m){
     Piece a=view->board[m.from],d=view->board[m.to];float best=0;
     if(d.side>=0&&(!d.revealed||combat_result(a.rank,d.rank)<0))return 0;

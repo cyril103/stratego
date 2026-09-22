@@ -90,6 +90,15 @@ bool game_end_playing_period(Game *g){
 bool game_apply(Game *g,Move m) {
     if(g->winner>=0||!game_legal(g,m,g->turn))return false;
     Piece a=g->board[m.from],d=g->board[m.to];int s=a.side;
+    if(a.rank==MARSHAL&&a.revealed){
+        for(int e=0;e<100;e++){
+            Piece suspect=g->board[e];
+            if(suspect.side!=1-s||suspect.revealed||suspect.id<0||suspect.id>=80)continue;
+            int before=abs(e%10-m.from%10)+abs(e/10-m.from/10);
+            int after=abs(e%10-m.to%10)+abs(e/10-m.to/10);
+            if(before==1&&after>1)g->marshal_suspects[s][suspect.id/64]|=UINT64_C(1)<<(suspect.id%64);
+        }
+    }
     int history_slot=g->history_count[s]++%8;
     g->history[s][history_slot]=m;g->history_id[s][history_slot]=a.id;
     bool reverse=g->last_id[s]==a.id&&m.from==g->last_to[s]&&m.to==g->last_from[s];
@@ -108,5 +117,11 @@ bool game_apply(Game *g,Move m) {
         g->board[m.to]=g->combat>0?a:(g->combat<0?d:empty_piece());
         if(d.rank==FLAG){g->winner=s;g->end_reason=END_FLAG;}
     }
+    /* Observation invalidates suspicion, regardless of the revealed rank.
+       Combat also clears captured identities; no hidden rank is inspected. */
+    if(a.revealed&&a.id>=0&&a.id<80)for(int side=0;side<2;side++)
+        g->marshal_suspects[side][a.id/64]&=~(UINT64_C(1)<<(a.id%64));
+    if(g->combat!=2&&d.id>=0&&d.id<80)for(int side=0;side<2;side++)
+        g->marshal_suspects[side][d.id/64]&=~(UINT64_C(1)<<(d.id%64));
     g->last_move=m;g->ply++;g->turn=1-s;game_check_end(g);return true;
 }
