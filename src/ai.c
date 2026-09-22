@@ -847,6 +847,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_continuity.h"
 #include "ai_marshalguard.h"
 #include "ai_armycare.h"
+#include "ai_pincer.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -989,6 +990,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         }
         strategic[i]+=ai_coordination_bonus(&view,m);
         strategic[i]+=dominant_hunt(&view,m);
+        strategic[i]+=pincer_bonus(&view,m);
         /* Opening a long spy route must not postpone an officer's rescue. */
         if(a.rank==SPY||preservation<1)strategic[i]+=spy_hunt(&view,m);
         strategic[i]+=1.25f*escorted_defense(&view,m);

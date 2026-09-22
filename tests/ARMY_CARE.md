@@ -23,3 +23,13 @@ An immobile target in the enemy camp with a majority bomb-or-flag probability
 keeps the existing assault evaluation: preserving a capability must not prevent
 using it against a probable bomb screen. The recorded continuity test checks
 that the miner still converts its flag route on four seeds.
+
+## Coordinated pursuit
+
+In small armies, a second stronger piece earns a bounded bonus for reducing
+an identified target's legal safe exits while its partner retains an immediate
+capture threat. Exit evaluation includes scouts' rays, obstacles, combat and
+legal recaptures. Moves exposing the helper or increasing public flag risk get
+no bonus. Tests distinguish closing exits from merely moving nearby, require
+a partner, exclude hidden prey and reject an exposed helper. This is a local
+coordination preference, not a claim of a forced multi-turn capture.
