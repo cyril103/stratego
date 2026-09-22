@@ -14,15 +14,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "ui_theme.h"
 
 static int view_width=1440;
 #define VW view_width
 #define VH 900
 #define SW (VW-424)
 #define SH 704
-static const Color BG={14,22,28,255}, PANEL={22,33,40,255}, INK={229,225,209,255};
-static const Color MUTED={139,157,162,255}, BRASS={214,177,108,255}, REDTEAM={202,30,44,255}, IVORY={229,218,185,255};
-static Font regular,bold;
+static const Color BG={9,16,23,255}, INK={240,231,208,255};
+static const Color MUTED={200,204,200,255}, BRASS={226,189,121,255}, REDTEAM={202,30,44,255}, IVORY={239,229,200,255};
+static Font regular,bold,imperial;
 static Vector2 mouse;
 static bool clicked;
 static bool quit_requested=false;
@@ -49,6 +50,7 @@ static Model table_model,tile_model;
 static Model contact_shadow;
 static Texture2D shadow_texture;
 static Texture2D battlefield_background;
+static Texture2D imperial_emblem;
 static void draw_background(float x,float y) {
     if(!battlefield_background.id)return;
     float w=(float)battlefield_background.width,h=(float)battlefield_background.height;
@@ -94,25 +96,34 @@ static bool combat_animation(void){return animating&&game.board[pending.to].side
 static float ease(float t){t=Clamp(t,0,1);return t*t*(3-2*t);}
 static float move_duration(void){return combat_animation()?2.55f:.42f;}
 static Font interface_font(bool heavy){
-    const char *windows=getenv("WINDIR");
-    char path[1024];
-    snprintf(path,sizeof(path),"%s/Fonts/%s",windows?windows:"C:/Windows",heavy?"consolab.ttf":"consola.ttf");
-    if(FileExists(path))return LoadFontEx(path,64,NULL,0);
-    const char *fallback=heavy?"assets/fonts/Barlow-SemiBold.ttf":"assets/fonts/Barlow-Regular.ttf";
+    const char *fallback=heavy?"assets/fonts/Barlow-Bold.ttf":"assets/fonts/Barlow-SemiBold.ttf";
     return FileExists(fallback)?LoadFontEx(fallback,64,NULL,0):GetFontDefault();
 }
-static void label(const char *s,float x,float y,float size,Color c,bool heavy) {DrawTextEx(heavy?bold:regular,s,(Vector2){x,y},size,1,c);}
-static void center(const char *s,float x,float y,float size,Color c) {Vector2 d=MeasureTextEx(bold,s,size,1);label(s,x-d.x/2,y,size,c,true);}
+static void label(const char *s,float x,float y,float size,Color c,bool heavy) {
+    size=fmaxf(size,18);
+    DrawTextEx(heavy?bold:regular,s,(Vector2){x,y},size,.35f,c);
+}
+static void center(const char *s,float x,float y,float size,Color c) {
+    size=fmaxf(size,18);
+    Vector2 d=MeasureTextEx(bold,s,size,.35f);label(s,x-d.x/2,y,size,c,true);
+}
+static void title(const char *s,float x,float y,float size,Color color) {
+    DrawTextEx(imperial,s,(Vector2){x+1,y+2},size,1,Fade(BLACK,.65f));
+    DrawTextEx(imperial,s,(Vector2){x,y},size,1,color);
+}
+static void emblem(Rectangle r,float alpha) {
+    if(imperial_emblem.id)DrawTexturePro(imperial_emblem,(Rectangle){0,0,(float)imperial_emblem.width,(float)imperial_emblem.height},r,(Vector2){0,0},0,Fade(WHITE,alpha));
+}
 static bool button(const char *s,Rectangle r,bool primary,bool enabled) {
     bool hover=enabled&&CheckCollisionPointRec(mouse,r);
-    Color fill=primary?BRASS:(Color){32,46,53,255};
-    if(hover)fill=primary?(Color){236,202,143,255}:(Color){47,65,71,255};
-    if(!enabled)fill=(Color){31,39,43,255};
-    DrawRectangleRounded(r,.12f,6,fill);
-    Color text=primary?BG:INK;if(!enabled)text=MUTED;
-    float size=20;
-    while(size>12&&MeasureTextEx(bold,s,size,1).x>r.width-16)size-=.5f;
-    center(s,r.x+r.width/2,r.y+(r.height-size)/2,size,text);
+    float transition=ui_hover(s,r,hover);
+    bool pressed=hover&&IsMouseButtonDown(MOUSE_BUTTON_LEFT);
+    ui_button_skin(r,primary,enabled,transition,pressed);
+    Color text=enabled?(primary?(Color){255,240,201,255}:INK):(Color){161,164,161,255};
+    float size=r.height<35?18:20;
+    while(size>16&&MeasureTextEx(bold,s,size,.35f).x>r.width-28)size-=.5f;
+    float width=MeasureTextEx(bold,s,size,.35f).x;
+    DrawTextEx(bold,s,(Vector2){r.x+(r.width-width)/2,r.y+(r.height-size)/2+(pressed?1:0)},size,.35f,text);
     return hover&&clicked;
 }
 static void push_log(const char *s) {for(int i=4;i>0;i--)memcpy(logs[i],logs[i-1],110);snprintf(logs[0],110,"%s",s);}
@@ -228,9 +239,21 @@ static void captured_tray(float x,bool ended){
     if(button("Pieces sorties",(Rectangle){x,544,148,30},!tray_journal,true))tray_journal=false;
     if(button("Journal",(Rectangle){x+156,544,148,30},tray_journal,true))tray_journal=true;
     if(tray_journal){
-        for(int i=0;i<5;i++)if(logs[i][0]){
-            float size=16;while(size>11&&MeasureTextEx(regular,logs[i],size,1).x>304)size-=.5f;
-            label(logs[i],x,596+i*34,size,i==0?INK:MUTED,false);
+        float y=594;
+        for(int i=0;i<5&&y<=795;i++)if(logs[i][0]){
+            const char *text=logs[i];
+            while(*text&&y<=795) {
+                char line[110];snprintf(line,sizeof(line),"%s",text);
+                int length=(int)strlen(line);
+                while(length>1&&MeasureTextEx(regular,line,18,.35f).x>304)line[--length]='\0';
+                if(text[length]) {
+                    int word=length;while(word>0&&text[word]!=' ')word--;
+                    if(word>0){length=word;line[length]='\0';}
+                }
+                label(line,x,y,18,i==0?INK:MUTED,false);y+=21;
+                text+=length;while(*text==' ')text++;
+            }
+            y+=10;
         }
     }else{
         int totals[2]={0};for(int side=0;side<2;side++)for(int r=0;r<12;r++)totals[side]+=game.captured[side][r];
@@ -241,8 +264,9 @@ static void captured_tray(float x,bool ended){
         for(int i=0;i<12;i++){
             int r=order[i],lost=game.captured[tray_side][r];Rectangle slot={x+(i%3)*103,620+(i/3)*45,98,41};
             bool hover=CheckCollisionPointRec(mouse,slot);if(hover)hovered=r;
-            DrawRectangleRounded(slot,.15f,4,hover?(Color){49,64,77,255}:(Color){16,26,34,255});
-            if(r==latest_lost[tray_side])DrawRectangleRoundedLinesEx(slot,.15f,4,1,BRASS);
+            DrawRectangleRec(slot,hover?(Color){40,48,53,255}:(Color){13,21,28,255});
+            DrawRectangleLinesEx(slot,1,Fade(BRASS,hover?.65f:.18f));
+            if(r==latest_lost[tray_side])DrawRectangleLinesEx(slot,1,BRASS);
             Texture2D icon=captured_icons[tray_side][r].texture;
             DrawTexturePro(icon,(Rectangle){0,0,96,-128},(Rectangle){slot.x+2,slot.y+1,29,39},(Vector2){0,0},0,Fade(WHITE,lost?1:.22f));
             label(rank_symbols[r],slot.x+35,slot.y,22,INK,true);
@@ -342,39 +366,56 @@ static void draw_scene(RenderTexture2D target) {
 static int remaining(int side) {int n=0;for(int s=0;s<100;s++)n+=game.board[s].side==side;return n;}
 static void help_overlay(void) {
     DrawRectangle(0,0,VW,VH,(Color){5,10,14,225});
-    DrawRectangleRounded((Rectangle){255,125,930,650},.03f,8,PANEL);
-    label("LE MANUEL DU STRATEGE",300,160,15,BRASS,true);label("Chaque information compte.",300,195,36,INK,true);
+    float dx=(VW-1440)/2.0f;mouse.x-=dx;
+    BeginMode2D((Camera2D){.offset={dx,0},.zoom=1});
+    ui_panel((Rectangle){255,125,930,650},true);
+    label("LE MANUEL DU STRATEGE",300,160,15,BRASS,true);title("Chaque information compte.",300,195,30,INK);
     const char *lines[]={"OBJECTIF   Capturer le drapeau ou immobiliser toute l'armee adverse.","PLACEMENT   Cliquez deux de vos pieces pour echanger leurs positions.","MOUVEMENT   Une case horizontale ou verticale. Aucun saut ni diagonale.","ECLAIREUR (2)   Traverse et attaque en ligne droite sur les cases libres.","COMBAT   Le rang le plus fort gagne. A egalite, les deux pieces tombent.","DEMINEUR (3)   Seul a desamorcer les bombes. Les autres attaquants meurent.","ESPION (1)   Elimine le marechal (10) uniquement lorsqu'il attaque.","DRAPEAU / BOMBE   Ne bougent jamais. Les lacs sont infranchissables.","RENSEIGNEMENT   Rang visible pendant le combat et le demi-tour suivant.","REPETITION   Un quatrieme trajet consecutif entre deux cases est interdit.","NULLE   Deux armees immobilisees ou accord des deux joueurs (ISF 12.3)."};
     for(int i=0;i<11;i++)label(lines[i],300,260+i*35,18,i%2?MUTED:INK,false);
     label("Clic droit : orbite / Molette : zoom cible / Clic molette : deplacer la vue",300,635,18,BRASS,false);
     label("C : vue initiale / Echap : fermer l'aide ou annuler / M : son",300,665,18,MUTED,false);
     if(button("Reprendre",(Rectangle){945,710,195,42},true,true))help=false;
+    EndMode2D();mouse.x+=dx;
 }
 static void interface(void) {
     ClearBackground(BG);
     draw_background(0,0);
     DrawRectangle(0,0,VW,VH,Fade(BG,.24f));
-    DrawRectangleGradientV(0,0,VW,142,Fade(BG,.94f),Fade(BG,.68f));
+    DrawRectangleGradientV(0,0,VW,142,Fade(BG,.97f),Fade(BG,.84f));
     DrawRectangleGradientV(0,846,VW,54,Fade(BG,.7f),Fade(BG,.94f));
-    label("ATELIER DE STRATEGIE    /    EDITION 3D",28,23,14,BRASS,true);
-    label("STRATEGO",24,47,46,INK,true);
-    label(phase==2?"Chaque coup compte.":"Deux armees. Un drapeau. Aucune certitude.",310,68,18,MUTED,false);
+    emblem((Rectangle){22,16,83,83},1);
+    label("LES GUERRES DE L'EMPIRE",120,24,12,BRASS,true);
+    title("STRATEGO",116,44,42,INK);
+    label(phase==2?"Chaque coup compte.":"L'audace. La ruse. La victoire.",410,67,16,MUTED,false);
     if(button("?  Regles",(Rectangle){VW-376,47,168,43},false,true))help=true;
     if(button("Nouvelle partie",(Rectangle){VW-196,47,172,43},false,true)){reset_game();phase=1;}
-    DrawLine(24,112,VW-24,112,(Color){53,65,66,255});
+    ui_rule(24,111,VW-48,BRASS);
     label(phase==0?"LE CHAMP DE BATAILLE":(phase==1?"01   DEPLOYEZ VOS FORCES":"02   LA BATAILLE"),28,122,13,BRASS,true);
-    label("BLEU / VOUS                           ROUGE / ADVERSAIRE",627,122,13,MUTED,false);
-    DrawRectangleRounded((Rectangle){VW-376,142,352,704},.025f,8,Fade(PANEL,.96f));
+    if(phase>0)label("VOTRE ARMEE  /  BLEUS                       ADVERSAIRE  /  ROUGES",627,123,11,MUTED,false);
+    ui_panel((Rectangle){VW-376,142,352,704},true);
+    if(phase==0) {
+        DrawRectangleGradientH(0,143,SW,702,Fade(BG,.72f),Fade(BG,.02f));
+        float x=84;
+        emblem((Rectangle){x-5,196,154,154},.95f);
+        label("ENTREZ DANS L'HISTOIRE",x,374,14,BRASS,true);
+        title("L'ART DE",x-4,409,64,INK);
+        title("LA GUERRE",x-4,480,64,INK);
+        ui_rule(x,574,360,BRASS);
+        label("Deux armees. Un drapeau.",x,601,24,INK,false);
+        label("Une seule decision peut changer la bataille.",x,642,18,MUTED,false);
+        label("STRATEGIE  /  BLUFF  /  CONQUETE",x,755,12,BRASS,true);
+    }
 }
 static void deployment_board(void){
-    DrawRectangle(24,142,SW,SH,(Color){27,37,39,226});
+    ui_panel((Rectangle){24,142,SW,SH},false);
     const float bx=24+(SW-600)/2.0f,by=185,cell=60;
     center("VOTRE PLAN DE BATAILLE",24+SW/2.0f,150,20,BRASS);
     int hovered=-1;
     for(int s=0;s<100;s++){
         Rectangle box={bx+(s%10)*cell,by+(s/10)*cell,cell-2,cell-2};
-        Color color=is_lake(s)?(Color){42,88,101,255}:s>=60?((s+s/10)%2?(Color){91,108,99,255}:(Color){108,123,111,255}):(Color){45,56,57,255};
+        Color color=is_lake(s)?(Color){30,66,80,255}:s>=60?((s+s/10)%2?(Color){75,84,76,255}:(Color){91,99,87,255}):(Color){32,43,48,255};
         DrawRectangleRec(box,color);
+        DrawRectangleLinesEx(box,1,Fade(BRASS,s>=60?.3f:.12f));
         if(s>=60&&CheckCollisionPointRec(mouse,box))hovered=s;
         if(s==selected)DrawRectangleLinesEx(box,3,BRASS);
         if(s>=60&&game.board[s].side==HUMAN){
@@ -399,20 +440,22 @@ static void deployment_board(void){
 static void side_panel(void) {
     float x=VW-352;
     if(phase==0) {
-        label("STRATEGIE A INFORMATION CACHEE",x,169,12,BRASS,true);
-        label("L'art de",x,213,36,INK,true);label("l'anticipation.",x,260,34,INK,true);
-        label("40 pieces sous vos ordres.",x,329,20,MUTED,false);
-        label("Observez. Sondez. Avancez.",x,360,20,MUTED,false);
-        label("Protegez votre drapeau et percez",x,412,16,INK,false);label("les lignes de votre adversaire.",x,440,16,INK,false);
-        label("ADVERSAIRE",x,515,13,BRASS,true);
+        label("VOTRE QUARTIER GENERAL",x,180,12,BRASS,true);
+        title("Prenez le",x,222,29,INK);title("commandement",x,262,26,INK);
+        ui_rule(x,315,304,BRASS);
+        label("40 pieces sous vos ordres.",x,341,20,INK,false);
+        label("Observez. Sondez. Avancez.",x,375,18,MUTED,false);
+        label("Protegez votre drapeau et percez",x,432,17,MUTED,false);label("les lignes de votre adversaire.",x,459,17,MUTED,false);
+        label("CHOISIR VOTRE ADVERSAIRE",x,515,12,BRASS,true);
         if(button(ai_model_name(difficulty),(Rectangle){x,545,304,47},false,true))difficulty=ai_model_next(difficulty,ml_ready());
         label(ai_model_description(difficulty),x,608,14,MUTED,false);
         label("Cliquer pour changer d'adversaire.",x,639,13,MUTED,false);
         if(button("Preparer mon armee",(Rectangle){x,688,304,55},true,true))phase=1;
-        label("Une creation en C, raylib et Blender.",x,789,14,MUTED,false);
+        ui_rule(x+42,773,220,BRASS);
+        center("LA VICTOIRE SE PREPARE ICI",x+152,797,11,BRASS);
     } else if(phase==1) {
-        label("PLACEMENT MANUEL / 2D",x,171,16,BRASS,true);
-        label(TextFormat("%d / 40 placees",40-deployment_count(&deployment,-1)),x,208,27,INK,true);
+        label("ORDRE DE BATAILLE",x,176,13,BRASS,true);
+        title(TextFormat("%d / 40 placees",40-deployment_count(&deployment,-1)),x,209,28,INK);
         label("Choisissez un grade, puis",x,252,17,INK,false);
         label("une case de votre camp.",x,277,17,INK,false);
         const int order[12]={10,9,8,7,6,5,4,3,2,1,11,0};
@@ -446,9 +489,9 @@ static void side_panel(void) {
         label(ended?"FIN DE LA BATAILLE":"SITUATION TACTIQUE",x,170,13,BRASS,true);
         label(combat_animation()?(animation<.75f?"Revelation des grades":animation<1.65f?"Face a face":"Resolution du combat"):ended?(game.winner==GAME_DRAW?"Partie nulle":game.winner==HUMAN?"Victoire !":"Defaite"):game.turn==HUMAN?"A vous de jouer":"L'IA reflechit...",x,207,combat_animation()?25:30,INK,true);
         label(ended?end_reason_text():TextFormat("Tour %02d / %s",game.ply/2+1,ai_model_name(difficulty)),x,251,16,MUTED,false);
-        DrawLine((int)x,287,1392,287,(Color){52,65,68,255});
+        ui_rule(x,287,304,BRASS);
         label("VOS FORCES",x,308,12,MUTED,true);label("ADVERSAIRE",x+170,308,12,MUTED,true);
-        label(TextFormat("%02d",remaining(HUMAN)),x,328,44,IVORY,true);label(TextFormat("%02d",remaining(COMPUTER)),x+170,328,44,(Color){228,130,110,255},true);
+        title(TextFormat("%02d",remaining(HUMAN)),x,328,44,IVORY);title(TextFormat("%02d",remaining(COMPUTER)),x+170,328,44,(Color){228,130,110,255});
         label("pieces en jeu",x,377,14,MUTED,false);label("pieces en jeu",x+170,377,14,MUTED,false);
         if(combat_animation()&&animation>=.75f) {
             Piece a=game.board[pending.from],d=game.board[pending.to];
@@ -470,10 +513,10 @@ static const char *end_reason_text(void){
     if(game.end_reason==END_FLAG)return "Le drapeau a ete capture.";
     return game.winner==HUMAN?"L'adversaire ne peut plus jouer.":"Vous ne pouvez plus jouer.";
 }
-static void end_overlay(void){
+static void end_overlay_content(void){
     if(phase!=2)return;
     if(ai_draw_pending){
-        DrawRectangle(24,142,SW,SH,Fade(BG,.85f));
+        ui_panel((Rectangle){232,292,600,272},true);
         center("L'IA propose une partie nulle",532,350,30,INK);
         center("Accepter termine la partie sans vainqueur.",532,412,18,MUTED);
         if(button("Refuser",(Rectangle){312,478,210,48},true,true)){
@@ -488,7 +531,7 @@ static void end_overlay(void){
         return;
     }
     if(draw_confirm){
-        DrawRectangle(24,142,SW,SH,Fade(BG,.85f));
+        ui_panel((Rectangle){232,292,600,272},true);
         center("Proposer une partie nulle ?",532,350,32,INK);
         center("L'IA peut accepter ou refuser votre proposition.",532,412,18,MUTED);
         if(button("Continuer",(Rectangle){312,478,210,48},true,true))draw_confirm=false;
@@ -501,7 +544,7 @@ static void end_overlay(void){
         return;
     }
     if(resign_confirm){
-        DrawRectangle(24,142,SW,SH,Fade(BG,.85f));
+        ui_panel((Rectangle){232,292,600,272},true);
         center("Capituler ?",532,350,38,INK);
         center("La victoire sera accordee a l'ordinateur.",532,412,19,MUTED);
         if(button("Continuer",(Rectangle){312,478,210,48},true,true))resign_confirm=false;
@@ -515,8 +558,8 @@ static void end_overlay(void){
     bool won=game.winner==HUMAN,draw=game.winner==GAME_DRAW;
     float t=ease(end_time/1.2f),y=320-45*t;
     Color accent=draw?MUTED:won?BRASS:(Color){228,130,110,255};
-    DrawRectangle(24,142,SW,SH,Fade(BG,.78f*t));
-    BeginScissorMode(24,142,SW,SH);
+    ui_panel((Rectangle){202,185,660,540},true);
+    BeginScissorMode(24+(VW-1440)/2,142,1016,SH);
     for(int i=0;i<52;i++){
         float px=40+(i*137)%980,py=142+fmodf(i*83+end_time*(won?52:25),704);
         float alpha=t*(end_time<5?1:Clamp((7-end_time)/2,0,1));
@@ -534,7 +577,18 @@ static void end_overlay(void){
     if(end_time>.8f&&button("Voir le plateau",(Rectangle){417,y+260,230,45},false,true))end_dismissed=true;
     EndScissorMode();
 }
+static void end_overlay(void) {
+    if(phase!=2||(!ai_draw_pending&&!draw_confirm&&!resign_confirm&&(game.winner<0||end_dismissed)))return;
+    DrawRectangle(24,142,SW,SH,Fade(BG,.78f));
+    float dx=(VW-1440)/2.0f;mouse.x-=dx;
+    BeginMode2D((Camera2D){.offset={dx,0},.zoom=1});
+    end_overlay_content();
+    EndMode2D();mouse.x+=dx;
+}
 int main(int argc,char **argv) {
+    bool journal_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--journal-demo"))journal_demo=true;
+    bool ui_help_demo=false,ui_hover_demo=false;
+    for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--ui-help-demo"))ui_help_demo=true;if(!strcmp(argv[i],"--ui-hover-demo"))ui_hover_demo=true;}
     bool quit_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--quit-demo"))quit_demo=true;
     bool deployment_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--deployment-demo"))deployment_demo=true;
     bool resign_demo=false,immobile_demo=false,draw_demo=false;
@@ -543,7 +597,8 @@ int main(int argc,char **argv) {
     for(int i=1;i<argc;i++)if(sscanf(argv[i],"--ai-draw-demo=%d",&ai_draw_demo)==1&&(ai_draw_demo<1||ai_draw_demo>2))return 4;
     for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--resign-demo"))resign_demo=true;if(!strcmp(argv[i],"--immobile-demo"))immobile_demo=true;if(!strcmp(argv[i],"--draw-demo"))draw_demo=true;}
     bool smoke=false,smoke_battle=false,closeup=false;for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--smoke"))smoke=true;if(!strcmp(argv[i],"--battle"))smoke_battle=true;if(!strcmp(argv[i],"--closeup"))closeup=true;}
-    if(resign_demo||immobile_demo||deployment_demo||draw_demo||ai_draw_demo||models_demo)smoke=true;
+    if(journal_demo)smoke=smoke_battle=true;
+    if(resign_demo||immobile_demo||deployment_demo||draw_demo||ai_draw_demo||models_demo||ui_help_demo||ui_hover_demo)smoke=true;
     bool combat_demo=false,reveal_captured=false;int demo_a=6,demo_d=5,demo_side=HUMAN;Game expected_demo;
     for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--combat-enemy"))demo_side=COMPUTER;
     for(int i=1;i<argc;i++)if(sscanf(argv[i],"--combat-demo=%d,%d",&demo_a,&demo_d)==2){if(demo_a<1||demo_a>10||demo_d<0||demo_d>11)return 4;combat_demo=smoke=true;}
@@ -560,6 +615,10 @@ int main(int argc,char **argv) {
     if(quit_demo&&!IsWindowFullscreen()){CloseWindow();return 4;}
     regular=interface_font(false);
     bold=interface_font(true);
+    imperial=LoadFontEx("assets/fonts/Cinzel-Bold.ttf",112,NULL,0);
+    SetTextureFilter(imperial.texture,TEXTURE_FILTER_BILINEAR);
+    imperial_emblem=LoadTexture("assets/ui/imperial-emblem.png");
+    if(imperial_emblem.id){GenTextureMipmaps(&imperial_emblem);SetTextureFilter(imperial_emblem,TEXTURE_FILTER_TRILINEAR);}
     SetTextureFilter(regular.texture,TEXTURE_FILTER_BILINEAR);SetTextureFilter(bold.texture,TEXTURE_FILTER_BILINEAR);
     lighting=studio_shader(.36f,0);metal_lighting=studio_shader(.42f,.3f);matte_lighting=studio_shader(.85f,0);
     if(!IsShaderValid(lighting)||!IsShaderValid(metal_lighting)||!IsShaderValid(matte_lighting)){TraceLog(LOG_ERROR,"Lighting shader failed");CloseWindow();return 1;}
@@ -615,6 +674,9 @@ int main(int argc,char **argv) {
     if(draw_demo){game_clear(&game);phase=2;game.board[98]=(Piece){FLAG,HUMAN,1,false,false};game.board[8]=(Piece){FLAG,COMPUTER,2,false,false};game_check_end(&game);}
     int frames=0;
     if(models_demo)phase=0;
+    if(journal_demo){tray_journal=true;push_log("Vous refusez la nulle : la partie continue.");}
+    if(ui_help_demo||ui_hover_demo)phase=0;
+    if(ui_help_demo)help=true;
     if(deployment_demo)deployment_path="reports/deployment_demo_save.txt";
     if(ai_draw_demo){phase=2;ai_draw_pending=true;last_ai_draw_offer=game.ply;}
     while(!quit_requested&&!WindowShouldClose()) {
@@ -636,9 +698,10 @@ int main(int argc,char **argv) {
         float dt=fminf(GetFrameTime(),.1f);float scale=fminf((float)GetScreenWidth()/VW,(float)GetScreenHeight()/VH);
         Vector2 offset={(GetScreenWidth()-VW*scale)/2,(GetScreenHeight()-VH*scale)/2};mouse=Vector2Scale(Vector2Subtract(GetMousePosition(),offset),1/scale);clicked=IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
         if(quit_demo&&frames==10){mouse=(Vector2){VW-100,870};clicked=true;}
-        if(resign_demo&&frames==20){mouse=(Vector2){640,500};clicked=true;}
+        if(resign_demo&&frames==20){mouse=(Vector2){640+(VW-1440)/2.0f,500};clicked=true;}
+        if(ui_hover_demo){mouse=(Vector2){VW-200,714};clicked=false;}
         if(models_demo&&(frames==5||frames==10||frames==15||(ml_ready()&&frames==20))){mouse=(Vector2){VW-210,565};clicked=true;}
-        if(ai_draw_demo&&frames==30){mouse=(Vector2){ai_draw_demo==1?640:410,500};clicked=true;}
+        if(ai_draw_demo&&frames==30){mouse=(Vector2){(ai_draw_demo==1?640:410)+(VW-1440)/2.0f,500};clicked=true;}
         if(deployment_demo){
             if(frames==5){mouse=(Vector2){VW-310,340};clicked=true;}
             if(frames==10){mouse=(Vector2){252+(VW-1440)/2.0f,565};clicked=true;}
@@ -753,6 +816,8 @@ int main(int argc,char **argv) {
     for(int side=0;side<2;side++)for(int r=0;r<12;r++)UnloadRenderTexture(captured_icons[side][r]);
     UnloadModel(table_model);UnloadModel(tile_model);UnloadShader(wood_lighting);UnloadShader(cloth_lighting);
     if(battlefield_background.id)UnloadTexture(battlefield_background);
+    if(imperial_emblem.id)UnloadTexture(imperial_emblem);
+    if(imperial.texture.id!=GetFontDefault().texture.id)UnloadFont(imperial);
     UnloadRenderTexture(canvas);UnloadRenderTexture(scene);for(int i=0;i<13;i++)UnloadModel(pieces[i]);for(int i=0;i<12;i++)UnloadModel(piece_faces[i]);UnloadModel(piece_plate);UnloadModel(board_model);UnloadModel(inlay);UnloadModel(contact_shadow);UnloadTexture(shadow_texture);UnloadShader(lighting);UnloadShader(metal_lighting);UnloadShader(matte_lighting);
     if(regular.texture.id!=GetFontDefault().texture.id)UnloadFont(regular);
     if(bold.texture.id!=GetFontDefault().texture.id)UnloadFont(bold);

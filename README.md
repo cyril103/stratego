@@ -4,7 +4,7 @@ Jeu local jouable contre l'ordinateur, écrit en **C99 avec raylib 5.5**. Platea
 
 ## Jouer sous Windows
 
-L'interface utilise Consolas et Consolas Bold installées dans le dossier de polices Windows. Sur une machine sans Consolas, elle utilise Barlow fournie avec le jeu.
+L'interface impériale associe des titres Cinzel à la police Barlow pour les commandes et les informations de jeu. Ces polices sont fournies sous licence SIL OFL. Les boutons en bronze et les panneaux bleu nuit sont dessinés à la résolution du jeu, avec survol animé, relief d'appui et état désactivé. Un aigle doré et le panorama napoléonien complètent l'accueil.
 
 Lancer `build/stratego.exe`, ou double-cliquer `Jouer.cmd` après compilation. Les assets sont copiés à côté de l'exécutable. OpenGL 3.3 est nécessaire. Aucun serveur ni compte.
 
