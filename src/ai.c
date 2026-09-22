@@ -507,6 +507,33 @@ static float approaching_officer_risk_from(const Game *view,const Game *intent,f
 static float approaching_officer_risk(const Game *view,float p[100][12]) {
     return approaching_officer_risk_from(view,view,p);
 }
+/* Credit removal of a contact threat only when the attacker survives.
+   A moved, isolated target can be a sound marshal capture even while its
+   rank is unknown. Failed attacks and equal trades buy no rescue credit;
+   retain any new exposure in full so a possible supporting spy still matters. */
+static float contact_safety_bonus(const Game *view,float p[100][12],Move m,float before){
+    Piece a=view->board[m.from],d=view->board[m.to];
+    Game next=optimistic_move(view,m);
+    if(d.side>=0&&next.board[m.to].side==view->turn)next.board[m.to].revealed=true;
+    float relief=before-approaching_officer_risk_from(&next,view,p);
+    if(d.side<0||relief<=0)return relief;
+    /* Unrevealed attackers retain the existing cautious probe policy. A
+       speculative contact must not finance early officer disclosure. */
+    if(!d.revealed&&!a.revealed)return 0;
+    /* Extend credit to uncertain captures only when survival is not followed
+       by a possible immediate recapture. Removing one contact must not buy
+       a bonus for stepping into another spy's attack. */
+    if(!d.revealed)for(int e=0;e<100;e++)if(next.board[e].side==1-a.side){
+        for(int r=SPY;r<=MARSHAL;r++)if(p[e][r]>0&&combat_result(r,a.rank)>=0){
+            Game reply=next;reply.board[e].rank=r;
+            if(public_legal(&reply,(Move){e,m.to},1-a.side))return 0;
+        }
+    }
+    float success=0;
+    if(d.revealed)success=combat_result(a.rank,d.rank)>0?1:0;
+    else for(int r=FLAG;r<=BOMB;r++)if(combat_result(a.rank,r)>0)success+=p[m.to][r];
+    return relief*success;
+}
 static int officer_exits(const Game *view,float p[100][12],int s){
     int nb[4],n=neighbors(s,nb),exits=0;Piece officer=view->board[s];
     for(int k=0;k<n;k++){
@@ -1134,17 +1161,12 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         float safety=preservation-ai_preservation_risk(&planned,g->turn);
         if(d.side>=0&&(!d.revealed||combat_result(a.rank,d.rank)<=0))safety=fminf(0,safety);
         strategic[i]+=safety;
-        Game cautious=optimistic_move(&view,m);
         if(public_flag_pressure>0){
             strategic[i]+=.5f*public_defense_relief(&view,p,m,public_flag_pressure);
         }
-        if(d.side>=0&&cautious.board[m.to].side==g->turn)cautious.board[m.to].revealed=true;
         /* Pursuit intent belongs to the actual officer position, not a
            hypothetical retreat square that the enemy never approached. */
-        float approach_safety=approaching-approaching_officer_risk_from(&cautious,&view,p);
-        /* An uncertain capture cannot be credited as a successful rescue. */
-        if(d.side>=0&&(!d.revealed||combat_result(a.rank,d.rank)<=0))approach_safety=fminf(0,approach_safety);
-        strategic[i]+=approach_safety;
+        strategic[i]+=contact_safety_bonus(&view,p,m,approaching);
         strategic[i]+=raider_bonus(&view,&raiders,m);
         strategic[i]+=reserve_home_bonus(&view,p,m);
         strategic[i]+=guard_relief_bonus(&relief,m);
