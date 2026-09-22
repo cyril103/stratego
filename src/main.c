@@ -15,6 +15,13 @@
 #include <string.h>
 #include <time.h>
 #include "ui_theme.h"
+#include "battlefield.h"
+
+#if defined(_WIN32)
+/* NVIDIA Optimus reads this executable export before the OpenGL context exists.
+   An explicit Windows per-application GPU preference still takes precedence. */
+__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+#endif
 
 static int view_width=1440;
 #define VW view_width
@@ -42,11 +49,10 @@ static void toggle_fullscreen(void) {
         SetWindowSize(width,height);
     }
 }
-static Model pieces[13],piece_faces[12],piece_plate,board_model,inlay;
+static Model pieces[13],piece_faces[12],piece_plate;
 static const Color BLUE_TEAM={35,83,183,255};
 static Shader lighting,metal_lighting,matte_lighting;
-static Shader wood_lighting,cloth_lighting;
-static Model table_model,tile_model;
+static Model tile_model;
 static Model contact_shadow;
 static Texture2D shadow_texture;
 static Texture2D battlefield_background;
@@ -62,12 +68,13 @@ static int layout_width(void) {
     return (int)fmaxf(1440,roundf((float)GetScreenWidth()*VH/fmaxf(1,GetScreenHeight())));
 }
 static RenderTexture2D captured_icons[2][12];
+static RenderTexture2D terrain_map;
 static int tray_side=COMPUTER;
 static bool tray_journal=false;
 static int latest_lost[2]={-1,-1};
 static int formation_bag[AI_FORMATIONS],formation_count=0,last_formation=-1;
 static Camera3D camera;
-static float azimuth=0, elevation=1.02f, zoom=15.6f;
+static float azimuth=0, elevation=1.02f, zoom=14.7f;
 static Vector3 camera_focus={0,0,0};
 static Game game;
 static RevealWindow reveal_window;
@@ -298,41 +305,31 @@ static void draw_move_animation(void) {
     draw_piece_pose(d,to,dh&&!opening,dh?180*(1-reveal):0,ds);
 }
 static void draw_scene(RenderTexture2D target) {
-    Shader studio[]={lighting,metal_lighting,matte_lighting,wood_lighting,cloth_lighting};
-    for(int i=0;i<5;i++)SetShaderValue(studio[i],GetShaderLocation(studio[i],"eyePosition"),&camera.position,SHADER_UNIFORM_VEC3);
+    battlefield_update(camera.position);
+    Shader studio[]={lighting,metal_lighting,matte_lighting};
+    for(int i=0;i<3;i++)SetShaderValue(studio[i],GetShaderLocation(studio[i],"eyePosition"),&camera.position,SHADER_UNIFORM_VEC3);
     BeginTextureMode(target);ClearBackground(BG);
     BeginMode2D((Camera2D){.zoom=2});
     draw_background(-24,-142);
     DrawRectangle(0,0,SW,SH,Fade(BG,.24f));
     EndMode2D();BeginMode3D(camera);
-    DrawModel(table_model,(Vector3){0,-.83f,0},1,(Color){94,59,37,255});
-    rlDrawRenderBatchActive();rlDisableDepthMask();
-    DrawModelEx(contact_shadow,(Vector3){.13f,-.474f,.17f},(Vector3){0,1,0},0,(Vector3){9.4f,1,13.6f},Fade(WHITE,.9f));
-    rlDrawRenderBatchActive();rlEnableDepthMask();
-    DrawModel(board_model,(Vector3){0,0,0},1,(Color){119,78,45,255});DrawModel(inlay,(Vector3){0,0,0},1,BRASS);
+    imperial_frame_draw();
     int hovered=help?-1:pick_square();
     for(int s=0;s<100;s++) {
         Vector3 p=square_pos(s);
         if(is_lake(s))continue;
-        Color tile=(s%10+s/10)%2?(Color){102,113,98,255}:(Color){123,134,115,255};
-        if(phase==1&&s>=60)tile=(s%10+s/10)%2?(Color){137,135,107,255}:(Color){155,151,122,255};
-        DrawModelEx(tile_model,(Vector3){p.x,.018f,p.z},(Vector3){0,1,0},0,(Vector3){.978f,.10f,.978f},tile);
-        if(game.last_move.to==s||game.last_move.from==s)DrawCube((Vector3){p.x,.074f,p.z},.95f,.012f,.95f,(Color){181,159,91,255});
-        if(selected==s)DrawCube((Vector3){p.x,.087f,p.z},.96f,.018f,.96f,BRASS);
+        Color tile=(s%10+s/10)%2?(Color){222,223,201,255}:(Color){252,248,220,255};
+        DrawModelEx(tile_model,(Vector3){p.x,.018f,p.z},(Vector3){0,1,0},0,(Vector3){.986f,.10f,.986f},tile);
+        DrawCubeWires((Vector3){p.x,.071f,p.z},.995f,.002f,.995f,(Color){115,111,74,255});
+        if(game.last_move.to==s||game.last_move.from==s)DrawCubeWires((Vector3){p.x,.080f,p.z},.94f,.009f,.94f,BRASS);
+        if(selected==s)DrawCubeWires((Vector3){p.x,.089f,p.z},.92f,.018f,.92f,(Color){255,219,124,255});
         bool legal=selected>=0&&phase==2&&game_legal(&game,(Move){selected,s},HUMAN);
         if(legal) {
             DrawCylinder((Vector3){p.x,.09f,p.z},game.board[s].side==COMPUTER?.42f:.12f,game.board[s].side==COMPUTER?.42f:.12f,.012f,24,game.board[s].side==COMPUTER?(Color){228,136,100,255}:BRASS);
         }
         if(s==hovered&&phase>0&&(!is_lake(s)))DrawCubeWires((Vector3){p.x,.10f,p.z},.94f,.02f,.94f,IVORY);
     }
-    for(int lake=0;lake<2;lake++) {
-        float x=lake?2:-2;
-        DrawCube((Vector3){x,-.015f,0},1.96f,.10f,1.96f,(Color){43,92,104,255});
-        for(int i=0;i<8;i++) {
-            float z=-.8f+i*.22f;float offset=sinf((float)GetTime()*.7f+i)*.09f;
-            DrawLine3D((Vector3){x-.72f+offset,.047f,z},(Vector3){x+.55f+offset,.047f,z},(Color){74,125,133,255});
-        }
-    }
+    battlefield_lakes();
     rlDrawRenderBatchActive();rlDisableDepthMask();
     for(int s=0;s<100;s++) {
         Piece p=game.board[s];if(p.side<0||(animating&&s==pending.from))continue;
@@ -364,6 +361,17 @@ static void draw_scene(RenderTexture2D target) {
     EndMode2D();EndTextureMode();
 }
 static int remaining(int side) {int n=0;for(int s=0;s<100;s++)n+=game.board[s].side==side;return n;}
+static void draw_deployment_map(void) {
+    Camera3D overhead={.position={0,20,0},.target={0,0,0},.up={0,0,-1},.fovy=10,.projection=CAMERA_ORTHOGRAPHIC};
+    battlefield_update(overhead.position);
+    BeginTextureMode(terrain_map);ClearBackground(BG);BeginMode3D(overhead);
+    for(int s=0;s<100;s++)if(!is_lake(s)) {
+        Vector3 p=square_pos(s);
+        Color tint=(s%10+s/10)%2?(Color){222,223,201,255}:(Color){252,248,220,255};
+        DrawModelEx(tile_model,(Vector3){p.x,.018f,p.z},(Vector3){0,1,0},0,(Vector3){.986f,.10f,.986f},tint);
+    }
+    battlefield_lakes();EndMode3D();EndTextureMode();
+}
 static void help_overlay(void) {
     DrawRectangle(0,0,VW,VH,(Color){5,10,14,225});
     float dx=(VW-1440)/2.0f;mouse.x-=dx;
@@ -409,13 +417,14 @@ static void interface(void) {
 static void deployment_board(void){
     ui_panel((Rectangle){24,142,SW,SH},false);
     const float bx=24+(SW-600)/2.0f,by=185,cell=60;
+    DrawTexturePro(terrain_map.texture,(Rectangle){0,0,1200,-1200},(Rectangle){bx,by,600,600},(Vector2){0,0},0,WHITE);
     center("VOTRE PLAN DE BATAILLE",24+SW/2.0f,150,20,BRASS);
     int hovered=-1;
     for(int s=0;s<100;s++){
         Rectangle box={bx+(s%10)*cell,by+(s/10)*cell,cell-2,cell-2};
-        Color color=is_lake(s)?(Color){30,66,80,255}:s>=60?((s+s/10)%2?(Color){75,84,76,255}:(Color){91,99,87,255}):(Color){32,43,48,255};
+        Color color=is_lake(s)?(Color){0,0,0,0}:s>=60?(Color){13,25,23,45}:(Color){9,20,27,155};
         DrawRectangleRec(box,color);
-        DrawRectangleLinesEx(box,1,Fade(BRASS,s>=60?.3f:.12f));
+        if(!is_lake(s))DrawRectangleLinesEx(box,1,Fade(BRASS,s>=60?.5f:.20f));
         if(s>=60&&CheckCollisionPointRec(mouse,box))hovered=s;
         if(s==selected)DrawRectangleLinesEx(box,3,BRASS);
         if(s>=60&&game.board[s].side==HUMAN){
@@ -586,6 +595,8 @@ static void end_overlay(void) {
     EndMode2D();mouse.x+=dx;
 }
 int main(int argc,char **argv) {
+    bool showcase_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--showcase-demo"))showcase_demo=true;
+    bool terrain_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--terrain-demo"))terrain_demo=true;
     bool journal_demo=false;for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--journal-demo"))journal_demo=true;
     bool ui_help_demo=false,ui_hover_demo=false;
     for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--ui-help-demo"))ui_help_demo=true;if(!strcmp(argv[i],"--ui-hover-demo"))ui_hover_demo=true;}
@@ -598,6 +609,7 @@ int main(int argc,char **argv) {
     for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--resign-demo"))resign_demo=true;if(!strcmp(argv[i],"--immobile-demo"))immobile_demo=true;if(!strcmp(argv[i],"--draw-demo"))draw_demo=true;}
     bool smoke=false,smoke_battle=false,closeup=false;for(int i=1;i<argc;i++){if(!strcmp(argv[i],"--smoke"))smoke=true;if(!strcmp(argv[i],"--battle"))smoke_battle=true;if(!strcmp(argv[i],"--closeup"))closeup=true;}
     if(journal_demo)smoke=smoke_battle=true;
+    if(terrain_demo||showcase_demo)smoke=true;
     if(resign_demo||immobile_demo||deployment_demo||draw_demo||ai_draw_demo||models_demo||ui_help_demo||ui_hover_demo)smoke=true;
     bool combat_demo=false,reveal_captured=false;int demo_a=6,demo_d=5,demo_side=HUMAN;Game expected_demo;
     for(int i=1;i<argc;i++)if(!strcmp(argv[i],"--combat-enemy"))demo_side=COMPUTER;
@@ -626,25 +638,16 @@ int main(int argc,char **argv) {
     for(int i=0;i<13;i++){pieces[i]=LoadModel(TextFormat("assets/models/piece_%02d.obj",i));if(!IsModelValid(pieces[i])){TraceLog(LOG_ERROR,"Missing piece assets; run tools/create_assets.py with Blender");CloseWindow();return 1;}apply_shader(&pieces[i]);}
     piece_plate=LoadModel("assets/models/piece_plate.obj");if(!IsModelValid(piece_plate)){CloseWindow();return 1;}apply_shader(&piece_plate);
     for(int i=0;i<12;i++){piece_faces[i]=LoadModel(TextFormat("assets/models/piece_face_%02d.obj",i));if(!IsModelValid(piece_faces[i])){CloseWindow();return 1;}apply_shader(&piece_faces[i]);}
-    board_model=LoadModel("assets/models/board.obj");inlay=LoadModel("assets/models/inlay.obj");apply_shader(&board_model);apply_shader(&inlay);
-    for(int i=0;i<board_model.materialCount;i++)board_model.materials[i].shader=matte_lighting;
-    for(int i=0;i<inlay.materialCount;i++)inlay.materials[i].shader=metal_lighting;
-    for(int i=0;i<piece_plate.materialCount;i++)piece_plate.materials[i].shader=metal_lighting;
-    wood_lighting=studio_shader(.85f,0);cloth_lighting=studio_shader(.94f,0);
-    float wood_kind=1,cloth_kind=2;
-    SetShaderValue(wood_lighting,GetShaderLocation(wood_lighting,"surfaceKind"),&wood_kind,SHADER_UNIFORM_FLOAT);
-    SetShaderValue(cloth_lighting,GetShaderLocation(cloth_lighting,"surfaceKind"),&cloth_kind,SHADER_UNIFORM_FLOAT);
-    table_model=LoadModelFromMesh(GenMeshCube(13,.7f,14));table_model.materials[0].shader=wood_lighting;
-    tile_model=LoadModelFromMesh(GenMeshCube(1,1,1));tile_model.materials[0].shader=cloth_lighting;
-    for(int i=0;i<board_model.materialCount;i++)board_model.materials[i].shader=wood_lighting;
+    if(!battlefield_load()){TraceLog(LOG_ERROR,"Cannot load battlefield materials");CloseWindow();return 1;}
+    tile_model=LoadModelFromMesh(GenMeshCube(1,1,1));field_material(&tile_model,0);
     battlefield_background=LoadTexture("assets/backgrounds/napoleonic-battlefield.png");
     if(battlefield_background.id)SetTextureFilter(battlefield_background,TEXTURE_FILTER_BILINEAR);
     create_contact_shadow();
     create_captured_icons();
-    if(!IsModelValid(board_model)||!IsModelValid(inlay)){TraceLog(LOG_ERROR,"Missing board assets");CloseWindow();return 1;}
     InitAudioDevice();audio_ok=IsAudioDeviceReady();if(audio_ok){click_sound=tone(460,.14f);combat_sound=tone(135,.30f);}
     view_width=layout_width();
     RenderTexture2D canvas=LoadRenderTexture(VW,VH),scene=LoadRenderTexture(SW*2,SH*2);SetTextureFilter(canvas.texture,TEXTURE_FILTER_BILINEAR);SetTextureFilter(scene.texture,TEXTURE_FILTER_BILINEAR);
+    terrain_map=LoadRenderTexture(1200,1200);SetTextureFilter(terrain_map.texture,TEXTURE_FILTER_BILINEAR);
     reset_game();if(smoke)phase=smoke_battle?2:1;
     if(smoke) {
         set_camera();
@@ -655,6 +658,8 @@ int main(int argc,char **argv) {
         TraceLog(LOG_INFO,"SMOKE: all 100 projected squares pass mouse picking");
     }
     if(closeup){camera_focus=square_pos(74);camera_focus.y=0;zoom=1.6f;set_camera();}
+    if(showcase_demo){phase=2;zoom=15.1f;azimuth=.22f;elevation=.83f;set_camera();}
+    if(terrain_demo){phase=2;camera_focus=(Vector3){0,0,0};zoom=6.5f;azimuth=.28f;elevation=1.08f;set_camera();}
     if(combat_demo){
         game_clear(&game);phase=2;
         game.board[99]=(Piece){FLAG,HUMAN,1,false,false};
@@ -672,7 +677,7 @@ int main(int argc,char **argv) {
         if(game.winner!=COMPUTER)return 4;
     }
     if(draw_demo){game_clear(&game);phase=2;game.board[98]=(Piece){FLAG,HUMAN,1,false,false};game.board[8]=(Piece){FLAG,COMPUTER,2,false,false};game_check_end(&game);}
-    int frames=0;
+    int frames=0;double smoke_started=GetTime();
     if(models_demo)phase=0;
     if(journal_demo){tray_journal=true;push_log("Vous refusez la nulle : la partie continue.");}
     if(ui_help_demo||ui_hover_demo)phase=0;
@@ -716,7 +721,7 @@ int main(int argc,char **argv) {
         if(IsKeyPressed(KEY_F1))help=!help;
         if(IsKeyPressed(KEY_ESCAPE)){if(help)help=false;else if(ai_draw_pending){ai_draw_pending=false;push_log("Vous refusez la nulle : la partie continue.");}else if(resign_confirm)resign_confirm=false;else if(draw_confirm)draw_confirm=false;else if(game.winner>=0)end_dismissed=true;else {selected=-1;reserve_rank=-1;}}
         if(IsKeyPressed(KEY_M))muted=!muted;
-        if(IsKeyPressed(KEY_C)){azimuth=0;elevation=1.02f;zoom=15.6f;camera_focus=(Vector3){0,0,0};}
+        if(IsKeyPressed(KEY_C)){azimuth=0;elevation=1.02f;zoom=14.7f;camera_focus=(Vector3){0,0,0};}
         set_camera();
         if(!help&&phase!=1&&CheckCollisionPointRec(mouse,(Rectangle){24,142,SW,SH})) {
             float wheel=GetMouseWheelMove();
@@ -758,7 +763,8 @@ int main(int argc,char **argv) {
         if(phase==2&&game.winner>=0&&!help)end_time+=dt;
         if(!combat_demo&&smoke&&smoke_battle&&!animating&&game.winner<0&&game.turn==HUMAN&&frames<110){Move m=ai_choose(&game,1,&ai_rng);if(m.from>=0)start_move(m);}
         if(phase==1&&!deployment_ready){deployment_begin(&deployment,&game);deployment_ready=true;}
-        draw_scene(scene);
+        if(phase==2)draw_scene(scene);
+        if(phase==1)draw_deployment_map();
         BeginTextureMode(canvas);
         bool raw_click=clicked;if(help||resign_confirm||draw_confirm||ai_draw_pending)clicked=false;
         interface();if(phase==2)DrawTexturePro(scene.texture,(Rectangle){0,0,SW*2,-SH*2},(Rectangle){24,142,SW,SH},(Vector2){0,0},0,WHITE);if(phase==1)deployment_board();side_panel();
@@ -807,18 +813,20 @@ int main(int argc,char **argv) {
             Image capture=LoadImageFromTexture(canvas.texture);ImageFlipVertical(&capture);
             bool exported=ExportImage(capture,draw_demo?"draw_result.png":resign_demo?"resign_result.png":immobile_demo?"immobile_result.png":combat_demo?"combat_result.png":closeup?"closeup.png":(smoke_battle?"battle.png":"preview.png"));UnloadImage(capture);
             if(!exported){TraceLog(LOG_ERROR,"Cannot export smoke capture");CloseWindow();return 3;}
-            TraceLog(LOG_INFO,"SMOKE: rendered %d frames, %d completed moves",frames,game.ply);break;
+            TraceLog(LOG_INFO,"SMOKE: rendered %d frames, %d completed moves, %.1f average FPS",frames,game.ply,frames/(GetTime()-smoke_started));break;
         }
     }
     ai_worker_stop();
     if(quit_demo)TraceLog(LOG_INFO,"QUIT: fullscreen launch and exit button passed (%d frames)",frames);
     match_log_close(&game);
     for(int side=0;side<2;side++)for(int r=0;r<12;r++)UnloadRenderTexture(captured_icons[side][r]);
-    UnloadModel(table_model);UnloadModel(tile_model);UnloadShader(wood_lighting);UnloadShader(cloth_lighting);
+    UnloadModel(tile_model);
+    UnloadRenderTexture(terrain_map);
+    battlefield_unload();
     if(battlefield_background.id)UnloadTexture(battlefield_background);
     if(imperial_emblem.id)UnloadTexture(imperial_emblem);
     if(imperial.texture.id!=GetFontDefault().texture.id)UnloadFont(imperial);
-    UnloadRenderTexture(canvas);UnloadRenderTexture(scene);for(int i=0;i<13;i++)UnloadModel(pieces[i]);for(int i=0;i<12;i++)UnloadModel(piece_faces[i]);UnloadModel(piece_plate);UnloadModel(board_model);UnloadModel(inlay);UnloadModel(contact_shadow);UnloadTexture(shadow_texture);UnloadShader(lighting);UnloadShader(metal_lighting);UnloadShader(matte_lighting);
+    UnloadRenderTexture(canvas);UnloadRenderTexture(scene);for(int i=0;i<13;i++)UnloadModel(pieces[i]);for(int i=0;i<12;i++)UnloadModel(piece_faces[i]);UnloadModel(piece_plate);UnloadModel(contact_shadow);UnloadTexture(shadow_texture);UnloadShader(lighting);UnloadShader(metal_lighting);UnloadShader(matte_lighting);
     if(regular.texture.id!=GetFontDefault().texture.id)UnloadFont(regular);
     if(bold.texture.id!=GetFontDefault().texture.id)UnloadFont(bold);
     if(audio_ok){UnloadSound(click_sound);UnloadSound(combat_sound);CloseAudioDevice();}CloseWindow();return 0;
