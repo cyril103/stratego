@@ -36,15 +36,16 @@ static void raider_plan(const Game *view,RaiderPlan *plan){
         int depth=side==COMPUTER?9-e/10:e/10;
         if(depth<5)continue;
         RaiderTask task={.enemy=e,.guard=-1,.urgency=36};int best=100,best_score=100;
-        bool vulnerable=false;
+        bool vulnerable=false;int exposed=0;
         for(int s=0;s<100;s++)if(view->board[s].side==side&&view->board[s].rank==FLAG&&
             abs(s%10-e%10)+abs(s/10-e/10)<=6)vulnerable=true;
         for(int s=0;s<100;s++){
             Piece own=view->board[s];
             if(own.side==side&&movable(own)&&combat_result(enemy.rank,own.rank)>0&&
-               abs(s%10-e%10)+abs(s/10-e/10)<=3)vulnerable=true;
+               abs(s%10-e%10)+abs(s/10-e/10)<=3){vulnerable=true;exposed++;}
         }
         if(!vulnerable)continue;
+        bool deep_officer=enemy.rank>=GENERAL&&(exposed>=2||depth>=6);
         task.urgency+=4*(depth-5);
         for(int rank=enemy.rank;rank<=MARSHAL;rank++){
             /* Do not seek a marshal trade while the spy lives. Intercepting
@@ -54,13 +55,14 @@ static void raider_plan(const Game *view,RaiderPlan *plan){
             for(int s=0;s<100;s++){
                 Piece own=view->board[s];
                 int score=distance[s]+(rank==enemy.rank?4:0)+(assigned[s]?4:0);
-                if(own.side==side&&own.rank==rank&&distance[s]<=8&&score<best_score){
+                if(own.side==side&&own.rank==rank&&distance[s]<=(deep_officer?16:8)&&score<best_score){
                     best=distance[s];best_score=score;task.guard=s;memcpy(task.distance,distance,sizeof(distance));
                 }
             }
         }
         /* A remote expedition must not displace immediate local defense. */
         int reach=task.guard>=0&&view->board[task.guard].rank==MARSHAL&&enemy.rank>=GENERAL?8:6;
+        if(deep_officer){reach=16;task.urgency+=12*exposed;}
         if(task.guard>=0&&best<=reach){plan->tasks[plan->count++]=task;assigned[task.guard]=true;}
     }
 }
@@ -123,6 +125,12 @@ static float raider_bonus(const Game *view,const RaiderPlan *plan,Move m){
         }
         /* The assigned officer must not abandon a more urgent flag defense. */
         if(gain>0&&ai_flag_risk(&next,a.side)>ai_flag_risk(view,a.side)+20)continue;
+        if(gain>0&&task->urgency>80){
+            bool hanging=false;
+            for(int s=0;s<100;s++)if(next.board[s].side==a.side&&next.board[s].rank>=COLONEL&&
+                next.board[s].rank<=MARSHAL&&known_unanswered_loss_at(&next,a.side,s)>0)hanging=true;
+            if(hanging)continue;
+        }
         if(fabsf(gain)>fabsf(best))best=gain;
     }
     return fmaxf(-80,fminf(80,best));

@@ -670,6 +670,7 @@ static float last_mobile_risk(const Game *view,float p[100][12],Move m){
     }
     return attack_loss+(1-attack_loss)*reply_loss;
 }
+static float last_officer_trade_cost(const Game *v,Move m);
 static float known_unanswered_loss_at(const Game *next,int side,int victim){
     Piece target=next->board[victim];
     if(target.side!=side||!movable(target))return 0;
@@ -691,8 +692,9 @@ static float known_unanswered_loss_at(const Game *next,int side,int victim){
         /* Recapturing the spy does not refund the marshal it just killed. */
         if(target.rank==MARSHAL&&e.rank==SPY)return 4*(worth[MARSHAL]-worth[SPY]);
         Game reply=*next;reply.board[s]=empty_piece();reply.board[victim]=e;
+        reply.captured[side][target.rank]++;reply.turn=side;
         bool recapture=false;
-        for(int t=0;t<100;t++){Piece guard=reply.board[t];if(guard.side==side&&movable(guard)&&combat_result(guard.rank,e.rank)>=0&&public_legal(&reply,(Move){t,victim},side)){recapture=true;break;}}
+        for(int t=0;t<100;t++){Piece guard=reply.board[t];if(guard.side==side&&movable(guard)&&combat_result(guard.rank,e.rank)>=0&&public_legal(&reply,(Move){t,victim},side)&&last_officer_trade_cost(&reply,(Move){t,victim})==0){recapture=true;break;}}
         if(!recapture){
             float value=worth[target.rank];
             if(target.rank==SPY&&next->captured[1-side][MARSHAL]<army_counts[MARSHAL])value=worth[MARSHAL];
@@ -970,6 +972,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_pincer.h"
 #include "ai_spyteam.h"
 #include "ai_endgamecare.h"
+#include "ai_officer_raid.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -1039,12 +1042,31 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
             spy_comeback_chance(&view,p,moves[i])>=1)rescue[kept++]=moves[i];
         if(kept){memcpy(moves,rescue,(size_t)kept*sizeof(Move));n=kept;}
     }
+    else if(view.captured[1-view.turn][MARSHAL]<army_counts[MARSHAL]){
+        /* Keeping a shield is as important as restoring it: evaluate the
+           resulting position before opening a possible scout ray. */
+        int kept=0;Move protected[MAX_MOVES];
+        for(int i=0;i<n;i++){
+            Game next=optimistic_move(&view,moves[i]);
+            Piece a=view.board[moves[i].from],d=view.board[moves[i].to];
+            if(d.side>=0&&d.revealed&&combat_result(a.rank,d.rank)>=0)next.captured[d.side][d.rank]++;
+            if(!active_spy_threat(&next)||spy_comeback_chance(&view,p,moves[i])>=1)protected[kept++]=moves[i];
+        }
+        if(kept){memcpy(moves,protected,(size_t)kept*sizeof(Move));n=kept;}
+    }
     int last_miner=threatened_last_miner(&view);
     if(last_miner>=0){
         int kept=0;Move rescue[MAX_MOVES];
         for(int i=0;i<n;i++)if(saves_last_miner(&view,p,moves[i],last_miner))rescue[kept++]=moves[i];
         if(kept){memcpy(moves,rescue,(size_t)kept*sizeof(Move));n=kept;}
     }
+    int boxed_miner=boxed_last_miner(&view);
+    if(boxed_miner>=0){
+        int kept=0;Move rescue[MAX_MOVES];
+        for(int i=0;i<n;i++)if(opens_miner_escape(&view,p,moves[i],boxed_miner))rescue[kept++]=moves[i];
+        if(kept){memcpy(moves,rescue,(size_t)kept*sizeof(Move));n=kept;}
+    }
+    n=urgent_flag_exchanges(&view,p,moves,n);
     bool safe_reserve=false,safe_officer=false;
     for(int i=0;i<n;i++)if(view.board[moves[i].to].side<0&&known_unanswered_loss(&view,moves[i])==0){
         safe_reserve=true;
@@ -1058,6 +1080,17 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         for(int i=0;i<n;i++)if(!costly_bomb_probe(&view,p,moves[i])&&
             (!safe_officer||!initiates_last_officer_trade(&view,moves[i])))moves[kept++]=moves[i];
         n=kept;
+    }
+    int miner_route[100],sole_guard=sole_guard_miner_route(&view,miner_route);
+    if(sole_guard>=0){
+        Move intercepts[MAX_MOVES];int kept=0;
+        for(int i=0;i<n;i++){
+            Move m=moves[i];Piece target=view.board[m.to];
+            bool flag_attempt=target.side==1-view.turn&&p[m.to][FLAG]>.5f;
+            if(flag_attempt||(m.from==sole_guard&&miner_route[m.to]<miner_route[m.from]&&
+                certain_survival(&view,p,m)&&known_unanswered_loss(&view,m)==0))intercepts[kept++]=m;
+        }
+        if(kept){memcpy(moves,intercepts,(size_t)kept*sizeof(Move));n=kept;}
     }
     /* Keep the terminal filters authoritative. Within equally viable moves,
        do not walk back into an avoided suspect when a quiet, materially safe
@@ -1142,11 +1175,13 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         }
         strategic[i]+=ai_coordination_bonus(&view,m);
         strategic[i]+=dominant_hunt(&view,m);
+        strategic[i]+=officer_raid_bonus(&view,p,&raiders,m,public_flag_pressure);
         strategic[i]+=pincer_bonus(&view,m);
         strategic[i]+=spy_clearance_bonus(&view,m)+spy_ambush_bonus(&view,m);
         strategic[i]-=spy_attack_cost(&view,p,m);
         strategic[i]-=spy_box_cost(&view,m);
         strategic[i]-=last_officer_trade_cost(&view,m);
+        strategic[i]+=flag_exchange_relief(&view,m);
         /* Opening a long spy route must not postpone an officer's rescue. */
         if(a.rank==SPY||preservation<1)strategic[i]+=spy_hunt(&view,m);
         strategic[i]+=1.25f*escorted_defense(&view,m);

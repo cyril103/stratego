@@ -4,16 +4,32 @@ static bool certain_survival(const Game *v,float p[100][12],Move m){
     for(int r=FLAG;r<=BOMB;r++)if(p[m.to][r]>0&&combat_result(v->board[m.from].rank,r)<=0)return false;
     return true;
 }
+/* Keep possible long-range fire separate from certain contact danger: when
+   no immediate rescue exists, opening an escape corridor remains useful. */
+static bool spy_survival_unsafe(const Game *v,int square,int side){
+    if(spy_square_unsafe(v,square,side))return true;
+    int hidden_scouts=army_counts[SCOUT]-v->captured[1-side][SCOUT];
+    for(int s=0;s<100;s++)if(v->board[s].side==1-side&&v->board[s].revealed&&v->board[s].rank==SCOUT)hidden_scouts--;
+    if(hidden_scouts<=0)return false;
+    for(int e=0;e<100;e++){
+        Piece enemy=v->board[e];
+        if(enemy.side!=1-side||enemy.revealed||!enemy.moved)continue;
+        Game probe=*v;probe.board[e].rank=SCOUT;
+        if(public_legal(&probe,(Move){e,square},1-side))return true;
+    }
+    return false;
+}
 static bool active_spy_threat(const Game *v){
     if(v->captured[1-v->turn][MARSHAL]>=army_counts[MARSHAL])return false;
     for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==SPY)
-        return spy_square_unsafe(v,s,v->turn);
+        return spy_survival_unsafe(v,s,v->turn);
     return false;
 }
 static bool saves_active_spy(const Game *v,float p[100][12],Move m){
     Piece d=v->board[m.to],a=v->board[m.from];
     if(d.side>=0&&d.revealed&&d.rank==MARSHAL&&combat_result(a.rank,d.rank)>=0)return true;
     if(!certain_survival(v,p,m))return false;
+    if(a.rank==SPY&&spy_box_cost(v,m)>0)return false;
     Game next=optimistic_move(v,m);
     /* Another unit may already be attacked too. Refuse a newly created loss,
        not an unrelated danger that this spy retreat cannot also repair. */
@@ -22,7 +38,7 @@ static bool saves_active_spy(const Game *v,float p[100][12],Move m){
         if(known_unanswered_loss_at(&next,v->turn,s)>known_unanswered_loss_at(v,v->turn,before))return false;
     }
     for(int s=0;s<100;s++)if(next.board[s].side==v->turn&&next.board[s].rank==SPY)
-        return !spy_square_unsafe(&next,s,v->turn);
+        return !spy_survival_unsafe(&next,s,v->turn);
     return false;
 }
 /* The final miner is an irreplaceable route through the enemy bomb screen.
@@ -55,18 +71,77 @@ static bool saves_last_miner(const Game *v,float p[100][12],Move m,int miner){
     }
     return true;
 }
+/* Look one enemy approach ahead: an allied blocker can make a last miner's
+   future rescue impossible. Only known surviving attackers establish a trap. */
+static bool miner_trapped_after_approach(const Game *v,int miner){
+    for(int e=0;e<100;e++){
+        Piece enemy=v->board[e];
+        if(enemy.side!=1-v->turn||!enemy.revealed||!movable(enemy)||combat_result(enemy.rank,MINER)<0)continue;
+        for(int t=0;t<100;t++){
+            if(t==miner||!public_legal(v,(Move){e,t},enemy.side))continue;
+            Piece target=v->board[t];
+            if(target.side==v->turn&&combat_result(enemy.rank,target.rank)<=0)continue;
+            Game probe=*v;
+            if(target.side==v->turn)probe.board[t].revealed=true;
+            Game next=optimistic_move(&probe,(Move){e,t});
+            if(!known_miner_threat(&next,miner))continue;
+            bool escape=false;int nb[4],nn=neighbors(miner,nb);
+            for(int j=0;j<nn;j++){
+                Move m={miner,nb[j]};Piece d=next.board[m.to];
+                if(!public_legal(&next,m,v->turn)||
+                   (d.side>=0&&(!d.revealed||combat_result(MINER,d.rank)<=0)))continue;
+                Game out=optimistic_move(&next,m);
+                if(!known_miner_threat(&out,m.to)){escape=true;break;}
+            }
+            /* A guard may remove the approaching attacker before it takes
+               the miner. An equal exchange also eliminates that threat. */
+            for(int s=0;s<100&&!escape;s++){
+                Piece guard=next.board[s];
+                if(guard.side!=v->turn||!movable(guard)||combat_result(guard.rank,enemy.rank)<0||
+                   !public_legal(&next,(Move){s,t},v->turn))continue;
+                Game out=optimistic_move(&next,(Move){s,t});
+                if(!known_miner_threat(&out,s==miner?t:miner))escape=true;
+            }
+            if(!escape)return true;
+        }
+    }
+    return false;
+}
+static int boxed_last_miner(const Game *v){
+    if(army_counts[MINER]-v->captured[v->turn][MINER]!=1||
+       v->captured[1-v->turn][BOMB]>=army_counts[BOMB])return -1;
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==MINER&&
+        !known_miner_threat(v,s)&&miner_trapped_after_approach(v,s))return s;
+    return -1;
+}
+static bool opens_miner_escape(const Game *v,float p[100][12],Move m,int miner){
+    if(!saves_last_miner(v,p,m,miner))return false;
+    Game next=optimistic_move(v,m);
+    return !miner_trapped_after_approach(&next,m.from==miner?m.to:miner);
+}
 /* Do not spend one of the final two mobile pieces on a mostly-bomb probe
    while a materially safe alternative survives the terminal filters. The
    last mobile piece and higher-confidence flag attempts retain their chance. */
 static bool costly_bomb_probe(const Game *v,float p[100][12],Move m){
     Piece a=v->board[m.from],d=v->board[m.to];
-    if(a.rank==MINER||d.side<0||d.revealed||p[m.to][BOMB]<.5f||p[m.to][FLAG]>=.5f)return false;
+    if(a.rank==MINER||d.side<0||d.revealed||p[m.to][BOMB]<.25f||p[m.to][FLAG]>=.5f)return false;
     int mobile=0;for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&movable(v->board[s]))mobile++;
     return mobile==2;
 }
 /* In a small losing army, trading its sole high officer can leave only
    weaker pieces or too few defenders against surviving enemies. Price allowing the
    exchange as well as initiating it; terminal flag filters still win. */
+/* Compare both positions with the opponent to move. A defensive exchange
+   may release the remaining guard from a stronger escort's control. */
+static float flag_exchange_relief(const Game *v,Move m){
+    Piece a=v->board[m.from],d=v->board[m.to];
+    if(d.side!=1-v->turn||!d.revealed||d.rank!=a.rank||a.rank<CAPTAIN)return 0;
+    int flag=-1;
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==FLAG)flag=s;
+    if(flag<0||abs(m.to%10-flag%10)+abs(m.to/10-flag/10)>3)return 0;
+    Game wait=*v,after=optimistic_move(v,m);wait.turn=after.turn=1-v->turn;
+    return fmaxf(0,ai_flag_risk(&wait,v->turn)-ai_flag_risk(&after,v->turn));
+}
 static float last_officer_trade_cost(const Game *v,Move m){
     int side=v->turn,officer=-1,highest=0,others=0,reserve=0;
     for(int s=0;s<100;s++)if(v->board[s].side==side&&movable(v->board[s])){
@@ -96,5 +171,49 @@ static float last_officer_trade_cost(const Game *v,Move m){
 }
 static bool initiates_last_officer_trade(const Game *v,Move m){
     Piece a=v->board[m.from],d=v->board[m.to];
-    return d.side==1-v->turn&&d.revealed&&d.rank==a.rank&&last_officer_trade_cost(v,m)>0;
+    return d.side==1-v->turn&&d.revealed&&d.rank==a.rank&&last_officer_trade_cost(v,m)>0&&flag_exchange_relief(v,m)<40;
+}
+/* In a small defense, preserve an exchange that is substantially safer for
+   the flag than EVERY available retreat. Sampled armies must not reinstate
+   an exposed escort merely because retaining the officer scores well. */
+static int urgent_flag_exchanges(const Game *v,float p[100][12],Move moves[MAX_MOVES],int n){
+    int mobile=0;for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&movable(v->board[s]))mobile++;
+    if(mobile>3)return n;
+    bool exchange[MAX_MOVES];bool found=false;
+    for(int i=0;i<n;i++){
+        if(v->board[moves[i].to].side==1-v->turn&&p[moves[i].to][FLAG]>.5f)return n;
+        exchange[i]=flag_exchange_relief(v,moves[i])>=40;found|=exchange[i];
+    }
+    if(!found)return n;
+    float risk[MAX_MOVES],best=1e9f,other=1e9f;
+    for(int i=0;i<n;i++){
+        Game next=optimistic_move(v,moves[i]);next.turn=1-v->turn;
+        risk[i]=ai_flag_risk(&next,v->turn);
+        if(exchange[i])best=fminf(best,risk[i]);else other=fminf(other,risk[i]);
+    }
+    if(other<best+40)return n;
+    int kept=0;for(int i=0;i<n;i++)if(exchange[i]&&risk[i]<=best+.00001f)moves[kept++]=moves[i];
+    return kept?kept:n;
+}
+/* A sole guard must finish a reachable interception instead of resuming a
+   speculative flag hunt while an identified miner crosses our back ranks. */
+static int sole_guard_miner_route(const Game *v,int dist[100]){
+    int guard=-1,flag=-1;
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn){
+        if(v->board[s].rank==FLAG)flag=s;
+        if(movable(v->board[s])){if(guard>=0)return -1;guard=s;}
+    }
+    if(guard<0||flag<0||v->board[guard].rank<=MINER)return -1;
+    int home[100];intercept_distances(v,flag,1-v->turn,MINER,home);
+    int hidden_miners=army_counts[MINER]-v->captured[1-v->turn][MINER];
+    bool dominant=true;
+    for(int r=v->board[guard].rank;r<=MARSHAL;r++)if(army_counts[r]>v->captured[1-v->turn][r])dominant=false;
+    for(int s=0;s<100;s++)if(v->board[s].side==1-v->turn&&v->board[s].revealed&&v->board[s].rank==MINER)hidden_miners--;
+    int enemy=-1,arrival=7;
+    for(int s=0;s<100;s++)if(v->board[s].side==1-v->turn&&
+        ((v->board[s].revealed&&v->board[s].rank==MINER)||
+         (!v->board[s].revealed&&v->board[s].moved&&hidden_miners>0&&dominant))&&home[s]<arrival){enemy=s;arrival=home[s];}
+    if(enemy<0)return -1;
+    intercept_distances(v,enemy,v->turn,v->board[guard].rank,dist);
+    return dist[guard]<100?guard:-1;
 }
