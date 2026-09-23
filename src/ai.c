@@ -1039,9 +1039,26 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
             spy_comeback_chance(&view,p,moves[i])>=1)rescue[kept++]=moves[i];
         if(kept){memcpy(moves,rescue,(size_t)kept*sizeof(Move));n=kept;}
     }
-    bool safe_reserve=false;
-    for(int i=0;i<n;i++)if(view.board[moves[i].to].side<0&&known_unanswered_loss(&view,moves[i])==0)safe_reserve=true;
-    if(safe_reserve){int kept=0;for(int i=0;i<n;i++)if(!costly_bomb_probe(&view,p,moves[i]))moves[kept++]=moves[i];n=kept;}
+    int last_miner=threatened_last_miner(&view);
+    if(last_miner>=0){
+        int kept=0;Move rescue[MAX_MOVES];
+        for(int i=0;i<n;i++)if(saves_last_miner(&view,p,moves[i],last_miner))rescue[kept++]=moves[i];
+        if(kept){memcpy(moves,rescue,(size_t)kept*sizeof(Move));n=kept;}
+    }
+    bool safe_reserve=false,safe_officer=false;
+    for(int i=0;i<n;i++)if(view.board[moves[i].to].side<0&&known_unanswered_loss(&view,moves[i])==0){
+        safe_reserve=true;
+        if(last_officer_trade_cost(&view,moves[i])==0)safe_officer=true;
+    }
+    /* Do not initiate the known exchange when a safe retreat preserves the
+       last high officer. Moving a guard into possible equal recapture stays
+       a scored choice: such an interception may be necessary for the flag. */
+    if(safe_reserve){
+        int kept=0;
+        for(int i=0;i<n;i++)if(!costly_bomb_probe(&view,p,moves[i])&&
+            (!safe_officer||!initiates_last_officer_trade(&view,moves[i])))moves[kept++]=moves[i];
+        n=kept;
+    }
     /* Keep the terminal filters authoritative. Within equally viable moves,
        do not walk back into an avoided suspect when a quiet, materially safe
        alternative exists. This does not label that suspect as a known spy. */
