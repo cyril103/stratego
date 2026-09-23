@@ -122,11 +122,13 @@ La compilation complète après cette modification et les deux contrôles affect
 sous charge. Aucun code de décision n'a changé depuis les 37/37 contrôles.
 
 Les tournois de moteur utilisent les placements `stable` et `random` : cette
-modification de `ai_deploy` n'y est pas appelée. Leur manifeste diffère donc du
-dernier générateur, mais leur code de décision est identique à celui livré.
+modification de `ai_deploy` n'y est pas appelée. Les manifestes des premières
+séries précèdent donc le dernier générateur ; cette différence n'affecte pas
+leurs placements.
 Une série distincte `reports/campaign-evolved` teste les placements générés
-finaux : graines 29000 et 29001, camps inversés, Classique et raider, plafond
-800, budget 25 %. Elle ne remplace pas la comparaison appariée du moteur.
+finaux, avec le moteur `d9bdc59` : graines 29000 et 29001, camps inversés,
+Classique et raider, plafond 800, budget 25 %. Bilan : 6 victoires et 2 défaites.
+Elle ne remplace pas la comparaison appariée du moteur.
 
 ## Validation technique
 
@@ -171,7 +173,31 @@ exactement aux sources du moteur validé.
 Cette correction exige une nouvelle validation. La première validation native
 `reports/campaign-native-holdout` a été interrompue avant tout résultat complet :
 ses parties partielles ne comptent ni comme nulles ni comme victoires. Le candidat
-final utilise `reports/campaign-final-dev` (les mêmes 80 tâches de développement)
+intermédiaire utilise `reports/campaign-final-dev` (les mêmes 80 tâches de développement)
 et `reports/campaign-final-native` (graines nouvelles 28000 et 28001, camps
 inversés, placements figés, contre la référence, budget natif, plafond de
-1 000 demi-coups). Aucun réglage n'est effectué sur cette validation finale.
+1 000 demi-coups). Cette série native se termine à 2 victoires, 1 défaite et
+1 partie inachevée ; elle ne suffit pas à démontrer une supériorité statistique.
+
+La comparaison de développement révèle ensuite un excès de prudence de ce
+contrôle. Au demi-coup 403 de `classic_17002_stable_0.jsonl`, il écarte le trajet
+du maréchal de 68 vers 67, alors que d'autres pièces peuvent jouer sans danger.
+Un suspect à distance deux doit encore s'approcher au contact avant de pouvoir
+attaquer : le maréchal n'est pas obligé de bouger immédiatement. Attendre avec
+une autre pièce est maintenant une réponse admise si elle survit avec certitude,
+ne subit pas de perte connue sans reprise et ne livre ni une défaite immédiate
+publique ni un tir d'éclaireur sur le drapeau. Le cas initial à deux pièces
+mobiles reste protégé : le mouvement d'attente du sergent y serait perdant.
+Les deux replays sont conservés en tests, dont l'invariance aux rangs cachés.
+
+La version corrigée est réévaluée dans `reports/campaign-v4-dev`, sur les mêmes
+80 tâches, et dans `reports/campaign-v4-native`, sur deux graines encore jamais
+utilisées (31000 et 31001), deux camps, référence figée, placements `stable`,
+budget natif et plafond 1 000. Les séries précédentes restent archivées ; leurs
+résultats ne sont pas attribués au nouveau moteur. Aucun paramètre n'est réglé
+sur les résultats de cette nouvelle validation hors développement.
+
+La compilation Release complète de cette dernière correction est sans
+avertissement. Les 37 tests CTest passent (450,47 secondes sous charge), ainsi
+que les six tests Python. Les empreintes des sources des deux exécutables V4
+correspondent exactement aux sources validées, générateur compris.

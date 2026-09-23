@@ -251,9 +251,13 @@ static bool marshal_approach_trap(const Game *v,float p[100][12]){
                 if(!public_legal(&next,m,v->turn)||!certain_survival(&next,moved,m)||known_unanswered_loss(&next,m)>0)continue;
                 Game out=optimistic_move(&next,m);
                 if(marshal_contact_unsafe(&out,moved))continue;
-                /* A guard may remove the hunter or clear a safe retreat, but
-                   merely waiting elsewhere is not an escape. */
+                /* A guard may remove the hunter or clear a safe retreat. */
                 if(m.from==marshal||m.to==t||marshal_has_exit(&out,moved)){escape=true;break;}
+                /* At distance two the suspect cannot attack the marshal yet.
+                   Another safe move can hold this standoff: approaching into
+                   contact hands initiative back to the marshal. Lack of an
+                   immediate retreat alone is not a forced loss. */
+                if(!immediate_defeat(&next,m)&&scout_flag_risk(&next,moved,m)==0){escape=true;break;}
             }
             if(!escape)return true;
         }

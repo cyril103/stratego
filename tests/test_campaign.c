@@ -71,5 +71,15 @@ int main(void){
         Game next=optimistic_move(&v,m);
         CHECK(!marshal_contact_unsafe(&next,p)&&!marshal_approach_trap(&next,p));
     }
+    /* A marshal need not retreat when a safe waiting move exists elsewhere.
+       The possible spy still has to spend a turn approaching into contact. */
+    CHECK(replay_load(STRATEGO_CAMPAIGN_WAIT_FIXTURE,403,&g));
+    public_board(&g,&v,left);probabilities(&v,left,p);
+    Game standoff=optimistic_move(&v,(Move){68,67});
+    CHECK(!marshal_approach_trap(&standoff,p));
+    Move keep[]={{68,67},{85,75}};bool retained=false;
+    int kept=preserve_marshal_exit(&v,p,keep,2);
+    for(int i=0;i<kept;i++)retained|=keep[i].from==68&&keep[i].to==67;
+    CHECK(retained);
     puts("Campaign: collective exits, public marshal traps, raid risk and mission continuity OK");return 0;
 }
