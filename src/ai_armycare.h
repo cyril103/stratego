@@ -1,4 +1,38 @@
 /* Multiple victims are alternatives, not simultaneous captures. */
+/* Reserve a retreat BEFORE a nearby hunter makes contact. This covers the
+   officers not handled by the marshal's emergency filter, including pieces
+   that did not move this turn. Only traversable enemy approaches count. */
+static float officer_escape_reserve(const Game *v,float p[100][12]){
+    float risk=0;
+    for(int s=0;s<100;s++){
+        Piece own=v->board[s];
+        if(own.side!=v->turn||own.rank<MAJOR||own.rank>GENERAL)continue;
+        float hunter=0;
+        for(int e=0;e<100;e++){
+            Piece enemy=v->board[e];if(enemy.side!=1-v->turn)continue;
+            int distance=abs(e%10-s%10)+abs(e/10-s/10);
+            if(distance>2)continue;
+            bool reaches=distance==1;
+            if(distance==2){
+                int nb[4],nn=neighbors(e,nb);
+                for(int k=0;k<nn;k++)if(!is_lake(nb[k])&&v->board[nb[k]].side<0&&
+                    abs(nb[k]%10-s%10)+abs(nb[k]/10-s/10)==1)reaches=true;
+            }
+            if(!reaches)continue;
+            float stronger=0;for(int r=own.rank+1;r<=MARSHAL;r++)stronger+=p[e][r];
+            hunter=fmaxf(hunter,stronger);
+        }
+        if(hunter<.1f||officer_exits(v,p,s)>0)continue;
+        risk+=.4f*worth[own.rank]*hunter;
+    }
+    return risk;
+}
+static float retreat_reserve_bonus(const Game *v,float p[100][12],Move m,float before){
+    Piece a=v->board[m.from],d=v->board[m.to];
+    if(d.side>=0&&(!d.revealed||combat_result(a.rank,d.rank)<=0))return 0;
+    Game next=optimistic_move(v,m);
+    return before-officer_escape_reserve(&next,p);
+}
 static float army_exposure(const Game *v,int side){
     float largest=0,total=0;
     for(int s=0;s<100;s++){

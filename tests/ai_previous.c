@@ -3,7 +3,8 @@
 #include "ai_parallel.h"
 #include "ai_strategy.h"
 #include "ml.h"
-#include "ai_belief.h"
+/* Keep Classic's likelihoods independent of Improved's new public memory. */
+#include "ai_previous_belief.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -174,7 +175,7 @@ static float tactical_search(const Game *g,int depth,int side,float alpha,float 
     for(int i=0;i<n;i++)if(g->board[moves[i].to].side>=0)
         insert(captures,&count,6,moves[i],move_order(g,moves[i]));
     for(int i=0;i<count&&*budget>0;i++){
-        Game child=*g;game_apply(&child,captures[i].move);
+        Game child=*g;game_apply_search(&child,captures[i].move);
         float value=tactical_search(&child,depth-1,side,alpha,beta,budget,flag_known);
         if(maximizing){if(value>best)best=value;if(best>alpha)alpha=best;}
         else {if(value<best)best=value;if(best<beta)beta=best;}
@@ -192,7 +193,7 @@ static float search(const Game *g,int depth,int side,float alpha,float beta,int 
     for(int i=0;i<n;i++)insert(best_moves,&count,BEAM,moves[i],move_order(g,moves[i]));
     float best=g->turn==side?-1e20f:1e20f;
     for(int i=0;i<count;i++) {
-        Game child=*g;game_apply(&child,best_moves[i].move);
+        Game child=*g;game_apply_search(&child,best_moves[i].move);
         float v=search(&child,depth-1,side,alpha,beta,budget,flag_known);
         if(g->turn==side){if(v>best)best=v;if(best>alpha)alpha=best;}
         else {if(v<best)best=v;if(best<beta)beta=best;}
@@ -292,7 +293,7 @@ typedef struct {
 static void evaluate_branch(int i,void *context) {
     RootSearch *work=context;float total=0,bad=0,losses=0,values[SAMPLES];
     for(int j=0;j<SAMPLES;j++) {
-        Game child=work->worlds[j];game_apply(&child,work->moves[i].move);int budget=work->budget;
+        Game child=work->worlds[j];game_apply_search(&child,work->moves[i].move);int budget=work->budget;
         float v=search(&child,work->depth,work->side,-1e20f,1e20f,&budget,work->flag_known)-work->base[j];
         v+=work->risk[j]-ai_flag_risk(&child,work->side);
         values[j]=work->flag_known?v:fminf(200,v);total+=values[j];if(v<-1000)losses++;

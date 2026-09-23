@@ -54,6 +54,10 @@ def build(out, reference, scale):
     # tests file against current headers would silently change the opponent.
     classic = frozen / 'ai_previous.c'
     classic.write_bytes(subprocess.check_output(['git', 'show', f'{commit}:tests/ai_previous.c'], cwd=ROOT))
+    legacy_belief = f'{commit}:tests/ai_previous_belief.h'
+    if subprocess.run(['git', 'cat-file', '-e', legacy_belief], cwd=ROOT,
+                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0:
+        (frozen/'ai_previous_belief.h').write_bytes(subprocess.check_output(['git', 'show', legacy_belief], cwd=ROOT))
     run(base + ['-Dgame_apply=game_apply_search', '-Dai_basic=ai_basic_reference'] + renamed +
         ['-c', str(classic), '-o', str(classic_obj)])
     run(base + ['-Dai_deploy=ai_deploy_reference', '-Dai_deploy_template=ai_deploy_template_reference',

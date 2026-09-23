@@ -1,6 +1,17 @@
 /* Opportunistic raids use public odds, not sampled weak targets. Front-row
    immobile targets are eligible only when their actual bomb odds are low;
    moved targets are preferable because bombs cannot move. */
+static float raid_loss_budget(const Game *v,int rank){
+    int reserves=0;
+    for(int r=rank;r<=MARSHAL;r++)reserves+=army_counts[r]-v->captured[v->turn][r];
+    /* A replaceable major can take a measured chance; the last strong
+       defender must not buy the same raid at the same probability of loss. */
+    float limit=rank==MARSHAL?.06f:rank==GENERAL?.08f:rank==COLONEL?.12f:.16f;
+    if(reserves<=1)limit=fminf(limit,.06f);
+    float lead=force_advantage(v);
+    if(lead>.2f)limit*=.75f;
+    return limit;
+}
 static float officer_raid_bonus(const Game *v,float p[100][12],const RaiderPlan *defense,Move m,float flag_risk){
     Piece a=v->board[m.from],d=v->board[m.to];
     if(a.rank<MAJOR||a.rank>MARSHAL)return 0;
@@ -24,7 +35,8 @@ static float officer_raid_bonus(const Game *v,float p[100][12],const RaiderPlan 
             if(combat_result(a.rank,r)>0){win+=p[e][r];value+=p[e][r]*worth[r];}
             else loss+=p[e][r];
         }
-        if(p[e][BOMB]>.08f||loss>.12f||win<.85f||value<=0)continue;
+        float budget=raid_loss_budget(v,a.rank);
+        if(p[e][BOMB]>.08f||loss>budget||win<1-budget||value<=0)continue;
         if(e==m.to){
             if(supported_capture_cost(v,p,m)>0||counter_capture_cost(v,p,m)>0)continue;
             float margin=value-loss*worth[a.rank];

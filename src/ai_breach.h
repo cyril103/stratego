@@ -10,9 +10,10 @@ static BreachPlan breach_plan(const Game *v,float p[100][12]){
         material[s]+=count*worth[r];if(s==enemy&&count>0)strongest=r;
     }
     float best=0;
+    float focus=ai_flag_focus_threshold(v,p,1.25f);
     for(int goal=0;goal<100;goal++){
         Piece target=v->board[goal];
-        if(target.side!=enemy||target.revealed||target.moved||p[goal][FLAG]<.25f)continue;
+        if(target.side!=enemy||target.revealed||target.moved||p[goal][FLAG]<focus)continue;
         int back=enemy==COMPUTER?goal/10:9-goal/10;
         if(back>1)continue;
         int gates[4],ng=neighbors(goal,gates);bool breached=false;

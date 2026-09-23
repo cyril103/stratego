@@ -2,6 +2,20 @@
    captures or a defensive emergency can cancel it without stale state. */
 typedef struct {int miner,escort,goal;float distance[100];} AssaultPlan;
 static float assault_bonus(const Game *view,float p[100][12],const AssaultPlan *plan,Move m);
+/* Give an already progressing miner a small head start when assigning the
+   next escort. Reconstruct intent from actual moves so replay/undo/restart
+   stays deterministic. A better route or an emergency still cancels it. */
+static float assault_commitment(const Game *v,int miner,const float distance[100]){
+    int side=v->turn,count=v->history_count[side];if(count>8)count=8;
+    for(int age=0;age<count;age++){
+        int h=(v->history_count[side]-1-age)%8;
+        if(v->history_id[side][h]!=v->board[miner].id)continue;
+        Move past=v->history[side][h];
+        if(past.to!=miner||distance[past.from]>=1000||distance[miner]>=distance[past.from])return 0;
+        return 2.0f*(8-age)/8;
+    }
+    return 0;
+}
 static void assault_plan(const Game *view,float p[100][12],AssaultPlan *plan){
     plan->miner=plan->escort=plan->goal=-1;
     if(ai_flag_risk(view,view->turn)>0)return;
@@ -51,7 +65,7 @@ static void assault_plan(const Game *view,float p[100][12],AssaultPlan *plan){
         for(int m=0;m<100;m++)if(view->board[m].side==view->turn&&view->board[m].rank==MINER&&plan->distance[m]<1000){
             int join[100];intercept_distances(view,m,view->turn,officer.rank,join);
             if(join[e]>=100)continue;
-            float score=plan->distance[m]+.7f*join[e];
+            float score=plan->distance[m]+.7f*join[e]-assault_commitment(view,m,plan->distance);
             if(score<best){best=score;plan->miner=m;plan->escort=e;}
         }
     }

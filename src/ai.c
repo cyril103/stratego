@@ -136,6 +136,7 @@ static void probabilities(const Game *view,const int remaining[12],float p[100][
         for(int r=0;r<12;r++){p[s][r]=fmaxf(remaining[r],0)*prior(view,s,r);total+=p[s][r];}
         if(total>0)for(int r=0;r<12;r++)p[s][r]/=total;
     }
+    ai_balance_beliefs(view,remaining,p);
 }
 static void sample_board(const Game *view,const int remaining[12],Game *sample,uint32_t *rng) {
     *sample=*view;
@@ -254,7 +255,7 @@ static float tactical_search(const Game *g,int depth,int side,float alpha,float 
     for(int i=0;i<n;i++)if(g->board[moves[i].to].side>=0)
         insert(captures,&count,6,moves[i],move_order(g,moves[i]));
     for(int i=0;i<count&&*budget>0;i++){
-        Game child=*g;game_apply(&child,captures[i].move);
+        Game child=*g;game_apply_search(&child,captures[i].move);
         float value=tactical_search(&child,depth-1,side,alpha,beta,budget,flag_known);
         if(maximizing){if(value>best)best=value;if(best>alpha)alpha=best;}
         else {if(value<best)best=value;if(best<beta)beta=best;}
@@ -316,7 +317,7 @@ static float search(const Game *g,int depth,int side,float alpha,float beta,Sear
     float best=g->turn==side?-1e20f:1e20f;
     Move best_move=moves[0];
     for(int i=0;i<count;i++) {
-        Game child=*g;game_apply(&child,best_moves[i].move);
+        Game child=*g;game_apply_search(&child,best_moves[i].move);
         float v=search(&child,depth-1,side,alpha,beta,ctx,flag_known);
         if(ctx->aborted)return 0;
         if(g->turn==side){if(v>best){best=v;best_move=best_moves[i].move;}if(best>alpha)alpha=best;}
@@ -985,7 +986,7 @@ static void evaluate_branch(int i,void *context) {
     RootSearch *work=context;
     SearchEntry *table=calloc(TT_SIZE,sizeof(SearchEntry));
     for(int j=0;j<SAMPLES;j++) {
-        Game child=work->worlds[j];game_apply(&child,work->moves[i].move);
+        Game child=work->worlds[j];game_apply_search(&child,work->moves[i].move);
         if(table)memset(table,0,TT_SIZE*sizeof(SearchEntry));
         SearchContext ctx={.table=table,.budget=work->budget};
         float offset=work->risk[j]-ai_flag_risk(&child,work->side)-work->base[j];
@@ -1128,6 +1129,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     float public_flag_pressure=ai_flag_risk(&view,g->turn);
     float approaching=approaching_officer_risk(&view,p);
     float exposure=army_exposure(&view,view.turn);
+    float escape_reserve=officer_escape_reserve(&view,p);
     for(int r=1;r<=10;r++)route_map(&view,p,r,routes[r]);
     Candidate candidates[ROOT_WIDTH];int count=0;float strategic[MAX_MOVES];
     StrategyHint hints[MAX_STRATEGY_HINTS];int hint_count=ai_strategy_hints(g,hints);
@@ -1167,6 +1169,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         strategic[i]+=.85f*(expected_threat(&view,p,m,false)-expected_threat(&view,p,m,true));
         strategic[i]-=known_unanswered_loss(&view,m);
         strategic[i]+=collective_retreat(&view,m,exposure);
+        strategic[i]+=retreat_reserve_bonus(&view,p,m,escape_reserve);
         strategic[i]-=supported_capture_cost(&view,p,m);
         strategic[i]-=officer_trap_cost(&view,m);
         strategic[i]-=counter_capture_cost(&view,p,m);
@@ -1230,7 +1233,11 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
                before its identity is known. Only miners can exploit it. */
             int nb[4],nn=neighbors(m.to,nb);float behind=0;
             for(int k=0;k<nn;k++)behind+=p[nb[k]][FLAG];
-            strategic[i]+=12.0f*p[m.to][BOMB]*fminf(1,behind);
+            /* A short-lived opening also has value when this move removes
+               the bomb BEFORE a flag attempt. Discount the next-step chance,
+               rather than requiring the gate itself to be the hidden flag. */
+            float gate_value=urgency>80?.75f*urgency:12;
+            strategic[i]+=gate_value*p[m.to][BOMB]*fminf(1,behind);
         }
         /* Preserve the entire army: moving an unrelated scout must not erase
            a known pursuit or let the last local flag guard wander away. */

@@ -4,7 +4,7 @@ typedef struct {Move step;int guard,goal;float priority;} ContinuityPlan;
 static ContinuityPlan last_miner_plan(const Game *v,float p[100][12]){
     ContinuityPlan plan={{-1,-1},-1,-1,0};int side=v->turn,miner=-1;
     if(army_counts[MINER]-v->captured[side][MINER]!=1||v->captured[1-side][BOMB]==army_counts[BOMB])return plan;
-    float most=.35f;
+    float most=ai_flag_focus_threshold(v,p,1.5f);
     for(int s=0;s<100;s++){
         if(v->board[s].side==side&&v->board[s].rank==MINER)miner=s;
         if(!v->board[s].revealed&&p[s][FLAG]>most){most=p[s][FLAG];plan.goal=s;}
@@ -40,7 +40,14 @@ static ContinuityPlan last_miner_plan(const Game *v,float p[100][12]){
         Game next=optimistic_move(v,m);
         if(known_unanswered_loss_at(&next,side,m.to)>0)continue;
         float progress=dist[miner]-dist[m.to];
-        if(progress>best&&progress<100){best=progress;plan.step=m;plan.priority=100;}
+        if(progress>best&&progress<100){
+            best=progress;plan.step=m;plan.priority=100;
+            /* Complete an opened gate instead of abandoning the last probe
+               for a distant redeployment. The flag is still uncertain, so
+               the extra conversion value is proportional to its probability.
+               Immediate defence and tactical filters retain priority. */
+            if(m.to==plan.goal&&v->cleared_bombs[1-side][m.from])plan.priority+=160*p[m.to][FLAG];
+        }
     }
     return plan;
 }

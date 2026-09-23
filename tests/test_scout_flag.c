@@ -22,7 +22,8 @@ int main(void){
     Game g,v;int remaining[12];float p[100][12];
     CHECK(replay_load(STRATEGO_SCOUT_FLAG_FIXTURE,180,&g));
     public_board(&g,&v,remaining);probabilities(&v,remaining,p);
-    CHECK(v.board[64].rank==-2&&fabsf(p[64][SCOUT]-.3f)<.0001f);
+    CHECK(v.board[64].rank==-2&&p[64][SCOUT]>.1f&&p[64][SCOUT]<.5f);
+    CHECK(fabsf(scout_flag_risk(&v,p,(Move){45,55})-p[64][SCOUT])<.0001f);
     CHECK(scout_flag_risk(&v,p,(Move){45,55})>.29f);
     CHECK(scout_flag_risk(&v,p,(Move){25,24})==0);
     CHECK(scout_flag_risk(&v,p,(Move){45,44})==0);
