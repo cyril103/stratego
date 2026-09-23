@@ -27,8 +27,12 @@ du capitaine connu en 21 ; le lieutenant ne sonde plus la bombe en 80.
 Au coup 424, le sergent se retire de 69 vers 59 au lieu de sonder 79.
 
 Le candidat local `build/stratego-campaign.exe` est mis à jour après cette
-validation, via le même lanceur `Tester-IA-campagne.cmd`. Le lancement habituel
-`Jouer.cmd` conserve la version précédente. Les nouvelles parties du candidat
+validation, via le même lanceur `Tester-IA-campagne.cmd`. À la demande du joueur,
+la version corrigée `2bc16bf` remplace ensuite l'ancienne dans `build/stratego.exe` :
+`Jouer.cmd` lance désormais la même version validée. L'ancienne reste sauvegardée
+dans `reports/stratego-before-campaign-09936c8.exe`. L'empreinte SHA-256 des deux
+exécutables installés est `ACDD6BF92E5F1BAAF894B5E548BCE71D693B6D7FBE4DCB7A1A862943889B2322`.
+Les nouvelles parties
 portent l'identifiant `ExpertPlusImprovedConversionV1` pour distinguer les
 replays des anciennes parties `ExpertPlusImprovedCampaignV1`.
 Les scores de la campagne précédente ne sont pas des mesures de cette correction.

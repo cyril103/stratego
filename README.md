@@ -39,16 +39,18 @@ Le présentoir **Pièces sorties**, à droite du plateau, regroupe les pertes da
 
 ### Campagne IA
 
-Le candidat avec la correction de gestion de l'avantage est disponible localement
-avec `Tester-IA-campagne.cmd` (`build/stratego-campaign.exe`). Sur ce poste,
-`Jouer.cmd` conserve l'exécutable précédent `09936c8` : les tests tactiques
-passent, mais aucun gain global n'est encore établi. La campagne antérieure
+La version corrigée `2bc16bf` est validée par les 38 tests CTest et installée
+comme version habituelle à la demande du joueur : `Jouer.cmd` lance désormais
+la correction de gestion de l'avantage. `Tester-IA-campagne.cmd` lance la même
+version. La sauvegarde locale de `09936c8` reste dans
+`reports/stratego-before-campaign-09936c8.exe`.
+Cette validation technique n'établit pas un gain global de force. La campagne antérieure
 du candidat `994ff5a` avait donné 1 victoire, 2 défaites et 1 partie inachevée
 au budget natif ; ces chiffres ne mesurent pas les corrections suivantes.
 Les résultats et les limites sont détaillés dans
 [le bilan de campagne](tests/AI_CAMPAIGN_20260923.md).
 Les exécutables ne sont pas versionnés ; compiler les sources actuelles
-reconstruit le candidat, pas l'ancienne référence.
+reconstruit cette nouvelle version, pas l'ancienne référence.
 La [correction des sondages de bombes et de la conversion de l'avantage](tests/BREACH_CONVERSION.md)
 utilise les deux dernières défaites humaines en 474 et 505 demi-coups.
 
