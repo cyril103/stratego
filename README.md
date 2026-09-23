@@ -8,6 +8,9 @@ L'interface impériale associe des titres Cinzel à la police Barlow pour les co
 
 Lancer `build/stratego.exe`, ou double-cliquer `Jouer.cmd` après compilation. Les assets sont copiés à côté de l'exécutable. OpenGL 3.3 est nécessaire. Aucun serveur ni compte.
 
+**Linux Mint 22.x (Intel/AMD 64 bits)** : un installateur `.deb` et un lanceur
+dans le menu Jeux sont disponibles. Voir [l'installation et la reconstruction du paquet](docs/LINUX_MINT.md).
+
 Le jeu démarre en plein écran réel, à la résolution native du moniteur. Sur les écrans larges (16:10, 16:9 et ultralarges), l'interface adapte sa largeur : le plateau dispose de plus d'espace, le panneau reste ancré à droite et le fond remplit l'écran sans déformation ni bandes noires. `F11` bascule entre plein écran et fenêtre. Le bouton **Quitter**, en bas à droite, ferme le jeu depuis tous les écrans, y compris l'aide et les dialogues.
 
 1. Choisir Découverte ou Expert + (sélectionné par défaut), puis « Préparer mon armée ».
@@ -78,7 +81,7 @@ ctest --test-dir build --output-on-failure
 
 Avec Visual Studio, omettre le générateur MinGW, puis utiliser `cmake --build build --config Release` et `ctest --test-dir build -C Release`. L'exécutable se trouve alors dans `build/Release`.
 
-Linux : installer les dépendances de développement X11 / OpenGL nécessaires à raylib, puis `cmake -S . -B build && cmake --build build -j`. macOS : utiliser CMake avec les outils de compilation Xcode. Ces deux plateformes n'ont pas été validées sur cette machine.
+Linux Mint 22.x : suivre [la procédure du paquet Debian](docs/LINUX_MINT.md), compilé et testé dans un environnement Ubuntu 24.04. macOS : utiliser CMake avec les outils de compilation Xcode ; cette plateforme n'a pas été validée sur cette machine.
 
 Tests sans dépendance graphique :
 

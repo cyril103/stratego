@@ -12,6 +12,7 @@ saves/
 /battle.png
 /closeup.png
 /immobile_result.png
+/dist/
 *.pid
 __pycache__/
 .env

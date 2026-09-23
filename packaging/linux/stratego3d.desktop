@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Stratego 3D
+Comment=Jeu de stratégie contre l'ordinateur
+Exec=/usr/games/stratego3d
+Icon=stratego3d
+Terminal=false
+Categories=Game;BoardGame;
+Keywords=Stratego;strategy;board;
+StartupNotify=false

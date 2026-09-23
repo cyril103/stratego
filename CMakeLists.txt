@@ -239,6 +239,9 @@ if(NOT STRATEGO_TESTS_ONLY)
     target_compile_options(stratego PRIVATE -Wall -Wextra -Wpedantic)
   endif()
   add_custom_command(TARGET stratego POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/assets" "$<TARGET_FILE_DIR:stratego>/assets")
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    include(cmake/LinuxPackage.cmake)
+  endif()
 endif()
 
 
