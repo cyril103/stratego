@@ -973,6 +973,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_spyteam.h"
 #include "ai_endgamecare.h"
 #include "ai_officer_raid.h"
+#include "ai_flankdefense.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -1036,6 +1037,8 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         least_risk=fminf(least_risk,terminal_risk[i]);
     }
     {int kept=0;for(int i=0;i<n;i++)if(terminal_risk[i]<=least_risk+.00001f)moves[kept++]=moves[i];n=kept;}
+    n=rescue_exposed_marshal(&view,p,moves,n);
+    n=preserve_marshal_exit(&view,p,moves,n);
     if(active_spy_threat(&view)){
         int kept=0;Move rescue[MAX_MOVES];
         for(int i=0;i<n;i++)if(saves_active_spy(&view,p,moves[i])||
@@ -1105,6 +1108,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     InterceptPlan intercept;intercept_plan(&view,p,&intercept);
     GuardRelief relief=guard_relief_plan(&view,&intercept);
     RaiderPlan raiders;raider_plan(&view,&raiders);
+    FlankDefense flank=flank_defense_plan(&view,p);
     AssaultPlan assault;assault_plan(&view,p,&assault);
     BreachPlan breach=breach_plan(&view,p);
     ContinuityPlan miner_mission=last_miner_plan(&view,p);
@@ -1140,6 +1144,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     for(int i=0;i<n;i++){
         Piece a=view.board[moves[i].from],d=view.board[moves[i].to];float bomb=p[moves[i].to][BOMB];
         bool known_loss=d.side>=0&&d.revealed&&combat_result(a.rank,d.rank)<0;
+        if(known_loss&&a.rank==SPY&&flank_defense_bonus(&view,p,&flank,moves[i])>0)known_loss=false;
         bool general_probe=a.rank==GENERAL&&a.revealed&&d.side>=0&&!d.revealed&&remaining[MARSHAL]>0;
         reckless[i]=known_loss||general_probe||(d.side>=0&&a.rank!=MINER&&
             (bomb>.999f||(a.rank>=CAPTAIN&&a.rank>cheapest&&bomb>(a.rank>=GENERAL?.04f:.16f))));
@@ -1240,6 +1245,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
            hypothetical retreat square that the enemy never approached. */
         strategic[i]+=contact_safety_bonus(&view,p,m,approaching);
         strategic[i]+=raider_bonus(&view,&raiders,m);
+        strategic[i]+=flank_defense_bonus(&view,p,&flank,m);
         strategic[i]+=reserve_home_bonus(&view,p,m);
         strategic[i]+=guard_relief_bonus(&relief,m);
         strategic[i]-=stale_pursuit_cost(&view,m,public_flag_pressure);

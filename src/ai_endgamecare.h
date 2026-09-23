@@ -195,6 +195,64 @@ static int urgent_flag_exchanges(const Game *v,float p[100][12],Move moves[MAX_M
     int kept=0;for(int i=0;i<n;i++)if(exchange[i]&&risk[i]<=best+.00001f)moves[kept++]=moves[i];
     return kept?kept:n;
 }
+/* An already exposed marshal needs an answer even when another piece moves.
+   A moved, unidentified neighbour is a possible spy, never a known spy. */
+static bool marshal_contact_unsafe(const Game *v,float p[100][12]){
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==MARSHAL&&v->board[s].revealed){
+        int nb[4],nn=neighbors(s,nb);
+        for(int i=0;i<nn;i++){
+            int e=nb[i];Piece enemy=v->board[e];
+            if(enemy.side==1-v->turn&&p[e][SPY]>0)return true;
+        }
+    }
+    return false;
+}
+static bool marshal_needs_exit(const Game *v,float p[100][12]){
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==MARSHAL&&v->board[s].revealed)
+        for(int e=0;e<100;e++)if(v->board[e].side==1-v->turn&&v->board[e].moved&&p[e][SPY]>0&&
+            abs(e%10-s%10)+abs(e/10-s/10)<=2)return true;
+    return false;
+}
+static bool marshal_has_exit(const Game *v,float p[100][12]){
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==MARSHAL){
+        int nb[4],nn=neighbors(s,nb);
+        for(int i=0;i<nn;i++){
+            Move retreat={s,nb[i]};
+            if(v->board[retreat.to].side>=0||!public_legal(v,retreat,v->turn))continue;
+            Game next=optimistic_move(v,retreat);
+            if(!marshal_contact_unsafe(&next,p)&&known_unanswered_loss(v,retreat)==0)return true;
+        }
+    }
+    return false;
+}
+static int preserve_marshal_exit(const Game *v,float p[100][12],Move *moves,int n){
+    if(marshal_contact_unsafe(v,p)||!marshal_needs_exit(v,p)||!marshal_has_exit(v,p))return n;
+    Move safe[MAX_MOVES];int kept=0;
+    for(int i=0;i<n;i++){
+        Game next=optimistic_move(v,moves[i]);
+        bool blocks=v->board[moves[i].from].rank!=MARSHAL&&v->board[moves[i].to].side<0&&
+            marshal_needs_exit(&next,p)&&!marshal_has_exit(&next,p);
+        if(!blocks)safe[kept++]=moves[i];
+    }
+    if(kept){memcpy(moves,safe,(size_t)kept*sizeof(Move));return kept;}
+    return n;
+}
+static int rescue_exposed_marshal(const Game *v,float p[100][12],Move *moves,int n){
+    if(!marshal_contact_unsafe(v,p))return n;
+    Move safe[MAX_MOVES];int kept=0;
+    for(int i=0;i<n;i++){
+        Move m=moves[i];
+        float failure=0;
+        if(v->board[m.to].side==1-v->turn)for(int r=FLAG;r<=BOMB;r++)
+            if(combat_result(v->board[m.from].rank,r)<=0)failure+=p[m.to][r];
+        if(failure>.1f||known_unanswered_loss(v,m)>0||last_officer_trade_cost(v,m)>0)continue;
+        Game next=optimistic_move(v,m);
+        if(marshal_contact_unsafe(&next,p))continue;
+        safe[kept++]=m;
+    }
+    if(kept){memcpy(moves,safe,(size_t)kept*sizeof(Move));return kept;}
+    return n;
+}
 /* A sole guard must finish a reachable interception instead of resuming a
    speculative flag hunt while an identified miner crosses our back ranks. */
 static int sole_guard_miner_route(const Game *v,int dist[100]){
