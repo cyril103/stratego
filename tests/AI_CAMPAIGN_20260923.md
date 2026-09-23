@@ -63,3 +63,77 @@ Validation de l'infrastructure : quatre tests Python ; candidat et référence
 identiques sur les 40 demi-coups du test de parité (deux camps, graine 16000).
 Le premier dépistage utilise 80 parties à 25 % du budget, 800 demi-coups maximum,
 contre les quatre adversaires distincts de la référence elle-même.
+
+## Candidat en validation
+
+- Mémoire par identité des approches et retraites face à des rangs révélés.
+  Les vraisemblances restent faibles, non nulles et s'estompent sur 120 demi-coups.
+  Une attaque évitée est enregistrée sans en déduire un rang : une autre urgence
+  peut expliquer ce choix. La relecture reconstruit la mémoire ; les simulations
+  n'y ajoutent pas d'observations imaginaires.
+- Ajustement itératif des probabilités aux effectifs publics restants. Chaque
+  case conserve une distribution normalisée ; les effectifs attendus de drapeaux,
+  bombes et rangs mobiles correspondent à l'inventaire. Cette approximation
+  marginale n'est pas un posterior bayésien exact, et les mondes échantillonnés
+  conservent leur méthode d'affectation sans remise.
+- Coût de fermeture de la dernière retraite d'un commandant, colonel ou général
+  face à une approche plausible et traversable. Il complète les secours déjà
+  prioritaires du maréchal, de l'espion et des derniers démineurs.
+- Budget de risque des raids selon le rang, les remplaçants et l'avance matérielle.
+  Préférence modérée pour un démineur ayant réellement progressé vers l'objectif,
+  afin de stabiliser le couple démineur/escorte. Les urgences restent prioritaires.
+- Mutations déterministes de placements, avec conservation de l'armée, des
+  couloirs, de la proximité espion/maréchal et des sorties des pièces mobiles.
+  Les six anciens modèles restent accessibles séparément pour les comparaisons.
+- Audit automatique des replays : bombe connue attaquée sans démineur, espion
+  perdu avec maréchal adverse vivant, circonstances des pertes de maréchaux,
+  drapeau pris par éclaireur, première révélation des deux officiers supérieurs.
+  Un événement est un signal à examiner, pas une preuve automatique d'erreur.
+
+Les adversaires de la ligue sont compilés avec leurs propres anciens fichiers
+de croyances, de stratégie et de politique : une modification du candidat ne
+doit pas changer silencieusement l'adversaire.
+
+La première intégration a été rejetée par les régressions avant de finir son
+tournoi. L'inventaire cohérent abaissait les probabilités du drapeau, ce qui
+désactivait deux missions utilisant des seuils absolus anciens et sous-estimait
+une ouverture urgente de bombe. Les objectifs sont maintenant sélectionnés
+selon leur concentration relative ; ouvrir une porte sous la poursuite d'un
+officier et terminer la tentative derrière une porte déjà ouverte ont une valeur
+explicite. Un test d'éclaireur exigeait exactement l'ancienne probabilité de 0,3 :
+il vérifie maintenant la cohérence entre la probabilité estimée et le risque de
+capture, tout en conservant ses scénarios de défense et de permutation cachée.
+
+Le générateur final mélange également la première ligne, garde au moins trois
+éclaireurs pour les sondages et conserve l'espion et les officiers supérieurs
+en retrait. Chaque mutation admise conserve une fausse poche à drapeau (pièce
+mobile voisine d'au moins deux bombes). Le lancement du jeu appelle ce générateur,
+au lieu de tirer uniquement parmi les six anciens modèles.
+
+## Validation technique
+
+- Moteur : `4376e01` ; placements et raccordement au jeu : `a03306a`.
+- Compilation Release complète sans avertissement ; 37/37 tests CTest réussis
+  (313,36 secondes, sous charge de tournoi). Ces temps ne constituent pas une
+  mesure comparative de la latence du moteur.
+- Cinq tests Python de protocole, censure, appariement et audit réussis.
+- Le test supplémentaire d'ouverture gardée, ajouté à `campaign_army_and_missions`,
+  passe sur trois graines : le dernier démineur n'est pas livré au général qui
+  protège la bombe devant un drapeau connu.
+- 2 800 placements contrôlés, dont 400 générés dans les deux camps. Sur les
+  200 graines du camp ordinateur : 200 topologies bombes/drapeau distinctes,
+  19 positions de drapeau observées. Ce décompte mesure la diversité, pas la force.
+- Le code source du binaire de ligue au budget natif correspond aux fichiers
+  `src/` de la version validée (vérification des SHA-256 du manifeste).
+- Les replays de la référence reconstruite restent identiques au contrôle
+  initial pendant les 40 demi-coups de la graine de parité 16000.
+
+## Mesures de force en cours
+
+Le candidat corrigé utilise `reports/campaign-v2-dev`, comparé aux mêmes
+80 tâches de `reports/campaign-baseline-dev`. La validation hors développement
+utilise `reports/campaign-native-holdout` : deux graines (27000 et 27001), les
+deux camps, placements figés, contre référence et Classique, budget natif,
+plafond de 1 000 demi-coups. Aucun réglage n'est effectué sur ces huit parties.
+Les parties ne sont pas encore toutes terminées ; aucune conclusion de force
+ni supériorité humaine n'est déduite de résultats partiels.
