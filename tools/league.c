@@ -22,11 +22,12 @@ static double now_seconds(void){
 Move ai_reference(const Game *,int,uint32_t *);
 Move ai_previous(const Game *,int,uint32_t *);
 void ai_deploy_reference(Game *,int);
+int ai_policy_reference(const Game *,Move[MAX_MOVES],float[MAX_MOVES],float[MAX_MOVES][ML_FEATURES]);
 static Move opponent(const Game *g,const char *name,uint32_t *rng){
     if(!strcmp(name,"reference"))return ai_reference(g,1,rng);
     if(!strcmp(name,"classic"))return ai_previous(g,1,rng);
     Move moves[MAX_MOVES];float scores[MAX_MOVES],features[MAX_MOVES][ML_FEATURES];
-    int n=ai_policy_candidates(g,moves,scores,features),best=-1;float value=-1e30f;
+    int n=ai_policy_reference(g,moves,scores,features),best=-1;float value=-1e30f;
     for(int i=0;i<n;i++){
         float *f=features[i],score=scores[i];Piece a=g->board[moves[i].from],d=g->board[moves[i].to];
         if(!strcmp(name,"raider"))score+=2*f[0]+(a.rank>=MAJOR?5*f[2]:0)-2*f[3]+1.5f*f[6];

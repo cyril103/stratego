@@ -37,8 +37,25 @@ def build(out, reference, scale):
             (frozen / path.name).write_text(data, encoding='utf-8')
     reference_obj = out / 'reference.o'
     deploy_obj = out / 'reference_deploy.o'
+    policy_obj = out / 'reference_policy.o'
+    strategy_obj = out / 'reference_strategy.o'
+    classic_obj = out / 'classic.o'
     base = ['gcc', '-O2', '-std=c99', '-Isrc', '-Wall', '-Wextra', '-Wpedantic']
-    run(base + ['-Dai_choose=ai_reference', '-c', str(frozen / 'ai.c'), '-o', str(reference_obj)])
+    strategy_names = ['ai_accept_draw', 'ai_offer_draw', 'ai_preservation_risk', 'ai_strategy_hints',
+                      'ai_coordination_bonus', 'ai_flag_risk']
+    renamed = [f'-D{name}={name}_reference' for name in strategy_names]
+    run(base + ['-Dai_choose=ai_reference', '-Dgame_apply=game_apply_search',
+                '-Dai_basic=ai_basic_reference'] + renamed +
+        ['-c', str(frozen / 'ai.c'), '-o', str(reference_obj)])
+    run(base + ['-Dai_policy_candidates=ai_policy_reference', '-Dai_basic=ai_basic_reference',
+                '-c', str(frozen / 'ai_basic.c'), '-o', str(policy_obj)])
+    run(base + renamed + ['-c', str(frozen / 'ai_strategy.c'), '-o', str(strategy_obj)])
+    # Classic includes belief/strategy headers too: compiling the original
+    # tests file against current headers would silently change the opponent.
+    classic = frozen / 'ai_previous.c'
+    classic.write_bytes(subprocess.check_output(['git', 'show', f'{commit}:tests/ai_previous.c'], cwd=ROOT))
+    run(base + ['-Dgame_apply=game_apply_search', '-Dai_basic=ai_basic_reference'] + renamed +
+        ['-c', str(classic), '-o', str(classic_obj)])
     run(base + ['-Dai_deploy=ai_deploy_reference', '-Dai_deploy_template=ai_deploy_template_reference',
                 '-c', str(frozen / 'ai_deploy.c'), '-o', str(deploy_obj)])
     # Instrument a private copy, never the installed engine. Search scale 100
@@ -52,7 +69,7 @@ def build(out, reference, scale):
     source = out / 'candidate.c'
     source.write_text(candidate, encoding='utf-8')
     binary = out / 'league.exe'
-    run(base + ['tools/league.c', str(source), str(reference_obj), str(deploy_obj), 'tests/ai_previous.c',
+    run(base + ['tools/league.c', str(source), str(reference_obj), str(deploy_obj), str(policy_obj), str(strategy_obj), str(classic_obj),
                 'src/game.c', 'src/ai_deploy.c', 'src/ai_basic.c', 'src/ml.c', 'src/ai_parallel.c',
                 'src/ai_strategy.c', '-o', str(binary), '-lm'])
     hashes = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()

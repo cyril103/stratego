@@ -1,6 +1,8 @@
 import importlib.util
 from pathlib import Path
 import unittest
+import tempfile
+import json
 
 spec=importlib.util.spec_from_file_location('league',Path(__file__).resolve().parents[1]/'tools/league.py')
 league=importlib.util.module_from_spec(spec)
@@ -8,6 +10,9 @@ spec.loader.exec_module(league)
 spec=importlib.util.spec_from_file_location('compare_league',Path(__file__).resolve().parents[1]/'tools/compare_league.py')
 comparison=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(comparison)
+spec=importlib.util.spec_from_file_location('audit_league',Path(__file__).resolve().parents[1]/'tools/audit_league.py')
+audit=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(audit)
 
 
 class LeagueTests(unittest.TestCase):
@@ -42,6 +47,18 @@ class LeagueTests(unittest.TestCase):
         new['matches'][0]['initial_sha256']='changed'
         with self.assertRaises(ValueError):
             comparison.compare(old,new)
+
+    def test_audit_distinguishes_unknown_bomb_from_repeated_error(self):
+        board=[[-1,-1,-1] for _ in range(100)]
+        board[60]=[0,4,0];board[61]=[1,11,40];board[71]=[0,6,1]
+        rows=[dict(board=board),dict(ply=1,side=0,**{'from':60},to=61,combat=-1),
+              dict(ply=3,side=0,**{'from':71},to=61,combat=-1)]
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'replay.jsonl'
+            path.write_text('\n'.join(json.dumps(r) for r in rows))
+            report=audit.audit_replay(path,0)
+        self.assertEqual(report['counts'],{'non_miner_attacks_known_bomb':1})
+        self.assertEqual(report['events'][0]['ply'],3)
 
 
 if __name__=='__main__':
