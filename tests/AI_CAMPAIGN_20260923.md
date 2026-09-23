@@ -5,6 +5,52 @@ la force de jeu face à plusieurs styles, sans exploiter les rangs cachés.
 Les résultats contre des programmes ne démontrent pas une supériorité sur
 la majorité des humains : cette conclusion nécessiterait des parties humaines.
 
+## Bilan et décision de livraison
+
+La campagne est terminée : **336 parties jouées ou arrêtées au plafond**, sur
+les différentes versions et protocoles. Les [mesures archivées](benchmarks/campaign_20260923/README.md)
+conservent les résultats individuels, les empreintes des sources et binaires,
+les placements initiaux, les comparaisons appariées et les audits.
+
+| Série | Victoires | Défaites | Inachevées |
+|---|---:|---:|---:|
+| Référence, développement à 25 % | 68 | 5 | 7 |
+| Candidat final, mêmes 80 parties | 68 | 6 | 6 |
+| Candidat final contre la référence, budget natif | 1 | 2 | 1 |
+
+Le gain global n'est **pas démontré**. Sur les 69 parties terminées dans les deux
+versions, deux défaites deviennent des victoires et deux victoires deviennent
+des défaites : l'écart moyen de score est nul. Cette sélection exclut les parties
+inachevées. En tenant compte de toutes les censures, l'écart de score reste
+compris entre −8,75 et +7,5 points de pourcentage. Ces bornes ne sont pas un
+intervalle de confiance. Le petit échantillon natif ne permet pas davantage
+de conclure à une supériorité.
+
+L'audit des mêmes 80 parties relève 31 pertes de maréchal contre 34, et
+7 pertes d'espion avec le maréchal ennemi encore vivant contre 11. Ces événements
+incluent des échanges et sacrifices favorables ; ce ne sont pas des nombres
+automatiques de fautes. Les parties avec au moins 200 demi-coups consécutifs
+sans combat passent de 8 à 4. Aucun des deux moteurs n'attaque une bombe connue
+sans démineur et aucun ne perd son drapeau contre un éclaireur dans cette série.
+
+Les 37 tests CTest et les 6 tests Python passent. Cela valide les situations
+testées, sans établir la force générale du moteur. Le candidat est donc livré
+**séparément pour essais**, sans promotion automatique au lancement habituel :
+
+- `Tester-IA-campagne.cmd` lance le candidat local `build/stratego-campaign.exe`,
+  issu de `994ff5a`, SHA-256
+  `08682BB8230FF0E3E31A191455AC5752FD62E94E0DC9E69DC73BF5F45B58F180`.
+- `Jouer.cmd` conserve sur ce poste la référence `09936c8`, SHA-256
+  `DAD8EEEEC98F57428504C2C5BD5DDB4287BB4AF8D19145D5C526F0FDF95D758C`.
+- Les sources versionnées sont celles du candidat ; une nouvelle compilation
+  dans `build/` remplace volontairement la version habituelle. Le README
+  décrit la compilation séparée. Aucun exécutable n'est ajouté à Git.
+
+Les prochaines pistes motivées par ces résultats sont la conservation du
+dernier allié mobile en défense et la conversion des finales qui stagnent.
+Le replay de la défaite en 503 demi-coups est archivé comme limite non résolue.
+La validation native finale n'a servi à aucun nouveau réglage.
+
 ## Protocole
 
 - Ligue contre la référence figée, Expert+ Classique et trois politiques
@@ -59,12 +105,12 @@ python tools/league.py --build build-campaign --output reports/campaign-native -
 python -m unittest discover -s tests -p "test_league.py"
 ```
 
-Validation de l'infrastructure : quatre tests Python ; candidat et référence
+Validation de l'infrastructure : six tests Python ; candidat et référence
 identiques sur les 40 demi-coups du test de parité (deux camps, graine 16000).
 Le premier dépistage utilise 80 parties à 25 % du budget, 800 demi-coups maximum,
 contre les quatre adversaires distincts de la référence elle-même.
 
-## Candidat en validation
+## Changements du moteur final `994ff5a`
 
 - Mémoire par identité des approches et retraites face à des rangs révélés.
   Les vraisemblances restent faibles, non nulles et s'estompent sur 120 demi-coups.
@@ -117,9 +163,6 @@ avec les mêmes contraintes de sorties, éclaireurs, défense et leurre. Sur les
 200 graines ordinateur du test, 32 placements n'en ont aucune en première ligne,
 89 en ont une et 79 en ont deux. Ce contrôle porte sur la diversité, sans
 prétendre établir que chaque placement est stratégiquement optimal.
-La compilation complète après cette modification et les deux contrôles affectés
-(`rules_and_ai`, `varied_formations`) passent également : 2/2, 323,54 secondes
-sous charge. Aucun code de décision n'a changé depuis les 37/37 contrôles.
 
 Les tournois de moteur utilisent les placements `stable` et `random` : cette
 modification de `ai_deploy` n'y est pas appelée. Les manifestes des premières
@@ -132,9 +175,9 @@ Elle ne remplace pas la comparaison appariée du moteur.
 
 ## Validation technique
 
-- Moteur : `4376e01` ; placements et raccordement au jeu : `a03306a`.
+- Version finale : `994ff5a` ; générateur de placements : `1673de0`.
 - Compilation Release complète sans avertissement ; 37/37 tests CTest réussis
-  (313,36 secondes, sous charge de tournoi). Ces temps ne constituent pas une
+  (450,47 secondes, sous charge de tournoi). Ces temps ne constituent pas une
   mesure comparative de la latence du moteur.
 - Six tests Python de protocole, censure, appariement et audit réussis.
 - Le test supplémentaire d'ouverture gardée, ajouté à `campaign_army_and_missions`,
@@ -148,7 +191,7 @@ Elle ne remplace pas la comparaison appariée du moteur.
 - Les replays de la référence reconstruite restent identiques au contrôle
   initial pendant les 40 demi-coups de la graine de parité 16000.
 
-## Mesures de force en cours
+## Itérations du moteur
 
 Le premier candidat corrigé utilise `reports/campaign-v2-dev`, comparé aux mêmes
 80 tâches de `reports/campaign-baseline-dev`. Son audit de développement a
@@ -201,3 +244,31 @@ La compilation Release complète de cette dernière correction est sans
 avertissement. Les 37 tests CTest passent (450,47 secondes sous charge), ainsi
 que les six tests Python. Les empreintes des sources des deux exécutables V4
 correspondent exactement aux sources validées, générateur compris.
+
+## Limites observées sur le candidat final
+
+La validation native finale se termine à **1 victoire, 2 défaites et 1 partie
+inachevée** contre `09936c8`. Sur quatre parties, ce résultat ne démontre pas
+un gain de force. L'audit n'y trouve ni attaque de bombe connue sans démineur,
+ni espion perdu avec le maréchal adverse vivant, ni drapeau pris par éclaireur.
+Les deux pertes de maréchaux sont des échanges entre maréchaux : l'un est connu,
+l'autre encore inconnu avant le combat. Deux parties comportent néanmoins plus
+de 200 demi-coups consécutifs sans combat, dont la partie plafonnée à 1 000.
+
+Le développement conserve une faiblesse plus précise dans
+`classic_17004_stable_1.jsonl` : le moteur final perd au demi-coup 503, malgré
+la réussite du test sur la position historique du demi-coup 468. Dans la
+nouvelle suite, le sergent capture le démineur en 11 au demi-coup 498, puis
+le commandant adverse le reprend. Le maréchal, dernière pièce mobile, se
+retrouve en 3 ; l'espion inconnu en 14 couvre ses deux sorties, 4 et 13.
+Le correctif du piège immédiat ne garantit donc pas la conservation durable
+d'une pièce permettant d'attendre, notamment quand la défense du drapeau
+absorbe le dernier allié. Ce cas reste une limite, pas une erreur déclarée
+résolue par le seul passage des tests.
+
+À l'inverse, les trois parties `classic_17002_stable_0`,
+`classic_17002_stable_1` et `classic_17002_random_0`, dégradées par le garde
+strict (deux défaites et une partie inachevée), sont gagnées par le moteur
+final. La seconde était l'unique drapeau perdu contre un éclaireur dans
+la série complète du garde strict. Contre Classique, le bilan final est
+12/4/4 (victoires/défaites/inachevées), contre 10/4/6 pour la référence.

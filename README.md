@@ -37,6 +37,31 @@ Le présentoir **Pièces sorties**, à droite du plateau, regroupe les pertes da
 
 ## Compiler
 
+### Campagne IA
+
+Le candidat `994ff5a` est disponible localement avec
+`Tester-IA-campagne.cmd` (`build/stratego-campaign.exe`). Sur ce poste,
+`Jouer.cmd` conserve l'exécutable précédent `09936c8` : les tests tactiques
+passent, mais la validation contre cette référence ne démontre pas de gain
+global (1 victoire, 2 défaites, 1 partie inachevée au budget natif).
+Les résultats et les limites sont détaillés dans
+[le bilan de campagne](tests/AI_CAMPAIGN_20260923.md).
+Les exécutables ne sont pas versionnés ; compiler les sources actuelles
+reconstruit le candidat, pas l'ancienne référence.
+
+Pour reconstruire un candidat séparément du lancement habituel avec MinGW :
+
+```powershell
+cmake -S . -B build-campaign-ui -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+cmake --build build-campaign-ui -j 6
+ctest --test-dir build-campaign-ui --output-on-failure
+New-Item -ItemType Directory -Force build
+Copy-Item build-campaign-ui/stratego.exe build/stratego-campaign.exe
+.\Tester-IA-campagne.cmd
+```
+
+### Compilation habituelle
+
 CMake 3.20+, un compilateur C et Git sont nécessaires. Au premier lancement de CMake, raylib est récupéré automatiquement si `vendor/raylib` n'existe pas. Sa révision est figée. Les assets exportés sont inclus : Blender n'est pas nécessaire pour jouer ou compiler.
 
 ```powershell

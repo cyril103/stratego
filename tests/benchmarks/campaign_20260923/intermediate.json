@@ -1,0 +1,1756 @@
+{
+  "protocol": {
+    "pairs": 5,
+    "seed": 17000,
+    "plies": 800,
+    "opponents": [
+      "classic",
+      "raider",
+      "miner",
+      "cautious"
+    ],
+    "formations": [
+      "stable",
+      "random"
+    ],
+    "baseline": false,
+    "games": 80,
+    "build": {
+      "reference": "09936c8d66093514d76a9bb2871f22f7666ad3ac",
+      "scale": 25,
+      "compiler": "gcc (MinGW-W64 x86_64-msvcrt-posix-seh, built by Brecht Sanders) 12.2.0",
+      "binary_sha256": "fc726929670420265d501b5d632b2446b979126e29fab5b2c6316fa9b4fc21bd",
+      "source_hashes": {
+        "src\\ai.c": "61698faf28e9356bf73e38a662d4511289e6f998baa66de95f3118b197d785c2",
+        "src\\ai_armycare.h": "044c02e99cbd686d0ceb597a7a628c2f8e21747a16ae03e23477cfcce0ad8e9a",
+        "src\\ai_assault.h": "478617f8db00904813a451c3381afdc5de76c598efdfb3c7c79ad43f4747af86",
+        "src\\ai_basic.c": "4c5a31b249a0872853632772381e3f44dc70c9e727471424a876fe78648d288d",
+        "src\\ai_belief.h": "a033557a690e1fb4f1c607e5888b54c4d5d7049d5de37f8f47595845305611a4",
+        "src\\ai_breach.h": "5634adf96a5a519403513b42be1af2938421555e8ceda3445a8b349835816b04",
+        "src\\ai_continuity.h": "eae637670762f8d566e9fd1492d672f55160592a2e1431b41b24f3dae0d1e6be",
+        "src\\ai_deploy.c": "95c3f54b886b23d1a7f4a64ca41a04944f2041f3962bdf8cc9861021b7efbf5d",
+        "src\\ai_endgamecare.h": "fb005adcd7a7b5d8f71f484b0ef2175bdef1764f79196978348819d7b8c8c7e3",
+        "src\\ai_flagrace.h": "072e7b5d6f409d22be318d9defc7e2ab474b7b670a6380ab0341a5f6b1fa004a",
+        "src\\ai_flankdefense.h": "73ddf2d9b429ad214d5f13b49eb99d407cfe5a3e8b436ceac0051ef3d37d9c80",
+        "src\\ai_force.h": "42ef924ec3fb95b747de7dbbe8819a8a730bf1983bb7e7630e2839f071b822fe",
+        "src\\ai_guardrelief.h": "76c7418398fa0b4443e474fa8f94c60c591339caf800cc2489e165bb3b72f779",
+        "src\\ai_guardtempo.h": "a8dbd6faf036a4f864f098dfb35f4cf06dc9bf34d8d849498c30f09b1f45ff1f",
+        "src\\ai_intercept.h": "26f84cfc7cc22e9bd5e55bb7482b121592f257bcdedf904c1509a1e4a9865c31",
+        "src\\ai_marshalguard.h": "f028800077e5a614c7ec8163332878b10acc129a5ae320d295eb3a68920cd2ab",
+        "src\\ai_models.c": "3b1d2474963f0365aaba932f4ee8a6bf895ef9b418f1542055f4cf44aa37cd52",
+        "src\\ai_models.h": "53a14cdc99f20381ebb270fe4dc1328a5d70c31509d80f4fc959e9e40b736868",
+        "src\\ai_officer_raid.h": "5d55f4ce2a1a9128de252479df024e557f3c1313460f351444a3f35c06f9f940",
+        "src\\ai_officerteam.h": "46d26cfdca196a459162615385ef5fac0ed1422bd73e26b946fda70802982b1e",
+        "src\\ai_parallel.c": "073f3b2434c3c61ce62b91a08be698b0fbf8e63a354168ac5ad201437a66f6a0",
+        "src\\ai_parallel.h": "1c7aaa87c9c1d42822298736d9576167f854818b7fd5fcbc3b4faba6fef0f6d4",
+        "src\\ai_pincer.h": "19f657229f6b01b2fdbde8ae6cab44b4aeadc6f48b1ef841c34210678788d7a2",
+        "src\\ai_raiders.h": "ce2adbfe1197ff10e5e4befc8561f87fa06bf07d8980d86cef96949c42543af6",
+        "src\\ai_spyteam.h": "37cb8b7f7981f02a3c670ac57eb472e5c2dd59cfe10b97280bab718b64d42b04",
+        "src\\ai_strategy.c": "75444ebefbc12e5dc066da1288b7b9f178053e156c81c481f841b16a6dedd27d",
+        "src\\ai_strategy.h": "931f4c09a8edf6e49cbd07d73db57a7304f2d142d5b4a059f2728956251985a9",
+        "src\\ai_worker.c": "ba5fae38be91ca86d36b8ebe5743c910ac9f106c8557216d4af75649084e12d9",
+        "src\\ai_worker.h": "be0133954da887153c6b592554004673170abd14f2ae47f90aaa708569ce69af",
+        "src\\battlefield.h": "7178bc74284ae778457c20cd243acd24fab18ccb9a8948379d240dde1b386598",
+        "src\\deployment.h": "927a92bdc0308561cd1eacc7c2438ff0c00926b5bf18764962b4604e104e7941",
+        "src\\deployment_io.c": "82403f96cf503b0a5b735edcc29e5cab6e8f6885156a9b21221bbdcd50ea7390",
+        "src\\game.c": "4e925f5124a397eb62ccbb8f53825a83666a97c44ac3776f38abe5863f8180ff",
+        "src\\game.h": "9d2ee5de2687f3f48f8d79d6d02b3ea95ee7a6b246dc12e579960ed70b3b18ab",
+        "src\\main.c": "2df8200905522713a0c67bdfe5606152289199c2a534056792c24dc7823caaf7",
+        "src\\match_log.c": "220788e01c311fc9b4545e89209f90c20fd00d3082e71b5be37c6c17b0d81859",
+        "src\\match_log.h": "32d875e4eb2163f0a6ff3a679e98688273f2edf68cfb39b2fd9b24bb200c2091",
+        "src\\ml.c": "471c1c0f60a1d7cbf55b7ac8e39afe80e44b2aa118404f87f6708cd69b480849",
+        "src\\ml.h": "57ec8d8f5927dd0661e5c320f0f7c6e0b843ef6a459ea19ad3dd60f86b43f58d",
+        "src\\piece_art.h": "df5a68189c03c03bc41257ff799e76ea6985da2cc19f67d2a4a578ea33bc91f8",
+        "src\\replay.c": "9595e516ff586daab7c3c937e1cf84299e090c699c23286293087d954d597df8",
+        "src\\replay.h": "3080f2842e769b43b8f00e0032e2de3c6ba6bf07611b228b4537e5ba70bca8f7",
+        "src\\reveal_window.h": "e09edf00d721f25587442a33d93942488be232800a231ba73429d67db08c9fa6",
+        "src\\ui_theme.h": "acae39074c0f36b654d88105744fa32620a6dda4953e5281014b1c7e6a63a308"
+      }
+    },
+    "jobs": 4
+  },
+  "matches": [
+    {
+      "winner": 0,
+      "ply": 639,
+      "reason": 1,
+      "decisions": [
+        320,
+        319
+      ],
+      "decision_seconds": [
+        152.113207,
+        0.017243
+      ],
+      "opponent": "cautious",
+      "seed": 17000,
+      "formation": "random",
+      "side": 0,
+      "seconds": 152.189,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "cautious_17000_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 474,
+      "reason": 2,
+      "decisions": [
+        237,
+        237
+      ],
+      "decision_seconds": [
+        102.937661,
+        0.011457
+      ],
+      "opponent": "cautious",
+      "seed": 17000,
+      "formation": "random",
+      "side": 1,
+      "seconds": 103.011,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "cautious_17000_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 389,
+      "reason": 1,
+      "decisions": [
+        195,
+        194
+      ],
+      "decision_seconds": [
+        102.08281,
+        0.011729
+      ],
+      "opponent": "cautious",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 102.168,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "cautious_17000_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 476,
+      "reason": 2,
+      "decisions": [
+        238,
+        238
+      ],
+      "decision_seconds": [
+        111.029802,
+        0.010642
+      ],
+      "opponent": "cautious",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 111.101,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "cautious_17000_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 411,
+      "reason": 1,
+      "decisions": [
+        206,
+        205
+      ],
+      "decision_seconds": [
+        81.060717,
+        0.008663
+      ],
+      "opponent": "cautious",
+      "seed": 17001,
+      "formation": "random",
+      "side": 0,
+      "seconds": 81.133,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "cautious_17001_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 394,
+      "reason": 1,
+      "decisions": [
+        197,
+        197
+      ],
+      "decision_seconds": [
+        73.030406,
+        0.011347
+      ],
+      "opponent": "cautious",
+      "seed": 17001,
+      "formation": "random",
+      "side": 1,
+      "seconds": 73.105,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "cautious_17001_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 293,
+      "reason": 2,
+      "decisions": [
+        147,
+        146
+      ],
+      "decision_seconds": [
+        71.392419,
+        0.006628
+      ],
+      "opponent": "cautious",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 71.481,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "cautious_17001_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 744,
+      "reason": 1,
+      "decisions": [
+        372,
+        372
+      ],
+      "decision_seconds": [
+        138.654589,
+        0.014649
+      ],
+      "opponent": "cautious",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 138.734,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "cautious_17001_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 613,
+      "reason": 1,
+      "decisions": [
+        307,
+        306
+      ],
+      "decision_seconds": [
+        153.447617,
+        0.016727
+      ],
+      "opponent": "cautious",
+      "seed": 17002,
+      "formation": "random",
+      "side": 0,
+      "seconds": 153.532,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "cautious_17002_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 383,
+      "reason": 2,
+      "decisions": [
+        191,
+        192
+      ],
+      "decision_seconds": [
+        93.09306,
+        0.014359
+      ],
+      "opponent": "cautious",
+      "seed": 17002,
+      "formation": "random",
+      "side": 1,
+      "seconds": 93.176,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "cautious_17002_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 596,
+      "reason": 2,
+      "decisions": [
+        298,
+        298
+      ],
+      "decision_seconds": [
+        139.089329,
+        0.013811
+      ],
+      "opponent": "cautious",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 139.181,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "cautious_17002_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 331,
+      "reason": 2,
+      "decisions": [
+        165,
+        166
+      ],
+      "decision_seconds": [
+        83.682911,
+        0.009355
+      ],
+      "opponent": "cautious",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 83.769,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "cautious_17002_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 209,
+      "reason": 1,
+      "decisions": [
+        105,
+        104
+      ],
+      "decision_seconds": [
+        46.783264,
+        0.004438
+      ],
+      "opponent": "cautious",
+      "seed": 17003,
+      "formation": "random",
+      "side": 0,
+      "seconds": 46.877,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "cautious_17003_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 258,
+      "reason": 2,
+      "decisions": [
+        129,
+        129
+      ],
+      "decision_seconds": [
+        95.394186,
+        0.004394
+      ],
+      "opponent": "cautious",
+      "seed": 17003,
+      "formation": "random",
+      "side": 1,
+      "seconds": 95.457,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "cautious_17003_random_1.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        283.705604,
+        0.017206
+      ],
+      "opponent": "cautious",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 283.831,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "cautious_17003_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 596,
+      "reason": 1,
+      "decisions": [
+        298,
+        298
+      ],
+      "decision_seconds": [
+        203.654271,
+        0.017521
+      ],
+      "opponent": "cautious",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 203.759,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "cautious_17003_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 311,
+      "reason": 1,
+      "decisions": [
+        156,
+        155
+      ],
+      "decision_seconds": [
+        159.411134,
+        0.007905
+      ],
+      "opponent": "cautious",
+      "seed": 17004,
+      "formation": "random",
+      "side": 0,
+      "seconds": 159.5,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "cautious_17004_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 382,
+      "reason": 2,
+      "decisions": [
+        191,
+        191
+      ],
+      "decision_seconds": [
+        165.485922,
+        0.010393
+      ],
+      "opponent": "cautious",
+      "seed": 17004,
+      "formation": "random",
+      "side": 1,
+      "seconds": 165.642,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "cautious_17004_random_1.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 320,
+      "reason": 1,
+      "decisions": [
+        160,
+        160
+      ],
+      "decision_seconds": [
+        130.660864,
+        0.008897
+      ],
+      "opponent": "cautious",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 130.737,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "cautious_17004_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 514,
+      "reason": 1,
+      "decisions": [
+        257,
+        257
+      ],
+      "decision_seconds": [
+        259.414361,
+        0.012071
+      ],
+      "opponent": "cautious",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 259.549,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "cautious_17004_stable_1.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 398,
+      "reason": 2,
+      "decisions": [
+        199,
+        199
+      ],
+      "decision_seconds": [
+        369.897558,
+        466.271719
+      ],
+      "opponent": "classic",
+      "seed": 17000,
+      "formation": "random",
+      "side": 0,
+      "seconds": 836.281,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "classic_17000_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 374,
+      "reason": 2,
+      "decisions": [
+        187,
+        187
+      ],
+      "decision_seconds": [
+        412.152244,
+        496.08132
+      ],
+      "opponent": "classic",
+      "seed": 17000,
+      "formation": "random",
+      "side": 1,
+      "seconds": 908.359,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "classic_17000_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 425,
+      "reason": 1,
+      "decisions": [
+        213,
+        212
+      ],
+      "decision_seconds": [
+        487.439921,
+        589.415717
+      ],
+      "opponent": "classic",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 1077.009,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "classic_17000_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 480,
+      "reason": 2,
+      "decisions": [
+        240,
+        240
+      ],
+      "decision_seconds": [
+        406.336056,
+        518.948885
+      ],
+      "opponent": "classic",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 925.441,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "classic_17000_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 463,
+      "reason": 2,
+      "decisions": [
+        232,
+        231
+      ],
+      "decision_seconds": [
+        212.116267,
+        244.665015
+      ],
+      "opponent": "classic",
+      "seed": 17001,
+      "formation": "random",
+      "side": 0,
+      "seconds": 456.846,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "classic_17001_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 398,
+      "reason": 1,
+      "decisions": [
+        199,
+        199
+      ],
+      "decision_seconds": [
+        176.745938,
+        168.428675
+      ],
+      "opponent": "classic",
+      "seed": 17001,
+      "formation": "random",
+      "side": 1,
+      "seconds": 345.298,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "classic_17001_random_1.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        300.73607,
+        423.167861
+      ],
+      "opponent": "classic",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 724.05,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "classic_17001_stable_0.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        276.617952,
+        219.392671
+      ],
+      "opponent": "classic",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 496.148,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "classic_17001_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 567,
+      "reason": 2,
+      "decisions": [
+        284,
+        283
+      ],
+      "decision_seconds": [
+        209.217856,
+        346.164497
+      ],
+      "opponent": "classic",
+      "seed": 17002,
+      "formation": "random",
+      "side": 0,
+      "seconds": 555.5,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "classic_17002_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 751,
+      "reason": 2,
+      "decisions": [
+        375,
+        376
+      ],
+      "decision_seconds": [
+        259.240071,
+        285.398206
+      ],
+      "opponent": "classic",
+      "seed": 17002,
+      "formation": "random",
+      "side": 1,
+      "seconds": 544.76,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "classic_17002_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 783,
+      "reason": 2,
+      "decisions": [
+        392,
+        391
+      ],
+      "decision_seconds": [
+        266.619162,
+        397.637022
+      ],
+      "opponent": "classic",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 664.408,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "classic_17002_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 740,
+      "reason": 2,
+      "decisions": [
+        370,
+        370
+      ],
+      "decision_seconds": [
+        294.051543,
+        287.205348
+      ],
+      "opponent": "classic",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 581.391,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "classic_17002_stable_1.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        228.746612,
+        296.490032
+      ],
+      "opponent": "classic",
+      "seed": 17003,
+      "formation": "random",
+      "side": 0,
+      "seconds": 525.332,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "classic_17003_random_0.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 585,
+      "reason": 1,
+      "decisions": [
+        292,
+        293
+      ],
+      "decision_seconds": [
+        150.817212,
+        154.183077
+      ],
+      "opponent": "classic",
+      "seed": 17003,
+      "formation": "random",
+      "side": 1,
+      "seconds": 305.101,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "classic_17003_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 684,
+      "reason": 2,
+      "decisions": [
+        342,
+        342
+      ],
+      "decision_seconds": [
+        208.211754,
+        251.991261
+      ],
+      "opponent": "classic",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 460.361,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "classic_17003_stable_0.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        245.939075,
+        202.91725
+      ],
+      "opponent": "classic",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 448.979,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "classic_17003_stable_1.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 548,
+      "reason": 1,
+      "decisions": [
+        274,
+        274
+      ],
+      "decision_seconds": [
+        114.760783,
+        101.491044
+      ],
+      "opponent": "classic",
+      "seed": 17004,
+      "formation": "random",
+      "side": 0,
+      "seconds": 216.313,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "classic_17004_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 514,
+      "reason": 2,
+      "decisions": [
+        257,
+        257
+      ],
+      "decision_seconds": [
+        80.637962,
+        93.937122
+      ],
+      "opponent": "classic",
+      "seed": 17004,
+      "formation": "random",
+      "side": 1,
+      "seconds": 174.632,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "classic_17004_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 329,
+      "reason": 2,
+      "decisions": [
+        165,
+        164
+      ],
+      "decision_seconds": [
+        68.50074,
+        80.456169
+      ],
+      "opponent": "classic",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 149.022,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "classic_17004_stable_0.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 507,
+      "reason": 2,
+      "decisions": [
+        253,
+        254
+      ],
+      "decision_seconds": [
+        86.329506,
+        109.947819
+      ],
+      "opponent": "classic",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 196.335,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "classic_17004_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 289,
+      "reason": 2,
+      "decisions": [
+        145,
+        144
+      ],
+      "decision_seconds": [
+        55.235004,
+        0.005794
+      ],
+      "opponent": "miner",
+      "seed": 17000,
+      "formation": "random",
+      "side": 0,
+      "seconds": 55.295,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "miner_17000_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 532,
+      "reason": 1,
+      "decisions": [
+        266,
+        266
+      ],
+      "decision_seconds": [
+        94.041919,
+        0.011057
+      ],
+      "opponent": "miner",
+      "seed": 17000,
+      "formation": "random",
+      "side": 1,
+      "seconds": 94.114,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "miner_17000_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 290,
+      "reason": 2,
+      "decisions": [
+        145,
+        145
+      ],
+      "decision_seconds": [
+        59.897744,
+        0.009989
+      ],
+      "opponent": "miner",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 59.965,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "miner_17000_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 294,
+      "reason": 1,
+      "decisions": [
+        147,
+        147
+      ],
+      "decision_seconds": [
+        72.693451,
+        0.006995
+      ],
+      "opponent": "miner",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 72.768,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "miner_17000_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 519,
+      "reason": 1,
+      "decisions": [
+        260,
+        259
+      ],
+      "decision_seconds": [
+        114.117224,
+        0.012472
+      ],
+      "opponent": "miner",
+      "seed": 17001,
+      "formation": "random",
+      "side": 0,
+      "seconds": 114.191,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "miner_17001_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 462,
+      "reason": 2,
+      "decisions": [
+        231,
+        231
+      ],
+      "decision_seconds": [
+        97.509479,
+        0.00878
+      ],
+      "opponent": "miner",
+      "seed": 17001,
+      "formation": "random",
+      "side": 1,
+      "seconds": 97.574,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "miner_17001_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 265,
+      "reason": 2,
+      "decisions": [
+        133,
+        132
+      ],
+      "decision_seconds": [
+        60.584551,
+        0.006924
+      ],
+      "opponent": "miner",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 60.639,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "miner_17001_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 330,
+      "reason": 2,
+      "decisions": [
+        165,
+        165
+      ],
+      "decision_seconds": [
+        66.710469,
+        0.004957
+      ],
+      "opponent": "miner",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 66.815,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "miner_17001_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 327,
+      "reason": 2,
+      "decisions": [
+        164,
+        163
+      ],
+      "decision_seconds": [
+        67.704187,
+        0.005252
+      ],
+      "opponent": "miner",
+      "seed": 17002,
+      "formation": "random",
+      "side": 0,
+      "seconds": 67.758,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "miner_17002_random_0.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        165.414777,
+        0.020722
+      ],
+      "opponent": "miner",
+      "seed": 17002,
+      "formation": "random",
+      "side": 1,
+      "seconds": 165.505,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "miner_17002_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 473,
+      "reason": 1,
+      "decisions": [
+        237,
+        236
+      ],
+      "decision_seconds": [
+        87.326848,
+        0.007204
+      ],
+      "opponent": "miner",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 87.391,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "miner_17002_stable_0.jsonl"
+    },
+    {
+      "winner": -1,
+      "ply": 800,
+      "reason": 0,
+      "decisions": [
+        400,
+        400
+      ],
+      "decision_seconds": [
+        183.678728,
+        0.020309
+      ],
+      "opponent": "miner",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 183.773,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "miner_17002_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 382,
+      "reason": 2,
+      "decisions": [
+        191,
+        191
+      ],
+      "decision_seconds": [
+        101.446761,
+        0.007582
+      ],
+      "opponent": "miner",
+      "seed": 17003,
+      "formation": "random",
+      "side": 0,
+      "seconds": 101.531,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "miner_17003_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 329,
+      "reason": 2,
+      "decisions": [
+        164,
+        165
+      ],
+      "decision_seconds": [
+        68.626346,
+        0.00742
+      ],
+      "opponent": "miner",
+      "seed": 17003,
+      "formation": "random",
+      "side": 1,
+      "seconds": 68.701,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "miner_17003_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 309,
+      "reason": 1,
+      "decisions": [
+        155,
+        154
+      ],
+      "decision_seconds": [
+        66.982646,
+        0.008726
+      ],
+      "opponent": "miner",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 67.052,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "miner_17003_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 514,
+      "reason": 1,
+      "decisions": [
+        257,
+        257
+      ],
+      "decision_seconds": [
+        100.137789,
+        0.009844
+      ],
+      "opponent": "miner",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 100.304,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "miner_17003_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 405,
+      "reason": 2,
+      "decisions": [
+        203,
+        202
+      ],
+      "decision_seconds": [
+        83.438075,
+        0.00853
+      ],
+      "opponent": "miner",
+      "seed": 17004,
+      "formation": "random",
+      "side": 0,
+      "seconds": 83.497,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "miner_17004_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 702,
+      "reason": 1,
+      "decisions": [
+        351,
+        351
+      ],
+      "decision_seconds": [
+        128.964327,
+        0.018468
+      ],
+      "opponent": "miner",
+      "seed": 17004,
+      "formation": "random",
+      "side": 1,
+      "seconds": 129.064,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "miner_17004_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 377,
+      "reason": 1,
+      "decisions": [
+        189,
+        188
+      ],
+      "decision_seconds": [
+        73.309651,
+        0.010313
+      ],
+      "opponent": "miner",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 73.389,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "miner_17004_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 512,
+      "reason": 1,
+      "decisions": [
+        256,
+        256
+      ],
+      "decision_seconds": [
+        83.244892,
+        0.019482
+      ],
+      "opponent": "miner",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 83.325,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "miner_17004_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 699,
+      "reason": 1,
+      "decisions": [
+        350,
+        349
+      ],
+      "decision_seconds": [
+        123.768849,
+        0.013204
+      ],
+      "opponent": "raider",
+      "seed": 17000,
+      "formation": "random",
+      "side": 0,
+      "seconds": 123.869,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "raider_17000_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 487,
+      "reason": 2,
+      "decisions": [
+        243,
+        244
+      ],
+      "decision_seconds": [
+        98.463763,
+        0.01129
+      ],
+      "opponent": "raider",
+      "seed": 17000,
+      "formation": "random",
+      "side": 1,
+      "seconds": 98.571,
+      "initial_sha256": "b677e7ea4475bde19aa58de221708e05569e0e71b1dfb5d6193b40dc68506b7a",
+      "replay": "raider_17000_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 176,
+      "reason": 2,
+      "decisions": [
+        88,
+        88
+      ],
+      "decision_seconds": [
+        33.90562,
+        0.003429
+      ],
+      "opponent": "raider",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 33.983,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "raider_17000_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 432,
+      "reason": 2,
+      "decisions": [
+        216,
+        216
+      ],
+      "decision_seconds": [
+        73.127404,
+        0.008625
+      ],
+      "opponent": "raider",
+      "seed": 17000,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 73.198,
+      "initial_sha256": "620336ad624c17b9e5549fa45e6e2133f3ca39a641b4f08069a1a97bab3ad9e7",
+      "replay": "raider_17000_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 441,
+      "reason": 2,
+      "decisions": [
+        221,
+        220
+      ],
+      "decision_seconds": [
+        92.673607,
+        0.011599
+      ],
+      "opponent": "raider",
+      "seed": 17001,
+      "formation": "random",
+      "side": 0,
+      "seconds": 92.756,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "raider_17001_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 604,
+      "reason": 2,
+      "decisions": [
+        302,
+        302
+      ],
+      "decision_seconds": [
+        102.800675,
+        0.014759
+      ],
+      "opponent": "raider",
+      "seed": 17001,
+      "formation": "random",
+      "side": 1,
+      "seconds": 102.875,
+      "initial_sha256": "2499cc5e6849445c72dd1845a6ab52152111869393cf4860921e1307955852b4",
+      "replay": "raider_17001_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 233,
+      "reason": 2,
+      "decisions": [
+        117,
+        116
+      ],
+      "decision_seconds": [
+        45.294705,
+        0.005815
+      ],
+      "opponent": "raider",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 45.351,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "raider_17001_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 410,
+      "reason": 1,
+      "decisions": [
+        205,
+        205
+      ],
+      "decision_seconds": [
+        65.644462,
+        0.006685
+      ],
+      "opponent": "raider",
+      "seed": 17001,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 65.71,
+      "initial_sha256": "3ad4cc73902861a7ac1b423368fb8d341163e36884411d256435fd2992fb713d",
+      "replay": "raider_17001_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 261,
+      "reason": 2,
+      "decisions": [
+        131,
+        130
+      ],
+      "decision_seconds": [
+        60.233684,
+        0.011764
+      ],
+      "opponent": "raider",
+      "seed": 17002,
+      "formation": "random",
+      "side": 0,
+      "seconds": 60.32,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "raider_17002_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 244,
+      "reason": 2,
+      "decisions": [
+        122,
+        122
+      ],
+      "decision_seconds": [
+        55.068879,
+        0.007458
+      ],
+      "opponent": "raider",
+      "seed": 17002,
+      "formation": "random",
+      "side": 1,
+      "seconds": 55.14,
+      "initial_sha256": "40be22c59b269e1d2ce272a2bc61fa4c0b9b312f60876f1a3f510626cded7849",
+      "replay": "raider_17002_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 352,
+      "reason": 2,
+      "decisions": [
+        176,
+        176
+      ],
+      "decision_seconds": [
+        71.372905,
+        0.006922
+      ],
+      "opponent": "raider",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 71.496,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "raider_17002_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 209,
+      "reason": 2,
+      "decisions": [
+        104,
+        105
+      ],
+      "decision_seconds": [
+        44.314863,
+        0.007932
+      ],
+      "opponent": "raider",
+      "seed": 17002,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 44.39,
+      "initial_sha256": "b31d4636867095918b807466fc1244aa75290f0f318a023b1d60dae579e0d3ad",
+      "replay": "raider_17002_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 213,
+      "reason": 2,
+      "decisions": [
+        107,
+        106
+      ],
+      "decision_seconds": [
+        44.237316,
+        0.005394
+      ],
+      "opponent": "raider",
+      "seed": 17003,
+      "formation": "random",
+      "side": 0,
+      "seconds": 44.302,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "raider_17003_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 171,
+      "reason": 2,
+      "decisions": [
+        85,
+        86
+      ],
+      "decision_seconds": [
+        29.97592,
+        0.006641
+      ],
+      "opponent": "raider",
+      "seed": 17003,
+      "formation": "random",
+      "side": 1,
+      "seconds": 30.045,
+      "initial_sha256": "c178c3592398181ba048d1ac942c74b620db4f7c7a973f5e3c5bd45c723a88e9",
+      "replay": "raider_17003_random_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 189,
+      "reason": 2,
+      "decisions": [
+        95,
+        94
+      ],
+      "decision_seconds": [
+        42.196068,
+        0.00732
+      ],
+      "opponent": "raider",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 42.279,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "raider_17003_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 298,
+      "reason": 2,
+      "decisions": [
+        149,
+        149
+      ],
+      "decision_seconds": [
+        62.542642,
+        0.01448
+      ],
+      "opponent": "raider",
+      "seed": 17003,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 62.618,
+      "initial_sha256": "006afa63a5f31a3f96077d3962e322ac0decda9dc8c987b15dcd3254b04d5eaa",
+      "replay": "raider_17003_stable_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 599,
+      "reason": 1,
+      "decisions": [
+        300,
+        299
+      ],
+      "decision_seconds": [
+        120.146801,
+        0.016444
+      ],
+      "opponent": "raider",
+      "seed": 17004,
+      "formation": "random",
+      "side": 0,
+      "seconds": 120.205,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "raider_17004_random_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 410,
+      "reason": 1,
+      "decisions": [
+        205,
+        205
+      ],
+      "decision_seconds": [
+        69.99109,
+        0.006285
+      ],
+      "opponent": "raider",
+      "seed": 17004,
+      "formation": "random",
+      "side": 1,
+      "seconds": 70.125,
+      "initial_sha256": "83e74bf03214a39ce97434914e64c77c2e3e6fd74636566ed53262dda77b8e6c",
+      "replay": "raider_17004_random_1.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 264,
+      "reason": 1,
+      "decisions": [
+        132,
+        132
+      ],
+      "decision_seconds": [
+        54.508901,
+        0.004802
+      ],
+      "opponent": "raider",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 0,
+      "seconds": 54.576,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "raider_17004_stable_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 530,
+      "reason": 2,
+      "decisions": [
+        265,
+        265
+      ],
+      "decision_seconds": [
+        96.37723,
+        0.01138
+      ],
+      "opponent": "raider",
+      "seed": 17004,
+      "formation": "stable",
+      "side": 1,
+      "seconds": 96.448,
+      "initial_sha256": "728f0b51f5e35bd76496143c7bc662ab29b66092d49369ac3e8f85a423f5a93e",
+      "replay": "raider_17004_stable_1.jsonl"
+    }
+  ],
+  "overall": {
+    "games": 80,
+    "wins": 67,
+    "losses": 6,
+    "draws": 0,
+    "unfinished": 7,
+    "candidate_mean_ms": 578.9332253848231,
+    "decisive_win_interval_95": [
+      0.8320560452006311,
+      0.9617862495212941
+    ],
+    "censored_score_bounds": [
+      0.8375,
+      0.925
+    ]
+  },
+  "by_opponent": {
+    "classic": {
+      "games": 20,
+      "wins": 12,
+      "losses": 4,
+      "draws": 0,
+      "unfinished": 4,
+      "candidate_mean_ms": 826.5431191692204,
+      "decisive_win_interval_95": [
+        0.505016834644919,
+        0.898179325087867
+      ],
+      "censored_score_bounds": [
+        0.6,
+        0.8
+      ]
+    },
+    "raider": {
+      "games": 20,
+      "wins": 19,
+      "losses": 1,
+      "draws": 0,
+      "unfinished": 0,
+      "candidate_mean_ms": 383.7933528923332,
+      "decisive_win_interval_95": [
+        0.7638688065532648,
+        0.9911185511992042
+      ],
+      "censored_score_bounds": [
+        0.95,
+        0.95
+      ]
+    },
+    "miner": {
+      "games": 20,
+      "wins": 18,
+      "losses": 0,
+      "draws": 0,
+      "unfinished": 2,
+      "candidate_mean_ms": 410.64473379681544,
+      "decisive_win_interval_95": [
+        0.8241207763533505,
+        1.0
+      ],
+      "censored_score_bounds": [
+        0.9,
+        1.0
+      ]
+    },
+    "cautious": {
+      "games": 20,
+      "wins": 18,
+      "losses": 1,
+      "draws": 0,
+      "unfinished": 1,
+      "candidate_mean_ms": 579.1473263296126,
+      "decisive_win_interval_95": [
+        0.7536126883310192,
+        0.9906480059376992
+      ],
+      "censored_score_bounds": [
+        0.9,
+        0.95
+      ]
+    }
+  }
+}

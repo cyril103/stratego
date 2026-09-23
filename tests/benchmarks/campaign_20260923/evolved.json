@@ -1,0 +1,281 @@
+{
+  "protocol": {
+    "pairs": 2,
+    "seed": 29000,
+    "plies": 800,
+    "opponents": [
+      "classic",
+      "raider"
+    ],
+    "formations": [
+      "evolved"
+    ],
+    "baseline": false,
+    "games": 8,
+    "build": {
+      "reference": "09936c8d66093514d76a9bb2871f22f7666ad3ac",
+      "scale": 25,
+      "compiler": "gcc (MinGW-W64 x86_64-msvcrt-posix-seh, built by Brecht Sanders) 12.2.0",
+      "binary_sha256": "9982dd506fa69a727fc4e40732cc7837c55e96c62760419ecd8be70d5bfbd358",
+      "source_hashes": {
+        "src\\ai.c": "61698faf28e9356bf73e38a662d4511289e6f998baa66de95f3118b197d785c2",
+        "src\\ai_armycare.h": "044c02e99cbd686d0ceb597a7a628c2f8e21747a16ae03e23477cfcce0ad8e9a",
+        "src\\ai_assault.h": "478617f8db00904813a451c3381afdc5de76c598efdfb3c7c79ad43f4747af86",
+        "src\\ai_basic.c": "4c5a31b249a0872853632772381e3f44dc70c9e727471424a876fe78648d288d",
+        "src\\ai_belief.h": "a033557a690e1fb4f1c607e5888b54c4d5d7049d5de37f8f47595845305611a4",
+        "src\\ai_breach.h": "5634adf96a5a519403513b42be1af2938421555e8ceda3445a8b349835816b04",
+        "src\\ai_continuity.h": "eae637670762f8d566e9fd1492d672f55160592a2e1431b41b24f3dae0d1e6be",
+        "src\\ai_deploy.c": "0d9549b9b2f179176ee6dd2aa16e233d78adf643b36c71c68743f9f2aca48a14",
+        "src\\ai_endgamecare.h": "75b4b31ebedbb43ca814197b132b8f03a1103811fa8c342df336d556efde9ba7",
+        "src\\ai_flagrace.h": "072e7b5d6f409d22be318d9defc7e2ab474b7b670a6380ab0341a5f6b1fa004a",
+        "src\\ai_flankdefense.h": "73ddf2d9b429ad214d5f13b49eb99d407cfe5a3e8b436ceac0051ef3d37d9c80",
+        "src\\ai_force.h": "42ef924ec3fb95b747de7dbbe8819a8a730bf1983bb7e7630e2839f071b822fe",
+        "src\\ai_guardrelief.h": "76c7418398fa0b4443e474fa8f94c60c591339caf800cc2489e165bb3b72f779",
+        "src\\ai_guardtempo.h": "a8dbd6faf036a4f864f098dfb35f4cf06dc9bf34d8d849498c30f09b1f45ff1f",
+        "src\\ai_intercept.h": "26f84cfc7cc22e9bd5e55bb7482b121592f257bcdedf904c1509a1e4a9865c31",
+        "src\\ai_marshalguard.h": "f028800077e5a614c7ec8163332878b10acc129a5ae320d295eb3a68920cd2ab",
+        "src\\ai_models.c": "3b1d2474963f0365aaba932f4ee8a6bf895ef9b418f1542055f4cf44aa37cd52",
+        "src\\ai_models.h": "53a14cdc99f20381ebb270fe4dc1328a5d70c31509d80f4fc959e9e40b736868",
+        "src\\ai_officer_raid.h": "5d55f4ce2a1a9128de252479df024e557f3c1313460f351444a3f35c06f9f940",
+        "src\\ai_officerteam.h": "46d26cfdca196a459162615385ef5fac0ed1422bd73e26b946fda70802982b1e",
+        "src\\ai_parallel.c": "073f3b2434c3c61ce62b91a08be698b0fbf8e63a354168ac5ad201437a66f6a0",
+        "src\\ai_parallel.h": "1c7aaa87c9c1d42822298736d9576167f854818b7fd5fcbc3b4faba6fef0f6d4",
+        "src\\ai_pincer.h": "19f657229f6b01b2fdbde8ae6cab44b4aeadc6f48b1ef841c34210678788d7a2",
+        "src\\ai_raiders.h": "ce2adbfe1197ff10e5e4befc8561f87fa06bf07d8980d86cef96949c42543af6",
+        "src\\ai_spyteam.h": "37cb8b7f7981f02a3c670ac57eb472e5c2dd59cfe10b97280bab718b64d42b04",
+        "src\\ai_strategy.c": "75444ebefbc12e5dc066da1288b7b9f178053e156c81c481f841b16a6dedd27d",
+        "src\\ai_strategy.h": "931f4c09a8edf6e49cbd07d73db57a7304f2d142d5b4a059f2728956251985a9",
+        "src\\ai_worker.c": "ba5fae38be91ca86d36b8ebe5743c910ac9f106c8557216d4af75649084e12d9",
+        "src\\ai_worker.h": "be0133954da887153c6b592554004673170abd14f2ae47f90aaa708569ce69af",
+        "src\\battlefield.h": "7178bc74284ae778457c20cd243acd24fab18ccb9a8948379d240dde1b386598",
+        "src\\deployment.h": "927a92bdc0308561cd1eacc7c2438ff0c00926b5bf18764962b4604e104e7941",
+        "src\\deployment_io.c": "82403f96cf503b0a5b735edcc29e5cab6e8f6885156a9b21221bbdcd50ea7390",
+        "src\\game.c": "4e925f5124a397eb62ccbb8f53825a83666a97c44ac3776f38abe5863f8180ff",
+        "src\\game.h": "9d2ee5de2687f3f48f8d79d6d02b3ea95ee7a6b246dc12e579960ed70b3b18ab",
+        "src\\main.c": "2df8200905522713a0c67bdfe5606152289199c2a534056792c24dc7823caaf7",
+        "src\\match_log.c": "220788e01c311fc9b4545e89209f90c20fd00d3082e71b5be37c6c17b0d81859",
+        "src\\match_log.h": "32d875e4eb2163f0a6ff3a679e98688273f2edf68cfb39b2fd9b24bb200c2091",
+        "src\\ml.c": "471c1c0f60a1d7cbf55b7ac8e39afe80e44b2aa118404f87f6708cd69b480849",
+        "src\\ml.h": "57ec8d8f5927dd0661e5c320f0f7c6e0b843ef6a459ea19ad3dd60f86b43f58d",
+        "src\\piece_art.h": "df5a68189c03c03bc41257ff799e76ea6985da2cc19f67d2a4a578ea33bc91f8",
+        "src\\replay.c": "9595e516ff586daab7c3c937e1cf84299e090c699c23286293087d954d597df8",
+        "src\\replay.h": "3080f2842e769b43b8f00e0032e2de3c6ba6bf07611b228b4537e5ba70bca8f7",
+        "src\\reveal_window.h": "e09edf00d721f25587442a33d93942488be232800a231ba73429d67db08c9fa6",
+        "src\\ui_theme.h": "acae39074c0f36b654d88105744fa32620a6dda4953e5281014b1c7e6a63a308"
+      }
+    },
+    "jobs": 2
+  },
+  "matches": [
+    {
+      "winner": 0,
+      "ply": 669,
+      "reason": 2,
+      "decisions": [
+        335,
+        334
+      ],
+      "decision_seconds": [
+        175.733531,
+        274.35977
+      ],
+      "opponent": "classic",
+      "seed": 29000,
+      "formation": "evolved",
+      "side": 0,
+      "seconds": 450.247,
+      "initial_sha256": "39c6f0d010396deaaa0775af76757ddb8610b7146d42ff9c7795d907e18c1cec",
+      "replay": "classic_29000_evolved_0.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 397,
+      "reason": 1,
+      "decisions": [
+        198,
+        199
+      ],
+      "decision_seconds": [
+        152.376886,
+        118.556947
+      ],
+      "opponent": "classic",
+      "seed": 29000,
+      "formation": "evolved",
+      "side": 1,
+      "seconds": 271.109,
+      "initial_sha256": "39c6f0d010396deaaa0775af76757ddb8610b7146d42ff9c7795d907e18c1cec",
+      "replay": "classic_29000_evolved_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 623,
+      "reason": 2,
+      "decisions": [
+        312,
+        311
+      ],
+      "decision_seconds": [
+        147.209928,
+        299.64337
+      ],
+      "opponent": "classic",
+      "seed": 29001,
+      "formation": "evolved",
+      "side": 0,
+      "seconds": 446.982,
+      "initial_sha256": "0800c1b40b310ad21bc336e8652aa1d741b6ccb5b917d4e1143ed542023a47f1",
+      "replay": "classic_29001_evolved_0.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 525,
+      "reason": 1,
+      "decisions": [
+        262,
+        263
+      ],
+      "decision_seconds": [
+        198.990843,
+        156.024531
+      ],
+      "opponent": "classic",
+      "seed": 29001,
+      "formation": "evolved",
+      "side": 1,
+      "seconds": 355.125,
+      "initial_sha256": "0800c1b40b310ad21bc336e8652aa1d741b6ccb5b917d4e1143ed542023a47f1",
+      "replay": "classic_29001_evolved_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 353,
+      "reason": 2,
+      "decisions": [
+        177,
+        176
+      ],
+      "decision_seconds": [
+        107.849293,
+        0.007749
+      ],
+      "opponent": "raider",
+      "seed": 29000,
+      "formation": "evolved",
+      "side": 0,
+      "seconds": 108.019,
+      "initial_sha256": "39c6f0d010396deaaa0775af76757ddb8610b7146d42ff9c7795d907e18c1cec",
+      "replay": "raider_29000_evolved_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 290,
+      "reason": 2,
+      "decisions": [
+        145,
+        145
+      ],
+      "decision_seconds": [
+        85.001074,
+        0.004826
+      ],
+      "opponent": "raider",
+      "seed": 29000,
+      "formation": "evolved",
+      "side": 1,
+      "seconds": 85.084,
+      "initial_sha256": "39c6f0d010396deaaa0775af76757ddb8610b7146d42ff9c7795d907e18c1cec",
+      "replay": "raider_29000_evolved_1.jsonl"
+    },
+    {
+      "winner": 0,
+      "ply": 433,
+      "reason": 1,
+      "decisions": [
+        217,
+        216
+      ],
+      "decision_seconds": [
+        139.63145,
+        0.009025
+      ],
+      "opponent": "raider",
+      "seed": 29001,
+      "formation": "evolved",
+      "side": 0,
+      "seconds": 139.764,
+      "initial_sha256": "0800c1b40b310ad21bc336e8652aa1d741b6ccb5b917d4e1143ed542023a47f1",
+      "replay": "raider_29001_evolved_0.jsonl"
+    },
+    {
+      "winner": 1,
+      "ply": 340,
+      "reason": 2,
+      "decisions": [
+        170,
+        170
+      ],
+      "decision_seconds": [
+        97.646327,
+        0.00809
+      ],
+      "opponent": "raider",
+      "seed": 29001,
+      "formation": "evolved",
+      "side": 1,
+      "seconds": 97.751,
+      "initial_sha256": "0800c1b40b310ad21bc336e8652aa1d741b6ccb5b917d4e1143ed542023a47f1",
+      "replay": "raider_29001_evolved_1.jsonl"
+    }
+  ],
+  "overall": {
+    "games": 8,
+    "wins": 6,
+    "losses": 2,
+    "draws": 0,
+    "unfinished": 0,
+    "candidate_mean_ms": 608.1714383259912,
+    "decisive_win_interval_95": [
+      0.40927543031017727,
+      0.9285207872478887
+    ],
+    "censored_score_bounds": [
+      0.75,
+      0.75
+    ]
+  },
+  "by_opponent": {
+    "classic": {
+      "games": 4,
+      "wins": 2,
+      "losses": 2,
+      "draws": 0,
+      "unfinished": 0,
+      "candidate_mean_ms": 609.1338644986449,
+      "decisive_win_interval_95": [
+        0.1500389891521544,
+        0.8499610108478456
+      ],
+      "censored_score_bounds": [
+        0.5,
+        0.5
+      ]
+    },
+    "raider": {
+      "games": 4,
+      "wins": 4,
+      "losses": 0,
+      "draws": 0,
+      "unfinished": 0,
+      "candidate_mean_ms": 606.6687503526093,
+      "decisive_win_interval_95": [
+        0.5101091635454165,
+        1.0
+      ],
+      "censored_score_bounds": [
+        1.0,
+        1.0
+      ]
+    }
+  }
+}

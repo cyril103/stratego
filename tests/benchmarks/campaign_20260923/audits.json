@@ -1,0 +1,6995 @@
+{
+  "baseline": {
+    "games": 80,
+    "counts": {
+      "marshal_lost": 34,
+      "spy_lost_with_enemy_marshal_alive": 11
+    },
+    "matches": [
+      {
+        "replay": "cautious_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 320,
+          "10": 531
+        },
+        "longest_quiet_plies": 123,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 321,
+          "10": 485
+        },
+        "longest_quiet_plies": 118,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 572,
+            "move": [
+              36,
+              37
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 54,
+          "9": 128
+        },
+        "longest_quiet_plies": 75,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 215,
+          "9": 343
+        },
+        "longest_quiet_plies": 65,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 174,
+          "9": 190
+        },
+        "longest_quiet_plies": 56,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 308,
+            "move": [
+              72,
+              73
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 103,
+          "10": 105
+        },
+        "longest_quiet_plies": 33,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 439,
+            "move": [
+              16,
+              26
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 48,
+          "10": 150
+        },
+        "longest_quiet_plies": 51,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "cautious_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 300,
+          "9": 345
+        },
+        "longest_quiet_plies": 110,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "cautious_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 185,
+            "move": [
+              35,
+              34
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 60,
+          "9": 188
+        },
+        "longest_quiet_plies": 38,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 47,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "9": 360,
+          "10": 373
+        },
+        "longest_quiet_plies": 81,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 350,
+            "move": [
+              45,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 350
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 29,
+          "10": 271
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28,
+          "9": 446
+        },
+        "longest_quiet_plies": 264,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "cautious_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 25,
+            "move": [
+              33,
+              23
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 25
+        },
+        "longest_quiet_plies": 71,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 120
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {},
+        "longest_quiet_plies": 72,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 548,
+            "move": [
+              15,
+              14
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 124,
+          "9": 603
+        },
+        "longest_quiet_plies": 95,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 216,
+          "10": 259
+        },
+        "longest_quiet_plies": 43,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 122,
+            "move": [
+              15,
+              85
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 164,
+            "move": [
+              54,
+              64
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 60,
+          "10": 91
+        },
+        "longest_quiet_plies": 26,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 107,
+            "move": [
+              55,
+              45
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 95,
+          "10": 107
+        },
+        "longest_quiet_plies": 35,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "classic_17000_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 115,
+            "move": [
+              68,
+              58
+            ],
+            "attacking": true,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 185,
+            "move": [
+              85,
+              86
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 44,
+          "9": 130
+        },
+        "longest_quiet_plies": 53,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 58,
+          "10": 132
+        },
+        "longest_quiet_plies": 92,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 213,
+            "move": [
+              45,
+              55
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 80,
+          "10": 93
+        },
+        "longest_quiet_plies": 347,
+        "trailing_quiet_plies": 347,
+        "max_public_board_visits": 19
+      },
+      {
+        "replay": "classic_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 183,
+            "move": [
+              58,
+              68
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 45,
+          "10": 61
+        },
+        "longest_quiet_plies": 37,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 231,
+            "move": [
+              71,
+              70
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 149,
+          "9": 352
+        },
+        "longest_quiet_plies": 366,
+        "trailing_quiet_plies": 366,
+        "max_public_board_visits": 12
+      },
+      {
+        "replay": "classic_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 373,
+            "move": [
+              54,
+              44
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 490,
+            "move": [
+              75,
+              85
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 34,
+          "9": 93
+        },
+        "longest_quiet_plies": 37,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 174
+        },
+        "longest_quiet_plies": 166,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 83,
+            "move": [
+              45,
+              35
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 226,
+            "move": [
+              10,
+              0
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 29,
+          "9": 238
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_17002_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 16,
+          "10": 32
+        },
+        "longest_quiet_plies": 683,
+        "trailing_quiet_plies": 683,
+        "max_public_board_visits": 137
+      },
+      {
+        "replay": "classic_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 57,
+            "move": [
+              49,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 169,
+            "move": [
+              38,
+              28
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 33,
+          "9": 117
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 341,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 26,
+          "10": 123
+        },
+        "longest_quiet_plies": 69,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 25,
+          "9": 140
+        },
+        "longest_quiet_plies": 45,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "classic_17003_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 7,
+          "9": 523
+        },
+        "longest_quiet_plies": 180,
+        "trailing_quiet_plies": 172,
+        "max_public_board_visits": 25
+      },
+      {
+        "replay": "classic_17003_random_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 518,
+            "move": [
+              20,
+              21
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 79
+        },
+        "longest_quiet_plies": 86,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 27,
+          "9": 56
+        },
+        "longest_quiet_plies": 693,
+        "trailing_quiet_plies": 693,
+        "max_public_board_visits": 139
+      },
+      {
+        "replay": "classic_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 491,
+            "move": [
+              85,
+              75
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 133,
+          "9": 141
+        },
+        "longest_quiet_plies": 83,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 36,
+            "move": [
+              50,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 227,
+            "move": [
+              86,
+              85
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 79,
+          "9": 196
+        },
+        "longest_quiet_plies": 23,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_17004_random_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 765,
+            "move": [
+              4,
+              3
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 769,
+            "move": [
+              13,
+              3
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 60
+        },
+        "longest_quiet_plies": 141,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 45,
+            "move": [
+              45,
+              44
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 193
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 44,
+          "10": 199
+        },
+        "longest_quiet_plies": 394,
+        "trailing_quiet_plies": 394,
+        "max_public_board_visits": 71
+      },
+      {
+        "replay": "miner_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 233,
+            "move": [
+              68,
+              58
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 140,
+          "9": 272
+        },
+        "longest_quiet_plies": 39,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 79,
+          "10": 251
+        },
+        "longest_quiet_plies": 29,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 50,
+          "10": 62
+        },
+        "longest_quiet_plies": 56,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 31,
+          "10": 123
+        },
+        "longest_quiet_plies": 66,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 42,
+          "9": 210
+        },
+        "longest_quiet_plies": 29,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 81,
+          "10": 143
+        },
+        "longest_quiet_plies": 109,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 52
+        },
+        "longest_quiet_plies": 45,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 143
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 40,
+          "10": 174
+        },
+        "longest_quiet_plies": 36,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 65,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 265,
+            "move": [
+              74,
+              64
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 26,
+          "9": 69
+        },
+        "longest_quiet_plies": 70,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 229,
+            "move": [
+              65,
+              55
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 229
+        },
+        "longest_quiet_plies": 36,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {},
+        "longest_quiet_plies": 756,
+        "trailing_quiet_plies": 756,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "miner_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28
+        },
+        "longest_quiet_plies": 108,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 533
+        },
+        "longest_quiet_plies": 82,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 92,
+          "10": 212
+        },
+        "longest_quiet_plies": 44,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 109,
+          "10": 141
+        },
+        "longest_quiet_plies": 63,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 285,
+            "move": [
+              14,
+              4
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 90,
+          "9": 320
+        },
+        "longest_quiet_plies": 33,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 349,
+            "move": [
+              69,
+              59
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 281,
+          "10": 349
+        },
+        "longest_quiet_plies": 62,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 172,
+          "9": 256
+        },
+        "longest_quiet_plies": 72,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 102,
+          "9": 113
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 68,
+          "9": 346
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 205,
+          "10": 595
+        },
+        "longest_quiet_plies": 247,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 30,
+          "9": 53
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 110
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 223,
+            "move": [
+              71,
+              70
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 72,
+          "9": 196
+        },
+        "longest_quiet_plies": 23,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 51,
+          "10": 71
+        },
+        "longest_quiet_plies": 106,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 84
+        },
+        "longest_quiet_plies": 12,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 89,
+          "9": 341
+        },
+        "longest_quiet_plies": 28,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 82,
+            "move": [
+              0,
+              70
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 94,
+            "move": [
+              66,
+              67
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 94,
+          "9": 98
+        },
+        "longest_quiet_plies": 17,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 25,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 99,
+          "9": 121
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 1,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 284,
+            "move": [
+              44,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 69,
+          "10": 180
+        },
+        "longest_quiet_plies": 27,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 109,
+            "move": [
+              44,
+              45
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 37,
+          "10": 109
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 12,
+          "9": 97
+        },
+        "longest_quiet_plies": 22,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 38,
+          "9": 56
+        },
+        "longest_quiet_plies": 12,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 157,
+            "move": [
+              39,
+              38
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 157,
+          "9": 172
+        },
+        "longest_quiet_plies": 31,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 212,
+          "10": 290
+        },
+        "longest_quiet_plies": 37,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 250,
+            "move": [
+              66,
+              67
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 55,
+          "10": 99
+        },
+        "longest_quiet_plies": 150,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 53,
+          "10": 148
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 180,
+            "move": [
+              35,
+              34
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 28,
+          "10": 32
+        },
+        "longest_quiet_plies": 26,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  },
+  "intermediate": {
+    "games": 80,
+    "counts": {
+      "marshal_lost": 29,
+      "spy_lost_with_enemy_marshal_alive": 9
+    },
+    "matches": [
+      {
+        "replay": "cautious_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 554
+        },
+        "longest_quiet_plies": 116,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 155,
+          "10": 295
+        },
+        "longest_quiet_plies": 60,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 64,
+          "9": 156
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 128,
+          "9": 389
+        },
+        "longest_quiet_plies": 126,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 158,
+          "9": 368
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 124
+        },
+        "longest_quiet_plies": 57,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 48,
+          "10": 150
+        },
+        "longest_quiet_plies": 56,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 51,
+          "9": 613
+        },
+        "longest_quiet_plies": 164,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 302,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 280,
+          "9": 308
+        },
+        "longest_quiet_plies": 129,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "cautious_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 47,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 91,
+          "9": 239
+        },
+        "longest_quiet_plies": 52,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 547,
+            "move": [
+              35,
+              45
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 534
+        },
+        "longest_quiet_plies": 64,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 201,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 29,
+          "10": 201
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28,
+          "9": 114
+        },
+        "longest_quiet_plies": 24,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 29,
+            "move": [
+              33,
+              23
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 29
+        },
+        "longest_quiet_plies": 29,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 120
+        },
+        "longest_quiet_plies": 191,
+        "trailing_quiet_plies": 191,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "cautious_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 215,
+          "9": 494
+        },
+        "longest_quiet_plies": 78,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 130
+        },
+        "longest_quiet_plies": 25,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 124,
+          "10": 222
+        },
+        "longest_quiet_plies": 71,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 190,
+            "move": [
+              34,
+              44
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 121,
+          "10": 190
+        },
+        "longest_quiet_plies": 24,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 453,
+            "move": [
+              64,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 165,
+          "10": 453
+        },
+        "longest_quiet_plies": 121,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "classic_17000_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 115,
+            "move": [
+              68,
+              58
+            ],
+            "attacking": true,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 185,
+            "move": [
+              85,
+              86
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 44,
+          "9": 130
+        },
+        "longest_quiet_plies": 67,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 22,
+          "10": 311
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 80,
+          "10": 94
+        },
+        "longest_quiet_plies": 77,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 184,
+            "move": [
+              38,
+              39
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 45,
+          "10": 61
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 231,
+            "move": [
+              71,
+              70
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 149,
+          "9": 356
+        },
+        "longest_quiet_plies": 40,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 153,
+            "move": [
+              64,
+              65
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 34,
+          "9": 143
+        },
+        "longest_quiet_plies": 52,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 316
+        },
+        "longest_quiet_plies": 69,
+        "trailing_quiet_plies": 69,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_17001_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 83,
+            "move": [
+              45,
+              35
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 188,
+            "move": [
+              31,
+              41
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 29,
+          "9": 181
+        },
+        "longest_quiet_plies": 173,
+        "trailing_quiet_plies": 173,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 416,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 46
+        },
+        "longest_quiet_plies": 211,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 42
+      },
+      {
+        "replay": "classic_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 57,
+            "move": [
+              49,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 204,
+            "move": [
+              28,
+              38
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 33,
+          "9": 87
+        },
+        "longest_quiet_plies": 181,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 783,
+            "move": [
+              16,
+              17
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 26,
+          "10": 119
+        },
+        "longest_quiet_plies": 95,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 700,
+            "move": [
+              5,
+              4
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 25,
+          "9": 140
+        },
+        "longest_quiet_plies": 65,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 7,
+          "9": 349
+        },
+        "longest_quiet_plies": 373,
+        "trailing_quiet_plies": 1,
+        "max_public_board_visits": 12
+      },
+      {
+        "replay": "classic_17003_random_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 224,
+            "move": [
+              32,
+              31
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 79
+        },
+        "longest_quiet_plies": 32,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 382,
+            "move": [
+              24,
+              64
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 497,
+            "move": [
+              80,
+              90
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 27,
+          "9": 128
+        },
+        "longest_quiet_plies": 73,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17003_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 129,
+          "10": 178
+        },
+        "longest_quiet_plies": 352,
+        "trailing_quiet_plies": 352,
+        "max_public_board_visits": 34
+      },
+      {
+        "replay": "classic_17004_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 36,
+            "move": [
+              50,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 541,
+            "move": [
+              81,
+              91
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 96,
+          "10": 177
+        },
+        "longest_quiet_plies": 61,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 218,
+            "move": [
+              36,
+              35
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 60
+        },
+        "longest_quiet_plies": 53,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 226,
+            "move": [
+              23,
+              24
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 120
+        },
+        "longest_quiet_plies": 38,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 471,
+            "move": [
+              15,
+              5
+            ],
+            "attacking": false,
+            "enemy_rank": 1,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 44,
+          "10": 199
+        },
+        "longest_quiet_plies": 54,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 46,
+          "10": 226
+        },
+        "longest_quiet_plies": 43,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 213,
+          "10": 400
+        },
+        "longest_quiet_plies": 109,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 50,
+          "10": 62
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 31,
+          "10": 123
+        },
+        "longest_quiet_plies": 33,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 128,
+          "9": 438
+        },
+        "longest_quiet_plies": 151,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 61,
+          "9": 75
+        },
+        "longest_quiet_plies": 54,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 158,
+            "move": [
+              10,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "9": 52,
+          "10": 148
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 143
+        },
+        "longest_quiet_plies": 57,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 40,
+          "10": 228
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_random_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 65,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 26,
+          "9": 69
+        },
+        "longest_quiet_plies": 122,
+        "trailing_quiet_plies": 24,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "miner_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 468
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {},
+        "longest_quiet_plies": 756,
+        "trailing_quiet_plies": 756,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "miner_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28,
+          "9": 266
+        },
+        "longest_quiet_plies": 121,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 299
+        },
+        "longest_quiet_plies": 25,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 92,
+          "10": 212
+        },
+        "longest_quiet_plies": 44,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 109,
+          "10": 141
+        },
+        "longest_quiet_plies": 67,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 363,
+            "move": [
+              26,
+              16
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 88
+        },
+        "longest_quiet_plies": 95,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 247
+        },
+        "longest_quiet_plies": 119,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 126,
+            "move": [
+              45,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 126,
+          "9": 134
+        },
+        "longest_quiet_plies": 36,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 94,
+          "9": 147
+        },
+        "longest_quiet_plies": 81,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 68
+        },
+        "longest_quiet_plies": 90,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 205
+        },
+        "longest_quiet_plies": 113,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 30,
+          "9": 53
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 97,
+          "9": 241
+        },
+        "longest_quiet_plies": 59,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 381,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 48,
+          "9": 427
+        },
+        "longest_quiet_plies": 69,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 59,
+          "10": 64
+        },
+        "longest_quiet_plies": 79,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 80
+        },
+        "longest_quiet_plies": 35,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 376,
+            "move": [
+              32,
+              31
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 89
+        },
+        "longest_quiet_plies": 37,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 60,
+          "9": 93
+        },
+        "longest_quiet_plies": 23,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 25,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 131,
+          "9": 183
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 278,
+            "move": [
+              44,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 69,
+          "10": 179
+        },
+        "longest_quiet_plies": 27,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 105,
+            "move": [
+              44,
+              34
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 37,
+          "10": 105
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 12,
+          "9": 150
+        },
+        "longest_quiet_plies": 15,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 171
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 38,
+          "9": 60
+        },
+        "longest_quiet_plies": 12,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 153,
+            "move": [
+              39,
+              38
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 153,
+          "9": 188
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 241,
+          "10": 308
+        },
+        "longest_quiet_plies": 163,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 139,
+            "move": [
+              38,
+              28
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 55,
+          "10": 99
+        },
+        "longest_quiet_plies": 122,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 57,
+          "10": 208
+        },
+        "longest_quiet_plies": 15,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 28,
+          "10": 32
+        },
+        "longest_quiet_plies": 54,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  },
+  "strict_guard": {
+    "games": 80,
+    "counts": {
+      "marshal_lost": 27,
+      "spy_lost_with_enemy_marshal_alive": 9,
+      "flag_taken_by_scout": 1
+    },
+    "matches": [
+      {
+        "replay": "cautious_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 554
+        },
+        "longest_quiet_plies": 116,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 155,
+          "10": 295
+        },
+        "longest_quiet_plies": 60,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 64,
+          "9": 156
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 128,
+          "9": 389
+        },
+        "longest_quiet_plies": 126,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 158,
+          "9": 368
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 124
+        },
+        "longest_quiet_plies": 57,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 48,
+          "10": 150
+        },
+        "longest_quiet_plies": 56,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 398,
+            "move": [
+              31,
+              41
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 51,
+          "9": 232
+        },
+        "longest_quiet_plies": 43,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 302,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 280,
+          "9": 308
+        },
+        "longest_quiet_plies": 129,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "cautious_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 47,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 91,
+          "9": 170
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 547,
+            "move": [
+              35,
+              45
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 534
+        },
+        "longest_quiet_plies": 64,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 201,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 29,
+          "10": 201
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28,
+          "9": 182
+        },
+        "longest_quiet_plies": 85,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 29,
+            "move": [
+              33,
+              23
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 29
+        },
+        "longest_quiet_plies": 29,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 120
+        },
+        "longest_quiet_plies": 50,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 530,
+            "move": [
+              30,
+              31
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 215,
+          "9": 467
+        },
+        "longest_quiet_plies": 78,
+        "trailing_quiet_plies": 17,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 130
+        },
+        "longest_quiet_plies": 25,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 124,
+          "10": 222
+        },
+        "longest_quiet_plies": 71,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 190,
+            "move": [
+              34,
+              44
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 121,
+          "10": 190
+        },
+        "longest_quiet_plies": 24,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 453,
+            "move": [
+              64,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 165,
+          "10": 453
+        },
+        "longest_quiet_plies": 121,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "classic_17000_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 115,
+            "move": [
+              68,
+              58
+            ],
+            "attacking": true,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 208,
+            "move": [
+              82,
+              72
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 44,
+          "9": 130
+        },
+        "longest_quiet_plies": 53,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 22,
+          "10": 311
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 80,
+          "10": 94
+        },
+        "longest_quiet_plies": 77,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 457,
+            "move": [
+              39,
+              38
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 45,
+          "10": 61
+        },
+        "longest_quiet_plies": 75,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 392,
+            "move": [
+              41,
+              51
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 149,
+          "9": 358
+        },
+        "longest_quiet_plies": 40,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 153,
+            "move": [
+              64,
+              65
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 34,
+          "9": 143
+        },
+        "longest_quiet_plies": 52,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 316
+        },
+        "longest_quiet_plies": 109,
+        "trailing_quiet_plies": 4,
+        "max_public_board_visits": 12
+      },
+      {
+        "replay": "classic_17001_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 83,
+            "move": [
+              45,
+              35
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 188,
+            "move": [
+              31,
+              41
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 29,
+          "9": 181
+        },
+        "longest_quiet_plies": 173,
+        "trailing_quiet_plies": 173,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17002_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 46
+        },
+        "longest_quiet_plies": 747,
+        "trailing_quiet_plies": 747,
+        "max_public_board_visits": 150
+      },
+      {
+        "replay": "classic_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 57,
+            "move": [
+              49,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 304,
+            "move": [
+              28,
+              38
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 33,
+          "9": 120
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 464,
+            "move": [
+              64,
+              65
+            ],
+            "attacking": false,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "9": 26,
+          "10": 119
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "flag_taken_by_scout",
+            "ply": 521,
+            "move": [
+              19,
+              9
+            ]
+          }
+        ],
+        "counts": {
+          "flag_taken_by_scout": 1
+        },
+        "first_officer_disclosures": {
+          "10": 25,
+          "9": 128
+        },
+        "longest_quiet_plies": 40,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "classic_17003_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 7,
+          "9": 329
+        },
+        "longest_quiet_plies": 374,
+        "trailing_quiet_plies": 374,
+        "max_public_board_visits": 7
+      },
+      {
+        "replay": "classic_17003_random_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 123,
+            "move": [
+              17,
+              16
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 138,
+            "move": [
+              32,
+              22
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 79
+        },
+        "longest_quiet_plies": 40,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 446,
+            "move": [
+              13,
+              14
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 27,
+          "9": 128
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 129,
+          "10": 178
+        },
+        "longest_quiet_plies": 352,
+        "trailing_quiet_plies": 352,
+        "max_public_board_visits": 34
+      },
+      {
+        "replay": "classic_17004_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 36,
+            "move": [
+              50,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 535,
+            "move": [
+              75,
+              85
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 96,
+          "10": 177
+        },
+        "longest_quiet_plies": 91,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 218,
+            "move": [
+              36,
+              35
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 60
+        },
+        "longest_quiet_plies": 53,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 400,
+            "move": [
+              13,
+              23
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 124
+        },
+        "longest_quiet_plies": 42,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 693,
+            "move": [
+              83,
+              84
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 44,
+          "10": 199
+        },
+        "longest_quiet_plies": 95,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 46,
+          "10": 226
+        },
+        "longest_quiet_plies": 43,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 213,
+          "10": 400
+        },
+        "longest_quiet_plies": 109,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 50,
+          "10": 62
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 31,
+          "10": 123
+        },
+        "longest_quiet_plies": 33,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 128,
+          "9": 502
+        },
+        "longest_quiet_plies": 84,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17001_random_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 61,
+          "9": 75
+        },
+        "longest_quiet_plies": 270,
+        "trailing_quiet_plies": 22,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 158,
+            "move": [
+              10,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "9": 52,
+          "10": 148
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 135
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 40,
+          "10": 228
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 26,
+          "9": 199
+        },
+        "longest_quiet_plies": 65,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 468
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {},
+        "longest_quiet_plies": 756,
+        "trailing_quiet_plies": 756,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "miner_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28,
+          "9": 116
+        },
+        "longest_quiet_plies": 27,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 299
+        },
+        "longest_quiet_plies": 25,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 92,
+          "10": 212
+        },
+        "longest_quiet_plies": 44,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 109,
+          "10": 141
+        },
+        "longest_quiet_plies": 63,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 88
+        },
+        "longest_quiet_plies": 38,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 247
+        },
+        "longest_quiet_plies": 119,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 126,
+            "move": [
+              45,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 126,
+          "9": 134
+        },
+        "longest_quiet_plies": 36,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 94,
+          "9": 137
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 68
+        },
+        "longest_quiet_plies": 122,
+        "trailing_quiet_plies": 58,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "raider_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 205
+        },
+        "longest_quiet_plies": 113,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 30,
+          "9": 53
+        },
+        "longest_quiet_plies": 17,
+        "trailing_quiet_plies": 3,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 97,
+          "9": 203
+        },
+        "longest_quiet_plies": 137,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 381,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 48,
+          "9": 427
+        },
+        "longest_quiet_plies": 69,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 59,
+          "10": 64
+        },
+        "longest_quiet_plies": 79,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 80
+        },
+        "longest_quiet_plies": 35,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 89,
+          "9": 221
+        },
+        "longest_quiet_plies": 28,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 60,
+          "9": 93
+        },
+        "longest_quiet_plies": 23,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 25,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 131,
+          "9": 183
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 278,
+            "move": [
+              44,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 69,
+          "10": 179
+        },
+        "longest_quiet_plies": 27,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 105,
+            "move": [
+              44,
+              34
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 37,
+          "10": 105
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 12
+        },
+        "longest_quiet_plies": 88,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 171
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 38,
+          "9": 60
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 153,
+            "move": [
+              39,
+              38
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 153,
+          "9": 188
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 241,
+          "10": 308
+        },
+        "longest_quiet_plies": 163,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 139,
+            "move": [
+              38,
+              28
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 55,
+          "10": 99
+        },
+        "longest_quiet_plies": 122,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 57,
+          "10": 208
+        },
+        "longest_quiet_plies": 15,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 91,
+            "move": [
+              45,
+              35
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 28,
+          "10": 32
+        },
+        "longest_quiet_plies": 20,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  },
+  "final": {
+    "games": 80,
+    "counts": {
+      "marshal_lost": 31,
+      "spy_lost_with_enemy_marshal_alive": 7
+    },
+    "matches": [
+      {
+        "replay": "cautious_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 554
+        },
+        "longest_quiet_plies": 116,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 155,
+          "10": 295
+        },
+        "longest_quiet_plies": 60,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 64,
+          "9": 156
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 128,
+          "9": 389
+        },
+        "longest_quiet_plies": 126,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 158,
+          "9": 368
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 124
+        },
+        "longest_quiet_plies": 57,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 48,
+          "10": 150
+        },
+        "longest_quiet_plies": 56,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 51
+        },
+        "longest_quiet_plies": 49,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 302,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 280,
+          "9": 308
+        },
+        "longest_quiet_plies": 129,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "cautious_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 47,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 91,
+          "9": 239
+        },
+        "longest_quiet_plies": 52,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 547,
+            "move": [
+              35,
+              45
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 534
+        },
+        "longest_quiet_plies": 64,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 201,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 29,
+          "10": 201
+        },
+        "longest_quiet_plies": 58,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28
+        },
+        "longest_quiet_plies": 39,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 29,
+            "move": [
+              33,
+              23
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 29
+        },
+        "longest_quiet_plies": 29,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17003_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 86,
+          "10": 120
+        },
+        "longest_quiet_plies": 191,
+        "trailing_quiet_plies": 191,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "cautious_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 215,
+          "9": 332
+        },
+        "longest_quiet_plies": 85,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "cautious_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 130
+        },
+        "longest_quiet_plies": 25,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 124,
+          "10": 222
+        },
+        "longest_quiet_plies": 71,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 190,
+            "move": [
+              34,
+              44
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 121,
+          "10": 190
+        },
+        "longest_quiet_plies": 24,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "cautious_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 453,
+            "move": [
+              64,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 165,
+          "10": 453
+        },
+        "longest_quiet_plies": 121,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "classic_17000_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 115,
+            "move": [
+              68,
+              58
+            ],
+            "attacking": true,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 185,
+            "move": [
+              85,
+              86
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 44,
+          "9": 130
+        },
+        "longest_quiet_plies": 67,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 22,
+          "10": 311
+        },
+        "longest_quiet_plies": 47,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 80,
+          "10": 94
+        },
+        "longest_quiet_plies": 77,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 184,
+            "move": [
+              38,
+              39
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 45,
+          "10": 61
+        },
+        "longest_quiet_plies": 35,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 231,
+            "move": [
+              71,
+              70
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 149,
+          "9": 356
+        },
+        "longest_quiet_plies": 40,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 153,
+            "move": [
+              64,
+              65
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 34,
+          "9": 143
+        },
+        "longest_quiet_plies": 52,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17001_stable_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 755,
+            "move": [
+              34,
+              44
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 316
+        },
+        "longest_quiet_plies": 79,
+        "trailing_quiet_plies": 31,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_17001_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 83,
+            "move": [
+              45,
+              35
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 188,
+            "move": [
+              31,
+              41
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 29,
+          "9": 181
+        },
+        "longest_quiet_plies": 173,
+        "trailing_quiet_plies": 173,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "classic_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 416,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 46
+        },
+        "longest_quiet_plies": 211,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 42
+      },
+      {
+        "replay": "classic_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 57,
+            "move": [
+              49,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 304,
+            "move": [
+              28,
+              38
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 33,
+          "9": 120
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 783,
+            "move": [
+              16,
+              17
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 26,
+          "10": 119
+        },
+        "longest_quiet_plies": 95,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 700,
+            "move": [
+              5,
+              4
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 25,
+          "9": 140
+        },
+        "longest_quiet_plies": 65,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_random_0.jsonl",
+        "winner": -1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 7,
+          "9": 329
+        },
+        "longest_quiet_plies": 374,
+        "trailing_quiet_plies": 374,
+        "max_public_board_visits": 49
+      },
+      {
+        "replay": "classic_17003_random_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 224,
+            "move": [
+              32,
+              31
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 79
+        },
+        "longest_quiet_plies": 32,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 446,
+            "move": [
+              13,
+              14
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 27,
+          "9": 128
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17003_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 129,
+          "10": 178
+        },
+        "longest_quiet_plies": 352,
+        "trailing_quiet_plies": 352,
+        "max_public_board_visits": 34
+      },
+      {
+        "replay": "classic_17004_random_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 36,
+            "move": [
+              50,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 541,
+            "move": [
+              81,
+              91
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 96,
+          "10": 177
+        },
+        "longest_quiet_plies": 61,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 218,
+            "move": [
+              36,
+              35
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 60
+        },
+        "longest_quiet_plies": 53,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 226,
+            "move": [
+              23,
+              24
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 120
+        },
+        "longest_quiet_plies": 38,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_17004_stable_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 503,
+            "move": [
+              14,
+              13
+            ],
+            "attacking": false,
+            "enemy_rank": 1,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 44,
+          "10": 199
+        },
+        "longest_quiet_plies": 54,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 46,
+          "10": 226
+        },
+        "longest_quiet_plies": 43,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 213,
+          "10": 400
+        },
+        "longest_quiet_plies": 109,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 50,
+          "10": 62
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 31,
+          "10": 123
+        },
+        "longest_quiet_plies": 33,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 128,
+          "9": 394
+        },
+        "longest_quiet_plies": 59,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 61,
+          "9": 75
+        },
+        "longest_quiet_plies": 54,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 158,
+            "move": [
+              10,
+              60
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "9": 52,
+          "10": 148
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 31,
+          "9": 135
+        },
+        "longest_quiet_plies": 34,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 40,
+          "10": 228
+        },
+        "longest_quiet_plies": 21,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 26,
+          "9": 160
+        },
+        "longest_quiet_plies": 60,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 17,
+          "10": 468
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17002_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {},
+        "longest_quiet_plies": 756,
+        "trailing_quiet_plies": 756,
+        "max_public_board_visits": 5
+      },
+      {
+        "replay": "miner_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 28,
+          "9": 216
+        },
+        "longest_quiet_plies": 28,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 299
+        },
+        "longest_quiet_plies": 25,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 92,
+          "10": 212
+        },
+        "longest_quiet_plies": 44,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 109,
+          "10": 141
+        },
+        "longest_quiet_plies": 94,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "miner_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 577,
+            "move": [
+              54,
+              55
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 88,
+          "9": 330
+        },
+        "longest_quiet_plies": 56,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 247
+        },
+        "longest_quiet_plies": 119,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "miner_17004_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 126,
+            "move": [
+              45,
+              55
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 126,
+          "9": 134
+        },
+        "longest_quiet_plies": 36,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "miner_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 357,
+            "move": [
+              74,
+              75
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 94,
+          "9": 147
+        },
+        "longest_quiet_plies": 27,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 68
+        },
+        "longest_quiet_plies": 90,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 205
+        },
+        "longest_quiet_plies": 113,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 30,
+          "9": 53
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 97,
+          "9": 241
+        },
+        "longest_quiet_plies": 59,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17001_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 381,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 48,
+          "9": 427
+        },
+        "longest_quiet_plies": 69,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 59,
+          "10": 64
+        },
+        "longest_quiet_plies": 79,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 59,
+          "9": 80
+        },
+        "longest_quiet_plies": 35,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17001_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 376,
+            "move": [
+              32,
+              31
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 89
+        },
+        "longest_quiet_plies": 37,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 60,
+          "9": 93
+        },
+        "longest_quiet_plies": 23,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 25,
+            "move": [
+              79,
+              39
+            ],
+            "attacking": false,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1
+        },
+        "first_officer_disclosures": {
+          "10": 131,
+          "9": 183
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 278,
+            "move": [
+              44,
+              54
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 69,
+          "10": 179
+        },
+        "longest_quiet_plies": 27,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17002_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 105,
+            "move": [
+              44,
+              34
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 37,
+          "10": 105
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 12,
+          "9": 150
+        },
+        "longest_quiet_plies": 19,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 1,
+          "10": 171
+        },
+        "longest_quiet_plies": 13,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 38,
+          "9": 60
+        },
+        "longest_quiet_plies": 12,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17003_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 153,
+            "move": [
+              39,
+              38
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 153,
+          "9": 188
+        },
+        "longest_quiet_plies": 41,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_random_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 241,
+          "10": 308
+        },
+        "longest_quiet_plies": 163,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_17004_random_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 139,
+            "move": [
+              38,
+              28
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 55,
+          "10": 99
+        },
+        "longest_quiet_plies": 122,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 57,
+          "10": 208
+        },
+        "longest_quiet_plies": 15,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_17004_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 28,
+          "10": 32
+        },
+        "longest_quiet_plies": 37,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  },
+  "native_previous": {
+    "games": 4,
+    "counts": {
+      "marshal_lost": 2
+    },
+    "matches": [
+      {
+        "replay": "reference_28000_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 26,
+          "9": 156
+        },
+        "longest_quiet_plies": 74,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 4
+      },
+      {
+        "replay": "reference_28000_stable_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 73,
+          "9": 207
+        },
+        "longest_quiet_plies": 55,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "reference_28001_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 279,
+            "move": [
+              51,
+              41
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 24,
+          "9": 62
+        },
+        "longest_quiet_plies": 63,
+        "trailing_quiet_plies": 5,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "reference_28001_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 863,
+            "move": [
+              62,
+              61
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 39,
+          "10": 143
+        },
+        "longest_quiet_plies": 89,
+        "trailing_quiet_plies": 39,
+        "max_public_board_visits": 2
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  },
+  "native": {
+    "games": 4,
+    "counts": {
+      "marshal_lost": 2
+    },
+    "matches": [
+      {
+        "replay": "reference_31000_stable_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 202,
+          "10": 549
+        },
+        "longest_quiet_plies": 77,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "reference_31000_stable_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 287,
+            "move": [
+              62,
+              61
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 47,
+          "10": 185
+        },
+        "longest_quiet_plies": 225,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 9
+      },
+      {
+        "replay": "reference_31001_stable_0.jsonl",
+        "winner": 1,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 157,
+            "move": [
+              27,
+              26
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 36,
+          "9": 44
+        },
+        "longest_quiet_plies": 53,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "reference_31001_stable_1.jsonl",
+        "winner": -1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 63,
+          "10": 99
+        },
+        "longest_quiet_plies": 336,
+        "trailing_quiet_plies": 336,
+        "max_public_board_visits": 17
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  },
+  "evolved": {
+    "games": 8,
+    "counts": {
+      "spy_lost_with_enemy_marshal_alive": 2,
+      "marshal_lost": 4
+    },
+    "matches": [
+      {
+        "replay": "classic_29000_evolved_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 126,
+          "10": 222
+        },
+        "longest_quiet_plies": 63,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_29000_evolved_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 75,
+            "move": [
+              59,
+              29
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 86,
+            "move": [
+              28,
+              27
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 27,
+          "10": 86
+        },
+        "longest_quiet_plies": 42,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "classic_29001_evolved_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 592,
+            "move": [
+              34,
+              33
+            ],
+            "attacking": false,
+            "enemy_rank": 10,
+            "enemy_known": false
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 92,
+          "9": 171
+        },
+        "longest_quiet_plies": 88,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 3
+      },
+      {
+        "replay": "classic_29001_evolved_1.jsonl",
+        "winner": 0,
+        "side": 1,
+        "events": [
+          {
+            "kind": "spy_lost_with_enemy_marshal_alive",
+            "ply": 127,
+            "move": [
+              26,
+              27
+            ],
+            "attacking": false,
+            "enemy_known": true
+          },
+          {
+            "kind": "marshal_lost",
+            "ply": 464,
+            "move": [
+              3,
+              2
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "spy_lost_with_enemy_marshal_alive": 1,
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "10": 63,
+          "9": 151
+        },
+        "longest_quiet_plies": 49,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 2
+      },
+      {
+        "replay": "raider_29000_evolved_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [
+          {
+            "kind": "marshal_lost",
+            "ply": 181,
+            "move": [
+              49,
+              48
+            ],
+            "attacking": true,
+            "enemy_rank": 10,
+            "enemy_known": true
+          }
+        ],
+        "counts": {
+          "marshal_lost": 1
+        },
+        "first_officer_disclosures": {
+          "9": 29,
+          "10": 181
+        },
+        "longest_quiet_plies": 52,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_29000_evolved_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 99,
+          "10": 115
+        },
+        "longest_quiet_plies": 46,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_29001_evolved_0.jsonl",
+        "winner": 0,
+        "side": 0,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "9": 34,
+          "10": 231
+        },
+        "longest_quiet_plies": 51,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      },
+      {
+        "replay": "raider_29001_evolved_1.jsonl",
+        "winner": 1,
+        "side": 1,
+        "events": [],
+        "counts": {},
+        "first_officer_disclosures": {
+          "10": 75,
+          "9": 251
+        },
+        "longest_quiet_plies": 30,
+        "trailing_quiet_plies": 0,
+        "max_public_board_visits": 1
+      }
+    ],
+    "caution": "Events are diagnostic signals, not automatically errors: a sacrifice can win the game. Inspect its public context."
+  }
+}

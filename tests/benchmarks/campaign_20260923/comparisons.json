@@ -1,0 +1,47 @@
+{
+  "intermediate": {
+    "paired_games": 80,
+    "both_finished": 68,
+    "finished_seed_clusters": 5,
+    "finished_score_delta": 0.0,
+    "finished_cluster_interval_95": [
+      0.0,
+      0.0
+    ],
+    "all_game_delta_bounds": [
+      -0.1,
+      0.075
+    ],
+    "caution": "Finished-only results may be biased by censoring. Seed clusters, not individual moves, are resampled."
+  },
+  "strict_guard": {
+    "paired_games": 80,
+    "both_finished": 68,
+    "finished_seed_clusters": 5,
+    "finished_score_delta": -0.029411764705882353,
+    "finished_cluster_interval_95": [
+      -0.08823529411764706,
+      0.0
+    ],
+    "all_game_delta_bounds": [
+      -0.125,
+      0.0625
+    ],
+    "caution": "Finished-only results may be biased by censoring. Seed clusters, not individual moves, are resampled."
+  },
+  "final": {
+    "paired_games": 80,
+    "both_finished": 69,
+    "finished_seed_clusters": 5,
+    "finished_score_delta": 0.0,
+    "finished_cluster_interval_95": [
+      0.0,
+      0.0
+    ],
+    "all_game_delta_bounds": [
+      -0.0875,
+      0.075
+    ],
+    "caution": "Finished-only results may be biased by censoring. Seed clusters, not individual moves, are resampled."
+  }
+}
