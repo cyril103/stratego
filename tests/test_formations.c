@@ -3,7 +3,7 @@
 #define CHECK(x) do{if(!(x)){fprintf(stderr,"Formation %d seed %d side %d line %d: %s\n",variant,seed,side,__LINE__,#x);return 1;}}while(0)
 int main(void){
     int flag_positions[100]={0},evolved_positions[100]={0},checked=0,unique=0;
-    uint64_t layouts[200]={0};
+    uint64_t layouts[200]={0};int front_hist[3]={0};
     for(int variant=0;variant<=AI_FORMATIONS;variant++)for(int seed=1;seed<=200;seed++)for(int side=0;side<2;side++){
         Game g;game_init(&g,seed);
         if(variant==AI_FORMATIONS)ai_deploy(&g,side);else ai_deploy_template(&g,side,variant);
@@ -24,17 +24,17 @@ int main(void){
             layout|=(uint64_t)flag<<40;
             bool found=false;for(int i=0;i<unique;i++)if(layouts[i]==layout)found=true;
             if(!found)layouts[unique++]=layout;
-            bool decoy=false;int probes=0;
+            bool decoy=false;int probes=0,front_bombs=0;
             for(int s=0;s<20;s++)if(movable(g.board[s])){
                 int adj[4]={s>=10?s-10:-1,s+10,s%10?s-1:-1,s%10<9?s+1:-1},bombs=0;
                 for(int k=0;k<4;k++)if(adj[k]>=0&&g.board[adj[k]].rank==BOMB)bombs++;
                 if(bombs>=2)decoy=true;
             }
             for(int s=30;s<40;s++){
-                CHECK(g.board[s].rank!=SPY&&g.board[s].rank<MAJOR);
-                probes+=g.board[s].rank==SCOUT;
+                CHECK(g.board[s].rank!=SPY&&(g.board[s].rank<MAJOR||g.board[s].rank==BOMB));
+                probes+=g.board[s].rank==SCOUT;front_bombs+=g.board[s].rank==BOMB;
             }
-            CHECK(decoy&&probes>=3);
+            CHECK(decoy&&probes>=3&&front_bombs<=2);front_hist[front_bombs]++;
         }
         CHECK((marshal%10-spy%10)*(marshal%10-spy%10)+(marshal/10-spy/10)*(marshal/10-spy/10)==1);
         /* Ignoring other mobile troops, every mobile piece can reach an open
@@ -60,5 +60,6 @@ int main(void){
     int positions=0;for(int s=0;s<100;s++)positions+=flag_positions[s]>0;
     int evolved=0;for(int s=0;s<100;s++)evolved+=evolved_positions[s]>0;
     printf("%d formations checked, %d template flag positions, %d evolved flag positions, %d bomb/flag topologies: inventory, lanes, escape routes, spy and reproducibility OK\n",checked,positions,evolved,unique);
-    return positions<8||evolved<12||unique<100;
+    printf("Front bomb counts: zero %d, one %d, two %d\n",front_hist[0],front_hist[1],front_hist[2]);
+    return positions<8||evolved<12||unique<100||!front_hist[0]||!front_hist[1]||!front_hist[2];
 }

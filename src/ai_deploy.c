@@ -59,18 +59,20 @@ void ai_deploy_template(Game *g,int side,int variant){
    template must not identify the flag. Rejection preserves deployment roles
    and escape routes; every accepted swap keeps the exact army inventory. */
 static bool deploy_viable(const int ranks[40]){
-    int flag=-1,marshal=-1,spy=-1,front_scouts=0,front_miners=0;
+    int flag=-1,marshal=-1,spy=-1,front_scouts=0,front_miners=0,front_bombs=0;
     for(int s=0;s<40;s++){
         if(ranks[s]==FLAG)flag=s;
         if(ranks[s]==MARSHAL)marshal=s;
         if(ranks[s]==SPY)spy=s;
         if(s>=30){
-            if(ranks[s]==SPY||ranks[s]>=MAJOR)return false;
-            front_scouts+=ranks[s]==SCOUT;front_miners+=ranks[s]==MINER;
+            if(ranks[s]==SPY||(ranks[s]>=MAJOR&&ranks[s]<=MARSHAL))return false;
+            front_scouts+=ranks[s]==SCOUT;front_miners+=ranks[s]==MINER;front_bombs+=ranks[s]==BOMB;
         }
     }
     if(flag<0||flag>=20||marshal<0||spy<0)return false;
-    if(front_scouts<3||front_miners>2)return false;
+    /* A permanently bomb-free front would advertise safe officer raids.
+       Keep some uncertainty without sealing the army behind its own bombs. */
+    if(front_scouts<3||front_miners>2||front_bombs>2)return false;
     int dx=marshal%10-spy%10,dy=marshal/10-spy/10;
     if(dx*dx+dy*dy!=1)return false;
     int nb[4]={flag>=10?flag-10:-1,flag+10,flag%10?flag-1:-1,flag%10<9?flag+1:-1};

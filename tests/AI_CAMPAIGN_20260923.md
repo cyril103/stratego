@@ -110,6 +110,24 @@ en retrait. Chaque mutation admise conserve une fausse poche à drapeau (pièce
 mobile voisine d'au moins deux bombes). Le lancement du jeu appelle ce générateur,
 au lieu de tirer uniquement parmi les six anciens modèles.
 
+Une vérification supplémentaire a retiré une régularité exploitable : l'exclusion
+des officiers supérieurs en première ligne excluait aussi les bombes, dont le
+rang numérique est supérieur. Jusqu'à deux bombes y sont maintenant permises,
+avec les mêmes contraintes de sorties, éclaireurs, défense et leurre. Sur les
+200 graines ordinateur du test, 32 placements n'en ont aucune en première ligne,
+89 en ont une et 79 en ont deux. Ce contrôle porte sur la diversité, sans
+prétendre établir que chaque placement est stratégiquement optimal.
+La compilation complète après cette modification et les deux contrôles affectés
+(`rules_and_ai`, `varied_formations`) passent également : 2/2, 323,54 secondes
+sous charge. Aucun code de décision n'a changé depuis les 37/37 contrôles.
+
+Les tournois de moteur utilisent les placements `stable` et `random` : cette
+modification de `ai_deploy` n'y est pas appelée. Leur manifeste diffère donc du
+dernier générateur, mais leur code de décision est identique à celui livré.
+Une série distincte `reports/campaign-evolved` teste les placements générés
+finaux : graines 29000 et 29001, camps inversés, Classique et raider, plafond
+800, budget 25 %. Elle ne remplace pas la comparaison appariée du moteur.
+
 ## Validation technique
 
 - Moteur : `4376e01` ; placements et raccordement au jeu : `a03306a`.
