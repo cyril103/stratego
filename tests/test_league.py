@@ -60,6 +60,20 @@ class LeagueTests(unittest.TestCase):
         self.assertEqual(report['counts'],{'non_miner_attacks_known_bomb':1})
         self.assertEqual(report['events'][0]['ply'],3)
 
+    def test_audit_reports_stalling_without_adjudicating_a_draw(self):
+        board=[[-1,-1,-1] for _ in range(100)]
+        board[60]=[0,2,0];board[9]=[1,2,40]
+        cycle=[(60,50),(9,19),(50,60),(19,9)]*2
+        rows=[dict(board=board)]+[dict(ply=i+1,side=i%2,**{'from':a},to=b,combat=2) for i,(a,b) in enumerate(cycle)]
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'replay.jsonl'
+            path.write_text('\n'.join(json.dumps(r) for r in rows))
+            report=audit.audit_replay(path,0)
+        self.assertEqual(report['longest_quiet_plies'],8)
+        self.assertEqual(report['trailing_quiet_plies'],8)
+        self.assertEqual(report['max_public_board_visits'],2)
+        self.assertNotIn('winner',report)
+
 
 if __name__=='__main__':
     unittest.main()
