@@ -11,6 +11,11 @@ enum { FLAG, SPY, SCOUT, MINER, SERGEANT, LIEUTENANT, CAPTAIN, MAJOR, COLONEL, G
 typedef struct { int rank, side, id; bool revealed, moved; } Piece;
 typedef struct { int from, to; } Move;
 typedef struct {
+    uint16_t pursued, avoided, declined; /* Bitsets of publicly revealed ranks. */
+    uint8_t approaches, retreats;
+    int last_ply, retreat_ply;
+} PublicEvidence;
+typedef struct {
     Piece board[BOARD];
     int turn, winner, ply, end_reason;
     int captured[2][12];
@@ -22,6 +27,7 @@ typedef struct {
     int history_id[2][8], history_count[2];
     int attack_rank, defend_rank, combat; /* -1 attacker lost, 0 mutual, 1 won, 2 no combat */
     uint32_t rng;
+    PublicEvidence evidence[80]; /* Behaviour, keyed by identity, never true hidden ranks. */
 } Game;
 extern const int army_counts[12];
 extern const char *rank_names[12];
@@ -40,6 +46,7 @@ bool game_legal(const Game *g, Move m, int side);
 int game_moves(const Game *g, int side, Move out[MAX_MOVES]);
 int combat_result(int attacker, int defender);
 bool game_apply(Game *g, Move m);
+bool game_apply_search(Game *g, Move m); /* Same rules; no persistent observation bookkeeping. */
 void game_check_end(Game *g);
 bool game_resign(Game *g,int side);
 bool game_agree_draw(Game *g,bool human_agrees,bool computer_agrees);

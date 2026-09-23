@@ -87,9 +87,37 @@ bool game_end_playing_period(Game *g){
     game_check_end(g);if(g->winner>=0)return false;
     g->winner=GAME_DRAW;g->end_reason=END_PLAYING_PERIOD;return true;
 }
-bool game_apply(Game *g,Move m) {
+/* Observe choices only against ranks the moving player has actually seen.
+   The mover's hidden rank is deliberately not consulted. Bluffing remains
+   possible; these facts are evidence, never an identification. */
+static void observe_choice(Game *g,Move m){
+    Piece a=g->board[m.from];
+    if(g->board[m.to].side>=0||abs(m.from%10-m.to%10)+abs(m.from/10-m.to/10)!=1)return;
+    for(int s=0;s<100;s++){
+        Piece actor=g->board[s];
+        if(actor.side!=a.side||actor.revealed||actor.id<0||actor.id>=80)continue;
+        PublicEvidence *e=&g->evidence[actor.id];
+        int cells[8]={s>=10?s-10:-1,s<90?s+10:-1,s%10?s-1:-1,s%10<9?s+1:-1,
+            m.to>=10?m.to-10:-1,m.to<90?m.to+10:-1,m.to%10?m.to-1:-1,m.to%10<9?m.to+1:-1};
+        for(int k=0;k<(s==m.from?8:4);k++){
+            int t=cells[k];if(t<0)continue;
+            bool duplicate=false;for(int j=0;j<k;j++)if(cells[j]==t)duplicate=true;
+            if(duplicate)continue;
+            Piece target=g->board[t];
+            if(target.side!=1-a.side||!target.revealed||!movable(target))continue;
+            int before=abs(s%10-t%10)+abs(s/10-t/10);
+            int after=s==m.from?abs(m.to%10-t%10)+abs(m.to/10-t/10):before;
+            uint16_t bit=(uint16_t)(1u<<target.rank);
+            if(s==m.from&&before>1&&after==1){e->pursued|=bit;if(e->approaches<6)e->approaches++;e->last_ply=g->ply+1;}
+            if(s==m.from&&before==1&&after>1){e->avoided|=bit;if(e->retreats<6)e->retreats++;e->retreat_ply=g->ply+1;}
+            if(s!=m.from&&before==1)e->declined|=bit;
+        }
+    }
+}
+static bool apply_move(Game *g,Move m,bool observe) {
     if(g->winner>=0||!game_legal(g,m,g->turn))return false;
     Piece a=g->board[m.from],d=g->board[m.to];int s=a.side;
+    if(observe)observe_choice(g,m);
     if(a.rank==MARSHAL&&a.revealed){
         for(int e=0;e<100;e++){
             Piece suspect=g->board[e];
@@ -125,3 +153,5 @@ bool game_apply(Game *g,Move m) {
         g->marshal_suspects[side][d.id/64]&=~(UINT64_C(1)<<(d.id%64));
     g->last_move=m;g->ply++;g->turn=1-s;game_check_end(g);return true;
 }
+bool game_apply(Game *g,Move m){return apply_move(g,m,true);}
+bool game_apply_search(Game *g,Move m){return apply_move(g,m,false);}
