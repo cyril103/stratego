@@ -225,6 +225,41 @@ static bool marshal_has_exit(const Game *v,float p[100][12]){
     }
     return false;
 }
+/* A retreat can be safe now but leave both exits covered by one quiet enemy
+   approach. Test that geometry with public identities, including captures by
+   the marshal: an unprotected possible spy is prey when WE initiate combat. */
+static bool marshal_approach_trap(const Game *v,float p[100][12]){
+    int marshal=-1;
+    for(int s=0;s<100;s++)if(v->board[s].side==v->turn&&v->board[s].rank==MARSHAL&&v->board[s].revealed)marshal=s;
+    if(marshal<0)return false;
+    for(int e=0;e<100;e++){
+        Piece enemy=v->board[e];
+        if(enemy.side!=1-v->turn||!enemy.moved||p[e][SPY]<=0||
+           abs(e%10-marshal%10)+abs(e/10-marshal/10)>3)continue;
+        int nb[4],nn=neighbors(e,nb);
+        for(int j=0;j<nn;j++){
+            int t=nb[j];
+            if(v->board[t].side>=0||abs(t%10-marshal%10)+abs(t/10-marshal/10)>2)continue;
+            Game legal=*v;legal.board[e].rank=SPY;
+            if(!public_legal(&legal,(Move){e,t},enemy.side))continue;
+            Game next=optimistic_move(v,(Move){e,t});
+            float moved[100][12];memcpy(moved,p,sizeof(moved));
+            memcpy(moved[t],moved[e],sizeof(moved[t]));memset(moved[e],0,sizeof(moved[e]));
+            Move answers[MAX_MOVES];int count=game_moves(&next,v->turn,answers);bool escape=false;
+            for(int k=0;k<count;k++){
+                Move m=answers[k];
+                if(!public_legal(&next,m,v->turn)||!certain_survival(&next,moved,m)||known_unanswered_loss(&next,m)>0)continue;
+                Game out=optimistic_move(&next,m);
+                if(marshal_contact_unsafe(&out,moved))continue;
+                /* A guard may remove the hunter or clear a safe retreat, but
+                   merely waiting elsewhere is not an escape. */
+                if(m.from==marshal||m.to==t||marshal_has_exit(&out,moved)){escape=true;break;}
+            }
+            if(!escape)return true;
+        }
+    }
+    return false;
+}
 static int preserve_marshal_exit(const Game *v,float p[100][12],Move *moves,int n){
     if(marshal_contact_unsafe(v,p)||!marshal_needs_exit(v,p)||!marshal_has_exit(v,p))return n;
     Move safe[MAX_MOVES];int kept=0;
@@ -232,6 +267,7 @@ static int preserve_marshal_exit(const Game *v,float p[100][12],Move *moves,int 
         Game next=optimistic_move(v,moves[i]);
         bool blocks=v->board[moves[i].from].rank!=MARSHAL&&v->board[moves[i].to].side<0&&
             marshal_needs_exit(&next,p)&&!marshal_has_exit(&next,p);
+        if(v->board[moves[i].to].side<0&&marshal_approach_trap(&next,p))blocks=true;
         if(!blocks)safe[kept++]=moves[i];
     }
     if(kept){memcpy(moves,safe,(size_t)kept*sizeof(Move));return kept;}

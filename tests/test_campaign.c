@@ -1,4 +1,5 @@
 #include "../src/ai.c"
+#include "replay.h"
 #define CHECK(x) do{if(!(x)){fprintf(stderr,"Campaign line %d: %s\n",__LINE__,#x);return 1;}}while(0)
 static void put(Game *g,int s,int rank,int side){g->board[s]=(Piece){rank,side,s,true,true};}
 static void count(Game *g){
@@ -46,5 +47,29 @@ int main(void){
         for(int s=0;s<100;s++)if(next.board[s].side==COMPUTER&&next.board[s].rank==MINER)miner=s;
         CHECK(miner>=0&&!game_legal(&next,(Move){74,miner},HUMAN));
     }
-    puts("Campaign: collective exits, role-sensitive raid risk and actual-move mission continuity OK");return 0;
+    CHECK(replay_load(STRATEGO_CAMPAIGN_FIXTURE,468,&g));
+    public_board(&g,&v,left);probabilities(&v,left,p);
+    CHECK(v.board[25].rank==-2&&p[25][SPY]>0);
+    Game pocket=optimistic_move(&v,(Move){14,4});
+    CHECK(marshal_approach_trap(&pocket,p));
+    Game open=optimistic_move(&v,(Move){14,13});
+    CHECK(!marshal_approach_trap(&open,p));
+    /* A certainly capturable possible spy is not an automatic retreat order. */
+    Game contact=optimistic_move(&v,(Move){14,24});
+    CHECK(!marshal_approach_trap(&contact,p));
+    float none[100][12];memcpy(none,p,sizeof(none));
+    for(int s=0;s<100;s++)none[s][SPY]=0;
+    CHECK(!marshal_approach_trap(&pocket,none));
+    Game other=g;int rank=other.board[25].rank;
+    other.board[25].rank=other.board[54].rank;other.board[54].rank=rank;
+    for(uint32_t seed=1;seed<=3;seed++){
+        uint32_t rng=seed,same=seed;
+        Move m=ai_choose(&g,1,&rng),hidden=ai_choose(&other,1,&same);
+        CHECK(m.from==hidden.from&&m.to==hidden.to&&rng==same);
+        CHECK(game_legal(&g,m,g.turn));
+        CHECK(!(m.from==14&&m.to==4));
+        Game next=optimistic_move(&v,m);
+        CHECK(!marshal_contact_unsafe(&next,p)&&!marshal_approach_trap(&next,p));
+    }
+    puts("Campaign: collective exits, public marshal traps, raid risk and mission continuity OK");return 0;
 }

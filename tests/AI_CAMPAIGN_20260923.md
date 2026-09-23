@@ -116,7 +116,7 @@ au lieu de tirer uniquement parmi les six anciens modèles.
 - Compilation Release complète sans avertissement ; 37/37 tests CTest réussis
   (313,36 secondes, sous charge de tournoi). Ces temps ne constituent pas une
   mesure comparative de la latence du moteur.
-- Cinq tests Python de protocole, censure, appariement et audit réussis.
+- Six tests Python de protocole, censure, appariement et audit réussis.
 - Le test supplémentaire d'ouverture gardée, ajouté à `campaign_army_and_missions`,
   passe sur trois graines : le dernier démineur n'est pas livré au général qui
   protège la bombe devant un drapeau connu.
@@ -130,10 +130,30 @@ au lieu de tirer uniquement parmi les six anciens modèles.
 
 ## Mesures de force en cours
 
-Le candidat corrigé utilise `reports/campaign-v2-dev`, comparé aux mêmes
-80 tâches de `reports/campaign-baseline-dev`. La validation hors développement
-utilise `reports/campaign-native-holdout` : deux graines (27000 et 27001), les
-deux camps, placements figés, contre référence et Classique, budget natif,
-plafond de 1 000 demi-coups. Aucun réglage n'est effectué sur ces huit parties.
-Les parties ne sont pas encore toutes terminées ; aucune conclusion de force
-ni supériorité humaine n'est déduite de résultats partiels.
+Le premier candidat corrigé utilise `reports/campaign-v2-dev`, comparé aux mêmes
+80 tâches de `reports/campaign-baseline-dev`. Son audit de développement a
+identifié une perte évitable du maréchal : au demi-coup 468 de
+`classic_17004_stable_1.jsonl`, le retour de 14 à 4 laisse les deux sorties
+couvertes après l'approche adverse de 25 à 15. Le rang de cet adversaire est
+encore inconnu. Une retraite vers 13 reste disponible.
+
+Le contrôle des retraites simule maintenant une approche légale d'un espion
+possible, puis les réponses publiques disponibles : fuite, capture certaine,
+ou dégagement par un allié sans perte connue. Une case libre au moment de la
+retraite ne suffit donc plus à déclarer celle-ci sûre. Le contrôle conserve les
+priorités terminales et n'élimine pas toutes les options si aucune n'est sûre.
+Le replay complet rejoint les fixtures ; le test vérifie aussi l'invariance du
+choix après permutation des rangs cachés, sur trois graines.
+
+Après cette correction : nouvelle compilation Release complète sans
+avertissement, 37/37 tests CTest réussis (472,51 secondes sous charge), et
+six tests Python réussis. Le manifeste du tournoi natif correspond alors
+exactement aux sources du moteur validé.
+
+Cette correction exige une nouvelle validation. La première validation native
+`reports/campaign-native-holdout` a été interrompue avant tout résultat complet :
+ses parties partielles ne comptent ni comme nulles ni comme victoires. Le candidat
+final utilise `reports/campaign-final-dev` (les mêmes 80 tâches de développement)
+et `reports/campaign-final-native` (graines nouvelles 28000 et 28001, camps
+inversés, placements figés, contre la référence, budget natif, plafond de
+1 000 demi-coups). Aucun réglage n'est effectué sur cette validation finale.
