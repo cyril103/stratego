@@ -37,6 +37,10 @@ Les 37 tests CTest et les 6 tests Python passent. Cela valide les situations
 testées, sans établir la force générale du moteur. Le candidat est donc livré
 **séparément pour essais**, sans promotion automatique au lancement habituel :
 
+L'état de livraison ci-dessous décrit la fin de cette campagne. Le lanceur
+candidat reçoit ensuite les [corrections issues des parties humaines suivantes](BREACH_CONVERSION.md) ;
+les mesures archivées et empreintes de cette campagne restent celles de `994ff5a`.
+
 - `Tester-IA-campagne.cmd` lance le candidat local `build/stratego-campaign.exe`,
   issu de `994ff5a`, SHA-256
   `08682BB8230FF0E3E31A191455AC5752FD62E94E0DC9E69DC73BF5F45B58F180`.

@@ -39,15 +39,18 @@ Le présentoir **Pièces sorties**, à droite du plateau, regroupe les pertes da
 
 ### Campagne IA
 
-Le candidat `994ff5a` est disponible localement avec
-`Tester-IA-campagne.cmd` (`build/stratego-campaign.exe`). Sur ce poste,
+Le candidat avec la correction de gestion de l'avantage est disponible localement
+avec `Tester-IA-campagne.cmd` (`build/stratego-campaign.exe`). Sur ce poste,
 `Jouer.cmd` conserve l'exécutable précédent `09936c8` : les tests tactiques
-passent, mais la validation contre cette référence ne démontre pas de gain
-global (1 victoire, 2 défaites, 1 partie inachevée au budget natif).
+passent, mais aucun gain global n'est encore établi. La campagne antérieure
+du candidat `994ff5a` avait donné 1 victoire, 2 défaites et 1 partie inachevée
+au budget natif ; ces chiffres ne mesurent pas les corrections suivantes.
 Les résultats et les limites sont détaillés dans
 [le bilan de campagne](tests/AI_CAMPAIGN_20260923.md).
 Les exécutables ne sont pas versionnés ; compiler les sources actuelles
 reconstruit le candidat, pas l'ancienne référence.
+La [correction des sondages de bombes et de la conversion de l'avantage](tests/BREACH_CONVERSION.md)
+utilise les deux dernières défaites humaines en 474 et 505 demi-coups.
 
 Pour reconstruire un candidat séparément du lancement habituel avec MinGW :
 
@@ -132,7 +135,7 @@ Les menaces publiques restent prises en compte dans le classement final des coup
 
 Les officiers poursuivent les pièces mobiles et les menaces révélées, au lieu de se précipiter sur les défenses fixes. Quand une unité moins précieuse est disponible, le maréchal et le général évitent de sonder une pièce potentiellement piégée. Les éclaireurs explorent, les démineurs ouvrent les défenses et les officiers peuvent les escorter. Les incursions près du drapeau, surtout celles des démineurs, déclenchent une priorité d'interception. La mémoire des huit derniers coups de chaque camp décourage les déplacements circulaires. Le mode Découverte conserve l'ancienne IA simplifiée.
 
-Après un désamorçage observé, l'IA peut poursuivre vers un drapeau probable malgré la perte du démineur. Une attaque à deux coups maximum peut risquer un officier si sa perte laisse un avantage matériel et une autre pièce dominante, sans compromettre le drapeau allié. Cette exception utilise uniquement les informations publiques ; une bombe connue ne devient jamais une cible sacrificielle. Voir `tests/BREACH_CONVERSION.md`.
+Après un désamorçage observé, l'IA peut poursuivre vers un drapeau probable avec un démineur, ou un attaquant dont le risque public de bombe est négligeable. Une réserve matérielle ne justifie plus le sacrifice d'un officier sur cette hypothèse. Lorsqu'une alternative viable existe, les unités utiles évitent les sondages immobiles risqués et privilégient les captures ou poursuites sûres de pièces mobiles. Les urgences du drapeau et les paris de dernier recours restent prioritaires. Voir [les règles et tests de conversion](tests/BREACH_CONVERSION.md).
 
 Le dernier démineur privilégie une route sûre vers le drapeau le plus probable lorsqu'un sondage voisin risque de le perdre. En fin de partie, la réserve rejoint le garde menacé par un chemin réellement praticable et évite les échanges sans soutien. Ces missions réduisent les allers-retours qui retardaient l'attaque ou la défense ; elles sont vérifiées sur la défaite enregistrée en 547 demi-coups (`tests/CONTINUITY.md`).
 

@@ -1,5 +1,5 @@
-/* Exploit a publicly observed bomb opening even after its miner dies.
-   The candidate flag remains a hypothesis; budget the entire attacker's loss. */
+/* A bomb opening is useful information, not proof of a flag. Never use
+   a material reserve as permission to throw an officer at another bomb. */
 typedef struct {Move step;int goal;float bonus;} BreachPlan;
 static BreachPlan breach_plan(const Game *v,float p[100][12]){
     BreachPlan plan={{-1,-1},-1,0};int side=v->turn,enemy=1-side;
@@ -21,6 +21,7 @@ static BreachPlan breach_plan(const Game *v,float p[100][12]){
         if(!breached)continue;
         for(int from=0;from<100;from++){
             Piece a=v->board[from];if(a.side!=side||!movable(a))continue;
+            if(a.rank!=MINER&&p[goal][BOMB]>.02f)continue;
             /* A failed probe must leave both a material edge and a dominant
                mobile reserve. No last-officer desperation disguised as attack. */
             if(material[side]-worth[a.rank]<material[enemy]+worth[CAPTAIN])continue;

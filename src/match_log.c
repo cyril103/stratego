@@ -28,7 +28,7 @@ void match_log_begin(const Game *g,int difficulty) {
         record=fopen(path,"w");break;
     }
     if(!record)return;
-    fprintf(record,"{\"version\":1,\"rules\":\"ISF-endings-v1\",\"engine\":\"%s\",\"difficulty\":%d,\"turn\":%d,\"board\":[",difficulty==2?"SelfPlayPolicyV1":difficulty==3?"ExpertPlusClassic":difficulty==1?"ExpertPlusImprovedCampaignV1":"Decouverte",difficulty,g->turn);
+    fprintf(record,"{\"version\":1,\"rules\":\"ISF-endings-v1\",\"engine\":\"%s\",\"difficulty\":%d,\"turn\":%d,\"board\":[",difficulty==2?"SelfPlayPolicyV1":difficulty==3?"ExpertPlusClassic":difficulty==1?"ExpertPlusImprovedConversionV1":"Decouverte",difficulty,g->turn);
     for(int s=0;s<100;s++)fprintf(record,"%s[%d,%d,%d]",s?",":"",g->board[s].side,g->board[s].rank,g->board[s].id);
     fputs("]}\n",record);fflush(record);
 }

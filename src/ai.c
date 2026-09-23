@@ -975,6 +975,7 @@ static float escorted_defense(const Game *view,Move m){
 #include "ai_endgamecare.h"
 #include "ai_officer_raid.h"
 #include "ai_flankdefense.h"
+#include "ai_conversion.h"
 typedef struct {
     const Game *worlds;const Candidate *moves;int side,depth,budget;
     bool flag_known;float downside;
@@ -1103,6 +1104,7 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     for(int i=0;i<n;i++)if(view.board[moves[i].to].side<0&&!marshal_returns_to_suspect(&view,p,moves[i])&&
         !marshal_known_spy_exposure(&view,moves[i])&&known_unanswered_loss(&view,moves[i])==0){safe_wait=true;break;}
     if(safe_wait){int kept=0;for(int i=0;i<n;i++)if(!marshal_returns_to_suspect(&view,p,moves[i]))moves[kept++]=moves[i];n=kept;}
+    n=preserve_conversion_army(&view,p,moves,n);
     Move spy_capture=dangerous_spy_capture(&view,p,moves,n);if(spy_capture.from>=0)return spy_capture;
     Move cleanup=cleanup_capture(&view,moves,n);if(cleanup.from>=0)return cleanup;
     Move certain=continuity_capture(&view,p,moves,n);if(certain.from>=0)return certain;
@@ -1114,10 +1116,9 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
     BreachPlan breach=breach_plan(&view,p);
     ContinuityPlan miner_mission=last_miner_plan(&view,p);
     ContinuityPlan support=reserve_support_plan(&view,p);
-    /* A two-turn flag probe with a budgeted complete loss is an explicit
-       conversion policy. Sampled hidden layouts otherwise drown this short
-       winning window in speculative distant flag losses. The terminal-risk
-       filters above retain priority over the mission. */
+    /* Exploit a public opening only with a miner or negligible bomb risk.
+       A material reserve no longer licenses an expensive flag gamble.
+       Terminal-risk and army-preservation filters retain priority. */
     for(int i=0;i<n;i++)if(breach_step(&breach,moves[i]))return moves[i];
     /* Finish a safe short reinforcement before buying another speculative
        search line. Candidate filtering still rules out immediate/forced loss. */
@@ -1184,6 +1185,9 @@ Move ai_choose(const Game *g,int difficulty,uint32_t *rng) {
         strategic[i]+=ai_coordination_bonus(&view,m);
         strategic[i]+=dominant_hunt(&view,m);
         strategic[i]+=officer_raid_bonus(&view,p,&raiders,m,public_flag_pressure);
+        /* A safe last-miner conversion already in progress outranks a new
+           hunt; do not postpone a bomb-safe route to the flag for material. */
+        if(miner_mission.step.from<0)strategic[i]+=mobile_conversion_bonus(&view,p,&raiders,m);
         strategic[i]+=pincer_bonus(&view,m);
         strategic[i]+=spy_clearance_bonus(&view,m)+spy_ambush_bonus(&view,m);
         strategic[i]-=spy_attack_cost(&view,p,m);

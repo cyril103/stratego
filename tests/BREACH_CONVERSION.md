@@ -1,13 +1,34 @@
-# Conversion d'une brèche vers le drapeau
+# Conversion des brèches et conservation de l'armée
 
-L'IA conserve les coordonnées des bombes effectivement désamorcées. Cette mémoire publique est reconstruite automatiquement par les replays, sans accéder aux rangs cachés.
+Depuis la correction du 23 septembre 2026, une réserve matérielle ne justifie plus de sacrifier un officier contre un drapeau seulement supposé.
 
-Une mission de conversion peut reprendre après la mort du démineur : une pièce mobile située à un ou deux pas attaque une pièce immobile inconnue du fond de camp, voisine d'une bombe désamorcée, lorsque sa probabilité de drapeau atteint 25 %. Le choix favorise la proximité et les attaquants moins coûteux.
+Une bombe désamorcée reste une information publique utile. La mission courte de brèche, limitée à deux pas, utilise désormais un démineur ou un attaquant dont la probabilité publique de rencontrer une bombe ne dépasse pas 2 %. Les conditions de réserve, de défense du drapeau et de sécurité tactique restent actives. Un drapeau identifié est toujours pris immédiatement.
 
-La perte complète de l'attaquant doit laisser un avantage matériel d'au moins un capitaine et une autre pièce plus forte que toutes les unités mobiles adverses encore possibles. Les chemins traversent uniquement des cases libres. Les risques publics pour notre drapeau, les pertes tactiques connues, l'exposition supplémentaire à un espion et les filtres de défaite de l'IA restent prioritaires. Une bombe connue n'est jamais une cible de cette mission.
+Cette règle remplace la politique précédente : le test historique exigeait explicitement la mort du maréchal après une permutation cachée bombe/drapeau. Cette attente est supprimée à la demande du joueur. Le test vérifie maintenant le refus du pari, l'invariance aux rangs cachés, l'exploitation par un démineur et la capture d'un drapeau révélé.
 
-Cette décision de conversion précède la recherche par échantillonnage : des positions cachées hypothétiques ne doivent pas faire systématiquement abandonner cette courte occasion de victoire. Il s'agit d'une politique de risque calculé, pas d'une preuve que la cible est le drapeau.
+Un filtre complémentaire évite les sondages immobiles risqués par les autres unités utiles, lorsqu'une alternative survivante existe après les filtres d'urgence. Il fonctionne aussi sans avantage matériel. Le budget de risque diminue encore avec une avance : 8 % pour les capitaines et grades supérieurs, 25 % pour les autres unités concernées, divisés par deux au-delà de 10 % d'avantage dans l'évaluation des forces. Les éclaireurs gardent leur rôle de reconnaissance ; le dernier mobile et la recherche finale après élimination de l'armée adverse restent possibles. Ces seuils sont des choix prudents, pas des probabilités calibrées expérimentalement.
 
-Le test breached_flag_conversion reprend human_win_577 avant le coup 418 : maréchal E2-D2, puis D2-D1. Il vérifie quatre graines, toutes les réponses humaines légales sur le plateau enregistré, l'invariance après permutation cachée du drapeau avec une bombe, la perte effective du maréchal dans cette variante et le maintien du général. Il couvre aussi l'absence de brèche, les cibles connues ou mobiles, l'absence de réserve et l'urgence défensive.
+La conversion de l'avantage favorise les captures et les routes ouvertes vers des unités mobiles dont la probabilité de capture gagnante atteint 98 %. Elle tient compte des reprises, des menaces connues, des gardes assignés et de la défense du drapeau. Les maréchaux et généraux encore cachés ne reçoivent pas ce bonus. Les trajets traversent seulement des cases libres et sont limités à six pas. Une mission sûre du dernier démineur déjà engagée reste prioritaire : le bonus de chasse est désactivé tant qu'elle fournit une étape viable. Le test historique `scarce_piece_continuity` conserve sa victoire sur les quatre graines, sans modification de ses attentes.
 
-Validation : les 21 tests CTest passent (reports/breach-tests.log). Le test graphique termine 150 images sans erreur. La comparaison contre Expert+ Classique, graine 204 dans les deux camps, donne une victoire en 603 demi-coups et une partie inachevée à 1200 ; les séquences de coups sont identiques à la référence defense577-final. Ces deux parties ne suffisent pas à établir une hausse globale de force. L'exécutable installé dans build/stratego.exe correspond à build-napoleonic/stratego.exe (SHA256 4B3FB057878BC8CF9E23FD3B54F2A7F0A1B073C03C7848FF7345219233BFFD58).
+## Dernières parties utilisées
+
+- `human_win_474.jsonl`, avant le coup 362 : lieutenant vers 80, bombe estimée à 34,4 %, drapeau à 3,0 %. Le sondage est évité.
+- Même partie, avant le coup 372 : colonel vers 83, bombe estimée à 29,5 %, drapeau à 2,8 %. Un capitaine connu en 17 menace déjà le drapeau en 7 sans défense possible ; le pari de dernier recours reste autorisé. La perte d'avantage précède cette position.
+- `human_win_505.jsonl`, avant le coup 424 : sergent vers 79, bombe estimée à 32,2 %, drapeau à 2,9 %. Le sondage est évité.
+
+Les fixtures complètes sont versionnées. Les tests vérifient trois graines par position, les permutations des rangs cachés, les drapeaux connus, les démineurs et une capture mobile sûre avec une cible immobile tentante à côté. Ils ne démontrent pas une victoire contre toutes les réponses d'un humain.
+
+## Validation et livraison
+
+Compilation Release complète sans avertissement. Les **38/38 tests CTest**
+passent après correction de la priorité du dernier démineur (321,65 secondes).
+Sur les trois graines du coup 362, le colonel joue 23 vers 22 et se rapproche
+du capitaine connu en 21 ; le lieutenant ne sonde plus la bombe en 80.
+Au coup 424, le sergent se retire de 69 vers 59 au lieu de sonder 79.
+
+Le candidat local `build/stratego-campaign.exe` est mis à jour après cette
+validation, via le même lanceur `Tester-IA-campagne.cmd`. Le lancement habituel
+`Jouer.cmd` conserve la version précédente. Les nouvelles parties du candidat
+portent l'identifiant `ExpertPlusImprovedConversionV1` pour distinguer les
+replays des anciennes parties `ExpertPlusImprovedCampaignV1`.
+Les scores de la campagne précédente ne sont pas des mesures de cette correction.
