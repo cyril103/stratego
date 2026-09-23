@@ -73,7 +73,6 @@ static RenderTexture2D terrain_map;
 static int tray_side=COMPUTER;
 static bool tray_journal=false;
 static int latest_lost[2]={-1,-1};
-static int formation_bag[AI_FORMATIONS],formation_count=0,last_formation=-1;
 static Camera3D camera;
 static float azimuth=0, elevation=1.02f, zoom=14.7f;
 static Vector3 camera_focus={0,0,0};
@@ -182,16 +181,7 @@ static void reset_game(void) {
     ai_worker_stop();
     match_log_close(&game);
     game_init(&game,(uint32_t)time(NULL)+game_random(&ai_rng));selected=-1;animating=false;animation=0;ai_timer=.75f;memset(logs,0,sizeof(logs));
-    if(!formation_count){
-        if(last_formation<0){FILE *f=fopen("reports/last_formation.txt","r");if(f){if(fscanf(f,"%d",&last_formation)!=1||last_formation<0||last_formation>=AI_FORMATIONS)last_formation=-1;fclose(f);}}
-        for(int i=0;i<AI_FORMATIONS;i++)formation_bag[i]=i;
-        for(int i=AI_FORMATIONS-1;i>0;i--){int j=game_random(&game.rng)%(i+1);int t=formation_bag[i];formation_bag[i]=formation_bag[j];formation_bag[j]=t;}
-        if(formation_bag[AI_FORMATIONS-1]==last_formation){int t=formation_bag[0];formation_bag[0]=last_formation;formation_bag[AI_FORMATIONS-1]=t;}
-        formation_count=AI_FORMATIONS;
-    }
-    last_formation=formation_bag[--formation_count];ai_deploy_template(&game,COMPUTER,last_formation);
-    if(!DirectoryExists("reports"))MakeDirectory("reports");
-    FILE *formation_file=fopen("reports/last_formation.txt","w");if(formation_file){fprintf(formation_file,"%d\n",last_formation);fclose(formation_file);}
+    ai_deploy(&game,COMPUTER);
     reveal_reset(&reveal_window);
     tray_side=COMPUTER;tray_journal=false;latest_lost[0]=latest_lost[1]=-1;
     resign_confirm=resigned=end_dismissed=false;end_time=0;deployment_ready=false;reserve_rank=-1;deployment_status="";

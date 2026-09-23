@@ -1,4 +1,5 @@
 #include "game.h"
+#include <stdlib.h>
 /* Original constrained templates; see tests/DEPLOYMENT_RESEARCH.md. Local
    coordinates run from the rear (row 0) to the front (row 3). */
 typedef struct {int flag,bombs[6],guard,marshal;} Formation;
@@ -54,4 +55,69 @@ void ai_deploy_template(Game *g,int side,int variant){
         g->board[s]=(Piece){ranks[i],side,side*40+i,false,false};
     }
 }
-void ai_deploy(Game *g,int side){ai_deploy_template(g,side,(int)(game_random(&g->rng)%AI_FORMATIONS));}
+/* Randomize the topology as well as the mobile ranks. A recognisable bomb
+   template must not identify the flag. Rejection preserves deployment roles
+   and escape routes; every accepted swap keeps the exact army inventory. */
+static bool deploy_viable(const int ranks[40]){
+    int flag=-1,marshal=-1,spy=-1,front_scouts=0,front_miners=0;
+    for(int s=0;s<40;s++){
+        if(ranks[s]==FLAG)flag=s;
+        if(ranks[s]==MARSHAL)marshal=s;
+        if(ranks[s]==SPY)spy=s;
+        if(s>=30){
+            if(ranks[s]==SPY||ranks[s]>=MAJOR)return false;
+            front_scouts+=ranks[s]==SCOUT;front_miners+=ranks[s]==MINER;
+        }
+    }
+    if(flag<0||flag>=20||marshal<0||spy<0)return false;
+    if(front_scouts<3||front_miners>2)return false;
+    int dx=marshal%10-spy%10,dy=marshal/10-spy/10;
+    if(dx*dx+dy*dy!=1)return false;
+    int nb[4]={flag>=10?flag-10:-1,flag+10,flag%10?flag-1:-1,flag%10<9?flag+1:-1};
+    int closed=0;bool guard=false;
+    for(int k=0;k<4;k++)closed+=nb[k]<0||ranks[nb[k]]==BOMB;
+    if(closed<2)return false;
+    for(int s=0;s<30;s++)if(ranks[s]>=CAPTAIN&&ranks[s]<=MARSHAL){
+        int distance=abs(s%10-flag%10)+abs(s/10-flag/10);
+        if(distance<=2)guard=true;
+    }
+    if(!guard)return false;
+    bool decoy=false;
+    for(int s=0;s<20;s++)if(ranks[s]>FLAG&&ranks[s]<BOMB){
+        int adj[4]={s>=10?s-10:-1,s+10,s%10?s-1:-1,s%10<9?s+1:-1},bombs=0;
+        for(int k=0;k<4;k++)if(adj[k]>=0&&ranks[adj[k]]==BOMB)bombs++;
+        if(bombs>=2)decoy=true;
+    }
+    if(!decoy)return false;
+    for(int lane=0;lane<3;lane++){
+        int col=lane==0?0:lane==1?4:8;bool miner=false,officer=false;
+        for(int row=0;row<4;row++)for(int x=col;x<col+2;x++){
+            int rank=ranks[row*10+x];
+            if(rank==MINER)miner=true;
+            if(row>=2&&rank>=CAPTAIN&&rank<=MARSHAL)officer=true;
+        }
+        if(!miner||!officer)return false;
+    }
+    bool seen[40]={false};int queue[40],head=0,tail=0;
+    for(int x=0;x<10;x++)if(x<2||(x>=4&&x<6)||x>=8){
+        int s=30+x;if(ranks[s]>FLAG&&ranks[s]<BOMB){seen[s]=true;queue[tail++]=s;}
+    }
+    while(head<tail){
+        int s=queue[head++],adj[4]={s>=10?s-10:-1,s<30?s+10:-1,s%10?s-1:-1,s%10<9?s+1:-1};
+        for(int k=0;k<4;k++){int t=adj[k];if(t>=0&&!seen[t]&&ranks[t]>FLAG&&ranks[t]<BOMB){seen[t]=true;queue[tail++]=t;}}
+    }
+    for(int s=0;s<40;s++)if(ranks[s]>FLAG&&ranks[s]<BOMB&&!seen[s])return false;
+    return true;
+}
+void ai_deploy(Game *g,int side){
+    ai_deploy_template(g,side,(int)(game_random(&g->rng)%AI_FORMATIONS));
+    int ranks[40];
+    for(int s=0;s<40;s++)ranks[s]=g->board[(side==COMPUTER?s/10:9-s/10)*10+s%10].rank;
+    for(int attempt=0;attempt<240;attempt++){
+        int a=(int)(game_random(&g->rng)%40),b=(int)(game_random(&g->rng)%40);
+        if(ranks[a]==ranks[b])continue;
+        int t=ranks[a];ranks[a]=ranks[b];ranks[b]=t;
+        if(!deploy_viable(ranks)){t=ranks[a];ranks[a]=ranks[b];ranks[b]=t;}
+    }
+    for(int s=0;s<40;s++)g->board[(side==COMPUTER?s/10:9-s/10)*10+s%10]=(Piece){ranks[s],side,side*40+s,false,false};
+}
